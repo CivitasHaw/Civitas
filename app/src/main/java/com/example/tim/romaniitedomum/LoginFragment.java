@@ -12,14 +12,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class LoginFragment extends Fragment {
 
     private static final String TAG = "LoginFragment";
+
+    private MainActivity mainActivity;
+
     private View mProgressView;
     private View mLoginFormView;
     private TextView tvLoad;
+
+    private Button btnConfirm;
+    private Button btnRegister;
 
     @Nullable
     @Override
@@ -29,15 +36,35 @@ public class LoginFragment extends Fragment {
         Log.d(TAG, "onCreateView: called");
         initLogin(view);
 
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                register();
+            }
+        });
+
         return view;
+    }
+
+    private void register(){
+        mainActivity.fragmentSwitch(new RegisterFragment(), true, "RegisterFragment");
     }
 
     private void initLogin(View view) {
         mLoginFormView = view.findViewById(R.id.login_form);
         mProgressView = view.findViewById(R.id.login_progress);
         tvLoad = view.findViewById(R.id.tvLoad);
+
+        btnConfirm = view.findViewById(R.id.button_login_confirm);
+        btnRegister = view.findViewById(R.id.button_login_register);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mainActivity = (MainActivity) getActivity();
+    }
 
     /**
      * Shows the progress UI and hides the login form.
