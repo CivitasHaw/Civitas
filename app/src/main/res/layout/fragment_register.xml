@@ -35,8 +35,54 @@
         android:id="@+id/register_form"
         android:orientation="vertical">
 
-        [remove this and do your layout here]
+        <EditText
+            android:id="@+id/edit_register_name"
+            android:hint="@string/edit_register_name"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
+        <EditText
+            android:id="@+id/edit_register_email"
+            android:hint="@string/edit_register_email"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edit_register_password"
+            android:hint="@string/edit_register_password"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/edit_register_password_again"
+            android:hint="@string/edit_register_password_again"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_register_confirm"
+                android:text="@string/button_register_submit"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button_register_login"
+                android:text="@string/button_register_login"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
