@@ -13,4 +13,6 @@
     <string name="button_register_login">Back to Login</string>
     <string name="toast_empty_fields">Please fill empty fields</string>
     <string name="toast_invalid_password">Please make sure password is correct!</string>
+    <string name="toast_backendless_error">Error:</string>
+    <string name="register_backendless_user">Registering... please wait...</string>
 </resources>

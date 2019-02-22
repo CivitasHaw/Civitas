@@ -17,9 +17,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+
+/**
+ * Created by TimStaats 21.02.2019
+ */
+
 public class RegisterFragment extends Fragment {
 
     private static final String TAG = "RegisterFragment";
+
+    private MainActivity mainActivity;
+
     private View mProgressView;
     private View mRegisterFormView;
     private TextView tvLoad;
@@ -54,6 +66,32 @@ public class RegisterFragment extends Fragment {
                 } else {
                     if (password.equals(passwordValidation)){
                         Log.d(TAG, "onClick: registration successful");
+                        BackendlessUser user = new BackendlessUser();
+                        user.setEmail(email);
+                        user.setPassword(password);
+                        // for adding columns to backendless, use setProperty like below
+                        user.setProperty("name", name);
+
+                        showProgress(true);
+                        tvLoad.setText(R.string.register_backendless_user);
+
+                        // registering user to backendless
+                        Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
+                            @Override
+                            public void handleResponse(BackendlessUser response) {
+
+                                showProgress(false);
+                                mainActivity.fragmentSwitch(new LoginFragment(), false, "");
+
+                            }
+
+                            @Override
+                            public void handleFault(BackendlessFault fault) {
+                                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                                showProgress(false);
+                            }
+                        });
+
                     } else {
                         Toast.makeText(getContext(), getResources().getText(R.string.toast_invalid_password), Toast.LENGTH_SHORT).show();
                     }
@@ -76,6 +114,12 @@ public class RegisterFragment extends Fragment {
         btnSubmit = view.findViewById(R.id.button_register_submit);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mainActivity = (MainActivity)getActivity();
+    }
 
     /**
      * Shows the progress UI and hides the login form.
