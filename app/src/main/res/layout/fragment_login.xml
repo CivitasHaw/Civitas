@@ -47,6 +47,7 @@
             android:id="@+id/edit_login_email"
             android:hint="@string/edit_login_email"
             android:gravity="center"
+            android:inputType="textEmailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

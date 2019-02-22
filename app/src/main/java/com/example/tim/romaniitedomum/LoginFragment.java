@@ -15,6 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+/**
+ * Created by TimStaats 21.02.2019
+ */
 
 public class LoginFragment extends Fragment {
 
@@ -28,9 +33,12 @@ public class LoginFragment extends Fragment {
 
     private EditText editLoginEmail;
     private EditText editLoginPassword;
-    private Button btnConfirm;
+    private Button btnLogin;
     private Button btnRegister;
     private TextView textResetPassword;
+
+    private String email = "";
+    private String password = "";
 
 
     @Nullable
@@ -41,10 +49,35 @@ public class LoginFragment extends Fragment {
         Log.d(TAG, "onCreateView: called");
         initLogin(view);
 
+
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: clicked");
+
+                email = editLoginEmail.getText().toString().trim();
+                password = editLoginPassword.getText().toString().trim();
+
+                if (email.isEmpty() || password.isEmpty()){
+                    Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "onClick: login: clicked");
+                }
+            }
+        });
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 register();
+            }
+        });
+
+        textResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: Reset Password: clicked");
             }
         });
 
@@ -62,7 +95,7 @@ public class LoginFragment extends Fragment {
 
         editLoginEmail = view.findViewById(R.id.edit_login_email);
         editLoginPassword = view.findViewById(R.id.edit_login_password);
-        btnConfirm = view.findViewById(R.id.button_login_confirm);
+        btnLogin = view.findViewById(R.id.button_login_confirm);
         btnRegister = view.findViewById(R.id.button_login_register);
         textResetPassword = view.findViewById(R.id.text_login_reset_password);
     }
