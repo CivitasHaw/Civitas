@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegisterFragment extends Fragment {
 
@@ -21,6 +24,14 @@ public class RegisterFragment extends Fragment {
     private View mRegisterFormView;
     private TextView tvLoad;
 
+    private EditText editRegisterName;
+    private EditText editRegisterEmail;
+    private EditText editRegisterPassword;
+    private EditText editRegisterPasswordValidation;
+    private Button btnSubmit;
+
+    private String name, email, password, passwordValidation;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,6 +39,28 @@ public class RegisterFragment extends Fragment {
 
         Log.d(TAG, "onCreateView: called");
         initRegister(view);
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: submit clicked");
+                name = editRegisterName.getText().toString().trim();
+                email = editRegisterEmail.getText().toString().trim();
+                password = editRegisterPassword.getText().toString().trim();
+                passwordValidation = editRegisterPasswordValidation.getText().toString().trim();
+
+                if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordValidation.isEmpty()){
+                    Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
+                } else {
+                    if (password.equals(passwordValidation)){
+                        Log.d(TAG, "onClick: registration successful");
+                    } else {
+                        Toast.makeText(getContext(), getResources().getText(R.string.toast_invalid_password), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
         return view;
     }
 
@@ -35,6 +68,12 @@ public class RegisterFragment extends Fragment {
         mRegisterFormView = view.findViewById(R.id.register_form);
         mProgressView = view.findViewById(R.id.register_progress);
         tvLoad = view.findViewById(R.id.tvLoad);
+
+        editRegisterName = view.findViewById(R.id.edit_register_name);
+        editRegisterEmail = view.findViewById(R.id.edit_register_email);
+        editRegisterPassword = view.findViewById(R.id.edit_register_password);
+        editRegisterPasswordValidation = view.findViewById(R.id.edit_register_password_again);
+        btnSubmit = view.findViewById(R.id.button_register_submit);
     }
 
 

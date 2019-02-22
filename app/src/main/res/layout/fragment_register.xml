@@ -69,20 +69,20 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:id="@+id/button_register_confirm"
+                android:id="@+id/button_register_submit"
                 android:text="@string/button_register_submit"
                 android:background="@drawable/buttons"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
-
+<!--
             <Button
                 android:id="@+id/button_register_login"
                 android:text="@string/button_register_login"
                 android:background="@drawable/buttons"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" />-->
 
         </LinearLayout>
 
