@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class LoginFragment extends Fragment {
@@ -25,8 +26,12 @@ public class LoginFragment extends Fragment {
     private View mLoginFormView;
     private TextView tvLoad;
 
+    private EditText editLoginEmail;
+    private EditText editLoginPassword;
     private Button btnConfirm;
     private Button btnRegister;
+    private TextView textResetPassword;
+
 
     @Nullable
     @Override
@@ -55,8 +60,11 @@ public class LoginFragment extends Fragment {
         mProgressView = view.findViewById(R.id.login_progress);
         tvLoad = view.findViewById(R.id.tvLoad);
 
+        editLoginEmail = view.findViewById(R.id.edit_login_email);
+        editLoginPassword = view.findViewById(R.id.edit_login_password);
         btnConfirm = view.findViewById(R.id.button_login_confirm);
         btnRegister = view.findViewById(R.id.button_login_register);
+        textResetPassword = view.findViewById(R.id.text_login_reset_password);
     }
 
     @Override
