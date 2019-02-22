@@ -15,4 +15,7 @@
     <string name="toast_invalid_password">Please make sure password is correct!</string>
     <string name="toast_backendless_error">Error:</string>
     <string name="register_backendless_user">Registering... please wait...</string>
+    <string name="toast_login_successful">Logged in successfully!</string>
+    <string name="toast_forgot_password">Please enter your email address!</string>
+    <string name="toast_backendless_reset_password_instructions">Reset instructions sent to email address!</string>
 </resources>

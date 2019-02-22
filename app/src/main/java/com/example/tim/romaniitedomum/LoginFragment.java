@@ -106,6 +106,26 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Reset Password: clicked");
+                if (email.isEmpty()){
+                    Toast.makeText(getContext(), getResources().getText(R.string.toast_forgot_password), Toast.LENGTH_SHORT).show();
+                } else {
+                    showProgress(true);
+
+                    Backendless.UserService.restorePassword(email, new AsyncCallback<Void>() {
+                        @Override
+                        public void handleResponse(Void response) {
+                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_reset_password_instructions), Toast.LENGTH_SHORT).show();
+                            showProgress(false);
+
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                            showProgress(false);
+                        }
+                    });
+                }
             }
         });
 
