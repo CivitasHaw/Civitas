@@ -3,6 +3,7 @@ package com.example.tim.romaniitedomum;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 
 /**
  * Created by TimStaats 21.02.2019
@@ -63,6 +69,28 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "onClick: login: clicked");
+
+                    showProgress(true);
+
+                    Backendless.UserService.login(email, password, new AsyncCallback<BackendlessUser>() {
+                        @Override
+                        public void handleResponse(BackendlessUser response) {
+
+                            Toast.makeText(getContext(), getResources().getText(R.string.toast_login_successful), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getActivity(), MapActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
+
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+
+                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                            showProgress(false);
+
+                        }
+                    }, true);
                 }
             }
         });
