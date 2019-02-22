@@ -65,6 +65,7 @@
             <Button
                 android:id="@+id/button_login_confirm"
                 android:text="@string/button_login_confirm"
+                android:background="@drawable/buttons"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -72,6 +73,7 @@
             <Button
                 android:id="@+id/button_login_register"
                 android:text="@string/button_login_register"
+                android:background="@drawable/buttons"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
