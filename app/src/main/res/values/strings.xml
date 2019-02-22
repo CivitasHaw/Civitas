@@ -4,7 +4,7 @@
     <string name="edit_login_password">enter your password</string>
     <string name="button_login_confirm">Confirm</string>
     <string name="button_login_register">Register</string>
-    <string name="text_login_reset_password">forgotten password?</string>
+    <string name="text_login_reset_password">Forgot Password? Reset here.</string>
     <string name="edit_register_name">enter your name</string>
     <string name="edit_register_email">enter your email</string>
     <string name="edit_register_password">password</string>
