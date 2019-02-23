@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">RomaniIteDomum</string>
+    <string name="google_maps_API_key">AIzaSyAPwxcEF4MMHDFkw80rEtSiQdNf2BmiiiM</string>
+
     <string name="edit_login_email">enter your email</string>
     <string name="edit_login_password">enter your password</string>
     <string name="button_login_confirm">Login</string>
