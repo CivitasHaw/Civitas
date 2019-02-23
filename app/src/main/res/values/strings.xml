@@ -20,4 +20,5 @@
     <string name="toast_login_successful">Logged in successfully!</string>
     <string name="toast_forgot_password">Please enter your email address!</string>
     <string name="toast_backendless_reset_password_instructions">Reset instructions sent to email address!</string>
+    <string name="toast_google_service_error">You can\'t make map requests</string>
 </resources>
