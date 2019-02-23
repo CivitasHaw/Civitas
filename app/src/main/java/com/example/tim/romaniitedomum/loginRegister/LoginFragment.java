@@ -1,4 +1,4 @@
-package com.example.tim.romaniitedomum;
+package com.example.tim.romaniitedomum.loginRegister;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -22,6 +22,9 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.example.tim.romaniitedomum.MainActivity;
+import com.example.tim.romaniitedomum.map.MapActivity;
+import com.example.tim.romaniitedomum.R;
 
 /**
  * Created by TimStaats 21.02.2019
