@@ -3,6 +3,10 @@ package com.example.tim.romaniitedomum;
 import android.app.Application;
 import com.backendless.Backendless;
 
+/**
+ * Created by TimStaats 21.02.2019
+ */
+
 public class ApplicationClass extends Application {
 
     public static final String APPLICATION_ID = "7E4DF0B7-34EF-5403-FF11-6C7F89ED2500";

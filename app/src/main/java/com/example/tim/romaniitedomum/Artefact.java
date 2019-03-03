@@ -2,6 +2,10 @@ package com.example.tim.romaniitedomum;
 
 import android.location.Location;
 
+/**
+ * Created by TimStaats 21.02.2019
+ */
+
 // in Backendless classnames become a table
 public class Artefact {
 

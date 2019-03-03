@@ -23,6 +23,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+/**
+ * Created by TimStaats 21.02.2019
+ */
+
 public class MapActivity extends AppCompatActivity {
 
     private static final String TAG = "MapActivity";

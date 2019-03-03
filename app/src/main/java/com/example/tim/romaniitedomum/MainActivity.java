@@ -12,6 +12,10 @@ import com.example.tim.romaniitedomum.loginRegister.LoginFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+/**
+ * Created by TimStaats 21.02.2019
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
