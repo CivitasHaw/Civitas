@@ -22,6 +22,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.local.UserIdStorageFactory;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.example.tim.romaniitedomum.R;
@@ -59,6 +60,7 @@ public class LoginFragment extends Fragment {
         initLogin(view);
 
 
+        showProgress(true);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,9 +82,10 @@ public class LoginFragment extends Fragment {
                         public void handleResponse(BackendlessUser response) {
 
                             Toast.makeText(getContext(), getResources().getText(R.string.toast_login_successful), Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), MapActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
+                            navigateToMapActivity();
+//                            Intent intent = new Intent(getActivity(), MapActivity.class);
+//                            startActivity(intent);
+//                            getActivity().finish();
 
                         }
 
@@ -132,7 +135,47 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        // User stays logged in
+        Backendless.UserService.isValidLogin(new AsyncCallback<Boolean>() {
+            @Override
+            public void handleResponse(Boolean response) {
+
+                if (response){
+                    String userObjectId = UserIdStorageFactory.instance().getStorage().get();
+
+                    Backendless.Data.of(BackendlessUser.class).findById(userObjectId, new AsyncCallback<BackendlessUser>() {
+                        @Override
+                        public void handleResponse(BackendlessUser response) {
+                            navigateToMapActivity();
+
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                            showProgress(false);
+                        }
+                    });
+                } else {
+                    showProgress(false);
+                }
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                showProgress(false);
+
+            }
+        });
+
         return view;
+    }
+
+    private void navigateToMapActivity(){
+        Intent intent = new Intent(getActivity(), MapActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     private void register(){
