@@ -53,9 +53,15 @@ public class MapActivity extends AppCompatActivity {
                 Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_map_ready), Toast.LENGTH_SHORT).show();
                 mMap = googleMap;
 
-                if (mLocationPermissionGranted){
+                if (mLocationPermissionGranted) {
                     getDeviceLocation();
 
+                    if (ActivityCompat.checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapActivity.this,
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    mMap.setMyLocationEnabled(true);
                 }
             }
         });
