@@ -40,11 +40,11 @@ public class LoginFragment extends Fragment {
     private View mLoginFormView;
     private TextView tvLoad;
 
-    private EditText editLoginEmail;
-    private EditText editLoginPassword;
+    private EditText etLoginEmail;
+    private EditText etLoginPassword;
     private Button btnLogin;
     private Button btnRegister;
-    private TextView textResetPassword;
+    private TextView tvResetPassword;
 
     private String email = "";
     private String password = "";
@@ -65,8 +65,8 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked");
 
-                email = editLoginEmail.getText().toString().trim();
-                password = editLoginPassword.getText().toString().trim();
+                email = etLoginEmail.getText().toString().trim();
+                password = etLoginPassword.getText().toString().trim();
 
                 if (email.isEmpty() || password.isEmpty()){
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
@@ -105,7 +105,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        textResetPassword.setOnClickListener(new View.OnClickListener() {
+        tvResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Reset Password: clicked");
@@ -144,11 +144,11 @@ public class LoginFragment extends Fragment {
         mProgressView = view.findViewById(R.id.login_progress);
         tvLoad = view.findViewById(R.id.tvLoad);
 
-        editLoginEmail = view.findViewById(R.id.edit_login_email);
-        editLoginPassword = view.findViewById(R.id.edit_login_password);
+        etLoginEmail = view.findViewById(R.id.edit_login_email);
+        etLoginPassword = view.findViewById(R.id.edit_login_password);
         btnLogin = view.findViewById(R.id.button_login_confirm);
         btnRegister = view.findViewById(R.id.button_login_register);
-        textResetPassword = view.findViewById(R.id.text_login_reset_password);
+        tvResetPassword = view.findViewById(R.id.text_login_reset_password);
     }
 
     @Override
