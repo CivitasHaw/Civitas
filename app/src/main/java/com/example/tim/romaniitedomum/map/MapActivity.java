@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.tim.romaniitedomum.R;
 import com.google.android.gms.maps.GoogleMap;
@@ -54,6 +55,7 @@ public class MapActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 mLocationPermissionGranted = true;
+                initMap();
             } else {
                 ActivityCompat.requestPermissions(this,
                         permissions,
