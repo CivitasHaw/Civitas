@@ -38,11 +38,11 @@ public class RegisterFragment extends Fragment {
     private View mRegisterFormView;
     private TextView tvLoad;
 
-    private EditText editRegisterName;
-    private EditText editRegisterEmail;
-    private EditText editRegisterPassword;
-    private EditText editRegisterPasswordValidation;
-    private Button btnSubmit;
+    private EditText etRegisterName;
+    private EditText etRegisterEmail;
+    private EditText etRegisterPassword;
+    private EditText etRegisterPasswordValidation;
+    private Button btnRegister;
 
     private String name, email, password, passwordValidation;
 
@@ -54,14 +54,14 @@ public class RegisterFragment extends Fragment {
         Log.d(TAG, "onCreateView: called");
         initRegister(view);
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
+        btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: submit clicked");
-                name = editRegisterName.getText().toString().trim();
-                email = editRegisterEmail.getText().toString().trim();
-                password = editRegisterPassword.getText().toString().trim();
-                passwordValidation = editRegisterPasswordValidation.getText().toString().trim();
+                name = etRegisterName.getText().toString().trim();
+                email = etRegisterEmail.getText().toString().trim();
+                password = etRegisterPassword.getText().toString().trim();
+                passwordValidation = etRegisterPasswordValidation.getText().toString().trim();
 
                 if (name.isEmpty() || email.isEmpty() || password.isEmpty() || passwordValidation.isEmpty()){
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
@@ -109,11 +109,11 @@ public class RegisterFragment extends Fragment {
         mProgressView = view.findViewById(R.id.register_progress);
         tvLoad = view.findViewById(R.id.tvLoad);
 
-        editRegisterName = view.findViewById(R.id.edit_register_name);
-        editRegisterEmail = view.findViewById(R.id.edit_register_email);
-        editRegisterPassword = view.findViewById(R.id.edit_register_password);
-        editRegisterPasswordValidation = view.findViewById(R.id.edit_register_password_again);
-        btnSubmit = view.findViewById(R.id.button_register_submit);
+        etRegisterName = view.findViewById(R.id.edit_register_name);
+        etRegisterEmail = view.findViewById(R.id.edit_register_email);
+        etRegisterPassword = view.findViewById(R.id.edit_register_password);
+        etRegisterPasswordValidation = view.findViewById(R.id.edit_register_password_again);
+        btnRegister = view.findViewById(R.id.button_register_submit);
     }
 
     @Override
