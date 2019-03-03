@@ -23,6 +23,7 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.local.UserIdStorageFactory;
+import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.example.tim.romaniitedomum.R;
@@ -84,6 +85,7 @@ public class LoginFragment extends Fragment {
                         @Override
                         public void handleResponse(BackendlessUser response) {
 
+                            ApplicationClass.user = response;
                             Toast.makeText(getContext(), getResources().getText(R.string.toast_login_successful), Toast.LENGTH_SHORT).show();
                             navigateToMapActivity();
 //                            Intent intent = new Intent(getActivity(), MapActivity.class);
@@ -151,6 +153,7 @@ public class LoginFragment extends Fragment {
                     Backendless.Data.of(BackendlessUser.class).findById(userObjectId, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response) {
+                            ApplicationClass.user = response;
                             navigateToMapActivity();
 
                         }

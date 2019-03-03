@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.artefact.ArtefactActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -99,6 +100,7 @@ public class MapActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             Log.d(TAG, "onComplete: found location");
                             Location currentLocation = (Location) task.getResult();
+                            ApplicationClass.mLocation = currentLocation;
 
                             moveCamera(new LatLng(currentLocation.getLatitude(),
                                     currentLocation.getLongitude()),
