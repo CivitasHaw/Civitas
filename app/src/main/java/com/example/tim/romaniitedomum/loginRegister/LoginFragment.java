@@ -61,6 +61,7 @@ public class LoginFragment extends Fragment {
 
 
         showProgress(true);
+        tvLoad.setText(getResources().getText(R.string.login_check_credentials));
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +77,8 @@ public class LoginFragment extends Fragment {
                     Log.d(TAG, "onClick: login: clicked");
 
                     showProgress(true);
+                    tvLoad.setText(getResources().getText(R.string.login_user));
+
 
                     Backendless.UserService.login(email, password, new AsyncCallback<BackendlessUser>() {
                         @Override
@@ -116,6 +119,7 @@ public class LoginFragment extends Fragment {
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_forgot_password), Toast.LENGTH_SHORT).show();
                 } else {
                     showProgress(true);
+                    tvLoad.setText(getResources().getText(R.string.reset_sending_information));
 
                     Backendless.UserService.restorePassword(email, new AsyncCallback<Void>() {
                         @Override
@@ -143,6 +147,7 @@ public class LoginFragment extends Fragment {
                 if (response){
                     String userObjectId = UserIdStorageFactory.instance().getStorage().get();
 
+                    tvLoad.setText(getResources().getText(R.string.login_user));
                     Backendless.Data.of(BackendlessUser.class).findById(userObjectId, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response) {
