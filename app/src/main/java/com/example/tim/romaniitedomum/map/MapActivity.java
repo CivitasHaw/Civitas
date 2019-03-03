@@ -62,6 +62,7 @@ public class MapActivity extends AppCompatActivity {
                         return;
                     }
                     mMap.setMyLocationEnabled(true);
+                    //mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 }
             }
         });
