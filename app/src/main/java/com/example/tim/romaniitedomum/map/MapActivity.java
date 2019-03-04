@@ -24,7 +24,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -54,6 +56,9 @@ public class MapActivity extends AppCompatActivity {
 
         getLocationPermission();
 
+
+
+
         btnAddArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,6 +77,15 @@ public class MapActivity extends AppCompatActivity {
             public void onMapReady(GoogleMap googleMap) {
                 Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_map_ready), Toast.LENGTH_SHORT).show();
                 mMap = googleMap;
+
+                mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(LatLng point) {
+                        mMap.addMarker(new MarkerOptions().position(point)
+                                .title("New Place")
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                    }
+                });
 
                 if (mLocationPermissionGranted) {
                     getDeviceLocation();
