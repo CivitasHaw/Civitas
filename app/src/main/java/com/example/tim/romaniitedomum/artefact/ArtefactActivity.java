@@ -1,5 +1,6 @@
 package com.example.tim.romaniitedomum.artefact;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,8 +22,13 @@ public class ArtefactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_artefact);
 
-        fragmentSwitcher2(new NewArtefactFragment(), false, "");
-
+        Intent intent = getIntent();
+        String content = intent.getExtras().getString("artefacts");
+        if (content.equals("list")){
+            fragmentSwitcher2(new ArtefactListFragment(), true, "ArtefactListFragment");
+        } else {
+            fragmentSwitcher2(new NewArtefactFragment(), false, "");
+        }
     }
 
     public void fragmentSwitcher2(Fragment fragment, boolean toBackstack, String name){

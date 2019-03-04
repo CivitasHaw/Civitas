@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +17,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 import com.example.tim.romaniitedomum.ApplicationClass;
+import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.artefact.ArtefactActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -38,7 +44,7 @@ import com.google.android.gms.tasks.Task;
  * Created by TimStaats 21.02.2019
  */
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MapActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -63,6 +69,9 @@ public class MapActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -71,15 +80,67 @@ public class MapActivity extends AppCompatActivity {
         getLocationPermission();
 
 
-
-
         btnAddArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
+                intent.putExtra("artefacts", "newArtefact");
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        switch (menuItem.getItemId()){
+            case R.id.nav_artefacts:
+                Log.d(TAG, "onNavigationItemSelected: artefacts");
+                Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
+                intent.putExtra("artefacts", "list");
+                startActivity(intent);
+
+                break;
+            case R.id.nav_map:
+                Log.d(TAG, "onNavigationItemSelected: map");
+
+                break;
+            case R.id.nav_info:
+                Log.d(TAG, "onNavigationItemSelected: impressum");
+
+                break;
+            case R.id.nav_settings:
+                Log.d(TAG, "onNavigationItemSelected: settings");
+
+                break;
+            case R.id.nav_logout:
+                Backendless.UserService.logout(new AsyncCallback<Void>() {
+                    @Override
+                    public void handleResponse(Void response) {
+                        Log.d(TAG, "handleResponse: logout");
+                        Toast.makeText(MapActivity.this, "User is logged out", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MapActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        MapActivity.this.finish();
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Toast.makeText(MapActivity.this, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+                break;
+            case R.id.nav_send:
+                Log.d(TAG, "onNavigationItemSelected: send");
+                break;
+            case R.id.nav_share:
+                Log.d(TAG, "onNavigationItemSelected: share");
+                break;
+        }
+
+        return true;
     }
 
     // for navigation_drawer needed
@@ -201,4 +262,6 @@ public class MapActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }
