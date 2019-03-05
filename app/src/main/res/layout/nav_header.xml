@@ -11,9 +11,10 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher_round" />
+        android:src="@mipmap/ic_logo" />
 
     <TextView
+        android:id="@+id/text_nav_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
@@ -21,6 +22,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
+        android:id="@+id/text_nav_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="civitas@gmail.com" />
