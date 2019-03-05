@@ -55,6 +55,7 @@
             android:id="@+id/edit_login_password"
             android:hint="@string/edit_login_password"
             android:gravity="center"
+            android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
