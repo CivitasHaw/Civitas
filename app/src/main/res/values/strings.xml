@@ -35,4 +35,8 @@
     <string name="ic_artefacts">Artefacts</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="hint_new_artefact_name">Name of artefact</string>
+    <string name="hint_new_artefact_description">Describe the artefact</string>
+    <string name="hint_new_artefact_date">Which epoche?</string>
+    <string name="button_new_artefact">Save</string>
 </resources>

@@ -1,9 +1,10 @@
 package com.example.tim.romaniitedomum.artefact;
 
 
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,15 +12,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -29,7 +27,14 @@ public class NewArtefactFragment extends Fragment {
 
     private static final String TAG = "NewArtefactFragment";
 
-    private TextView textView;
+    private View mProgressViewNewArtefact;
+    private View mFormViewNewArtefact;
+    private TextView tvLoadNewArtefact;
+
+    private ImageView imageNewArtefact;
+    private EditText etNewArtefactName, etNewArtefactDescription, etNewArtefactDate;
+    private Button btnNewArtefactSave;
+
 
     @Nullable
     @Override
@@ -38,24 +43,67 @@ public class NewArtefactFragment extends Fragment {
 
         initNewArtefact(view);
 
-        List<Address> adr = new ArrayList<>();
-        Geocoder geocoder = new Geocoder(getContext(), Locale.GERMAN);
-        String name = (String) ApplicationClass.user.getProperty("name");
-        String street = "";
-        Location location = ApplicationClass.mLocation;
-        try {
-            adr = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            street = adr.get(0).getAddressLine(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        textView.setText(name + "\n" + "Address: " + street);
         return view;
     }
 
+
     private void initNewArtefact(View view) {
-        textView = view.findViewById(R.id.textView);
+        mProgressViewNewArtefact = view.findViewById(R.id.progress_new_artefact);
+        mFormViewNewArtefact = view.findViewById(R.id.form_new_artefact);
+        tvLoadNewArtefact = view.findViewById(R.id.tvLoad_new_artefact);
+
+        imageNewArtefact = view.findViewById(R.id.image_new_artefact);
+        etNewArtefactDate = view.findViewById(R.id.edit_new_artefact_date);
+        etNewArtefactName = view.findViewById(R.id.edit_new_artefact_name);
+        etNewArtefactDescription = view.findViewById(R.id.edit_new_artefact_description);
+
     }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mFormViewNewArtefact.setVisibility(show ? View.GONE : View.VISIBLE);
+            mFormViewNewArtefact.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mFormViewNewArtefact.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressViewNewArtefact.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressViewNewArtefact.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressViewNewArtefact.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+
+            tvLoadNewArtefact.setVisibility(show ? View.VISIBLE : View.GONE);
+            tvLoadNewArtefact.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    tvLoadNewArtefact.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressViewNewArtefact.setVisibility(show ? View.VISIBLE : View.GONE);
+            tvLoadNewArtefact.setVisibility(show ? View.VISIBLE : View.GONE);
+            mFormViewNewArtefact.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+
 }
