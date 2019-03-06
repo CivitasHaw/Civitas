@@ -64,6 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:inputType="number"
             android:hint="@string/hint_new_artefact_date" />
 
         <Button

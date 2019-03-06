@@ -5,14 +5,17 @@
 
     <!--    this group will stay selected   -->
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_artefacts"
-            android:icon="@drawable/ic_blur"
-            android:title="@string/ic_artefacts" />
+
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map"
             android:title="@string/ic_map" />
+
+        <item
+            android:id="@+id/nav_artefacts"
+            android:icon="@drawable/ic_blur"
+            android:title="@string/ic_artefacts" />
+
         <item
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_info"
