@@ -32,7 +32,7 @@
     <string name="ic_info">impressum</string>
     <string name="ic_send">send</string>
     <string name="ic_map">Map</string>
-    <string name="ic_artefacts">Artefacts</string>
+    <string name="ic_artefacts">My Artefacts</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="hint_new_artefact_name">Name of artefact</string>
