@@ -1,6 +1,7 @@
 package com.example.tim.romaniitedomum.artefact;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.tim.romaniitedomum.R;
+
+import java.io.ByteArrayOutputStream;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -41,5 +44,20 @@ public class ArtefactActivity extends AppCompatActivity {
         }
         transaction.commit();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        Bundle args = new Bundle();
+        args.putByteArray("image", byteArray);
+        NewArtefactFragment fragment = new NewArtefactFragment();
+        fragment.setArguments(args);
+
+        fragmentSwitcher2(fragment, false, "");
     }
 }
