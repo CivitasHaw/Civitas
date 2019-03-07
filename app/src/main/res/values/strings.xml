@@ -45,4 +45,5 @@
     <string name="button_new_artefact_audio_pause">Pause</string>
     <string name="button_new_artefact_audio_stop">Stop</string>
     <string name="button_new_artefact_audio_remove">Remove</string>
+    <string name="list_of_artefacts">List of Artefacts</string>
 </resources>
