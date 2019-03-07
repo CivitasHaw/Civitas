@@ -39,4 +39,10 @@
     <string name="hint_new_artefact_description">Describe the artefact</string>
     <string name="hint_new_artefact_date">Which epoche?</string>
     <string name="button_new_artefact">Save</string>
+    <string name="button_new_artefact_image">Take a picture</string>
+    <string name="button_new_artefact_audio">Record audio file (optional)</string>
+    <string name="button_new_artefact_audio_play">Play</string>
+    <string name="button_new_artefact_audio_pause">Pause</string>
+    <string name="button_new_artefact_audio_stop">Stop</string>
+    <string name="button_new_artefact_audio_remove">Remove</string>
 </resources>

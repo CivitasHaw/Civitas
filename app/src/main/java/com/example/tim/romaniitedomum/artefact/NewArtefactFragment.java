@@ -38,7 +38,7 @@ public class NewArtefactFragment extends Fragment {
 
     private ImageView ivNewArtefact;
     private EditText etNewArtefactName, etNewArtefactDescription, etNewArtefactDate;
-    private Button btnNewArtefactSave;
+    private Button btnNewArtefactSave, btnTakeImage, btnAudioRecord;
 
     private String artefactName, artefactDescription, artefactDate;
     private Bitmap artefactBitmap;
@@ -54,8 +54,14 @@ public class NewArtefactFragment extends Fragment {
         ivNewArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 0);
+                takeAPictureWithCamera();
+            }
+        });
+
+        btnTakeImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takeAPictureWithCamera();
             }
         });
 
@@ -80,6 +86,11 @@ public class NewArtefactFragment extends Fragment {
         return view;
     }
 
+    private void takeAPictureWithCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 0);
+    }
+
 
     private void initNewArtefact(View view) {
         mProgressViewNewArtefact = view.findViewById(R.id.progress_new_artefact);
@@ -91,6 +102,8 @@ public class NewArtefactFragment extends Fragment {
         etNewArtefactName = view.findViewById(R.id.edit_new_artefact_name);
         etNewArtefactDescription = view.findViewById(R.id.edit_new_artefact_description);
         btnNewArtefactSave = view.findViewById(R.id.button_new_artefact_save);
+        btnAudioRecord = view.findViewById(R.id.button_new_artefact_audio_record);
+        btnTakeImage = view.findViewById(R.id.button_new_artefact_image);
 
         if (getArguments() != null){
             byte[] byteArray = getArguments().getByteArray("image");

@@ -36,6 +36,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/button_new_artefact_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/buttons"
+            android:text="@string/button_new_artefact_image" />
+
         <ImageView
             android:id="@+id/image_new_artefact"
             android:layout_width="200dp"
@@ -44,6 +52,55 @@
             android:layout_marginTop="16dp"
             android:clickable="true"
             android:src="@drawable/civitas_main_logo" />
+
+        <Button
+            android:id="@+id/button_new_artefact_audio_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/buttons"
+            android:text="@string/button_new_artefact_audio" />
+
+        <LinearLayout
+            android:id="@+id/audio_layout"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/button_new_artefact_audio_play"
+                android:layout_width="wrap_content"
+                android:text="@string/button_new_artefact_audio_play"
+                android:background="@drawable/buttons"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button_new_artefact_audio_pause"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_new_artefact_audio_pause"
+                android:background="@drawable/buttons"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button_new_artefact_audio_stop"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_new_artefact_audio_stop"
+                android:background="@drawable/buttons"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button_new_artefact_audio_remove"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_new_artefact_audio_remove"
+                android:background="@drawable/buttons"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/edit_new_artefact_name"
