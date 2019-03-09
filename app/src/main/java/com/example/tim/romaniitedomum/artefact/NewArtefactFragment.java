@@ -32,6 +32,7 @@ public class NewArtefactFragment extends Fragment {
 
     private static final String TAG = "NewArtefactFragment";
 
+    private ArtefactActivity artefactActivity;
     private View mProgressViewNewArtefact;
     private View mFormViewNewArtefact;
     private TextView tvLoadNewArtefact;
@@ -91,6 +92,14 @@ public class NewArtefactFragment extends Fragment {
         startActivityForResult(intent, 0);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        artefactActivity = (ArtefactActivity)getActivity();
+        //mainActivity = (MainActivity)getActivity();
+        //mapActivity = (MapActivity)getActivity();
+    }
 
     private void initNewArtefact(View view) {
         mProgressViewNewArtefact = view.findViewById(R.id.progress_new_artefact);
