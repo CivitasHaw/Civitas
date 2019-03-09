@@ -8,7 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import com.backendless.geo.GeoPoint;
+import com.example.tim.romaniitedomum.ApplicationClass;
+import com.example.tim.romaniitedomum.Artefact;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.map.MapActivity;
 
 import java.io.ByteArrayOutputStream;
 
@@ -30,7 +34,11 @@ public class ArtefactActivity extends AppCompatActivity {
         if (content.equals("list")){
             fragmentSwitcher2(new ArtefactListFragment(), true, "ArtefactListFragment");
         } else {
-            fragmentSwitcher2(new NewArtefactFragment(), false, "");
+            NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
+            Bundle args = new Bundle();
+            args.putDouble("latitude", ApplicationClass.mLocation.getLatitude());
+            args.putDouble("longitude", ApplicationClass.mLocation.getLongitude());
+            fragmentSwitcher2(newArtefactFragment, false, "");
         }
     }
 
