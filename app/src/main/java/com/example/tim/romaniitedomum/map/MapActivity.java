@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,7 +47,8 @@ import com.google.android.gms.tasks.Task;
  * Created by TimStaats 21.02.2019
  */
 
-public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener/*,
+        GoogleMap.OnMapLongClickListener*/ {
 
     private static final String TAG = "MapActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -182,9 +185,12 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng point) {
+                        addMarkerToMap(point);
+/*
                         mMap.addMarker(new MarkerOptions().position(point)
                                 .title("New Place")
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+*/
                     }
                 });
 
@@ -201,6 +207,17 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 }
             }
         });
+    }
+
+    public void addMarkerToMap(LatLng point) {
+        //String title = ApplicationClass.mArtefact.getArtefactName();
+        Marker marker = mMap.addMarker(new MarkerOptions().position(point)
+                .title("title")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+//        mMap.addMarker(new MarkerOptions().position(point)
+//                .title("title")
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
     }
 
     private void getDeviceLocation(){
@@ -278,5 +295,14 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
+/*
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        mMap.addMarker(new MarkerOptions().position(latLng)
+                .title("New Place")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+    }
+*/
 
 }
