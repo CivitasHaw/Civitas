@@ -5,6 +5,7 @@ import android.location.Location;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by TimStaats 21.02.2019
@@ -17,7 +18,8 @@ public class ApplicationClass extends Application {
     public static final String SERVER_URL = "https://api.backendless.com";
 
     public static BackendlessUser user;
-    public static Location mLocation;
+    public static Location mDeviceLocation;
+    public static LatLng mArtefactLatLng;
     public static Artefact mArtefact;
 
     @Override
