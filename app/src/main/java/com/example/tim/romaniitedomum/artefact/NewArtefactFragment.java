@@ -148,6 +148,10 @@ public class NewArtefactFragment extends Fragment {
                 showProgress(false);
                 ApplicationClass.mArtefact = artefact;
 
+                etNewArtefactName.setText("");
+                etNewArtefactDescription.setText("");
+                etNewArtefactDate.setText("");
+
             }
 
             @Override
