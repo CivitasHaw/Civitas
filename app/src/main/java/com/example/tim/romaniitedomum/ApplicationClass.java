@@ -18,6 +18,7 @@ public class ApplicationClass extends Application {
 
     public static BackendlessUser user;
     public static Location mLocation;
+    public static Artefact mArtefact;
 
     @Override
     public void onCreate() {
