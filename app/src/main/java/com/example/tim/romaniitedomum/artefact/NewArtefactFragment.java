@@ -7,12 +7,15 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +25,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.geo.GeoPoint;
+import com.example.tim.romaniitedomum.ApplicationClass;
+import com.example.tim.romaniitedomum.Artefact;
+import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.map.MapActivity;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -33,6 +49,7 @@ public class NewArtefactFragment extends Fragment {
     private static final String TAG = "NewArtefactFragment";
 
     private ArtefactActivity artefactActivity;
+
     private View mProgressViewNewArtefact;
     private View mFormViewNewArtefact;
     private TextView tvLoadNewArtefact;
@@ -43,6 +60,9 @@ public class NewArtefactFragment extends Fragment {
 
     private String artefactName, artefactDescription, artefactDate;
     private Bitmap artefactBitmap;
+    private Artefact mArtefact;
+    private double mLat;
+    private double mLng;
 
 
     @Nullable
@@ -77,7 +97,18 @@ public class NewArtefactFragment extends Fragment {
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
                 } else {
                     showProgress(true);
-                    tvLoadNewArtefact.setText("Saving image... please wait...");
+                    tvLoadNewArtefact.setText(getResources().getText(R.string.new_artefact_save_image));
+
+                    Artefact artefact = new Artefact();
+                    artefact.setArtefactName(artefactName);
+                    artefact.setArtefactDescription(artefactDescription);
+                    artefact.setUserEmail(ApplicationClass.user.getEmail());
+
+
+                    saveDataWithGeoAsync(artefact);
+
+
+
 
                 }
             }
@@ -85,6 +116,47 @@ public class NewArtefactFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void saveDataWithGeoAsync(final Artefact artefact){
+
+//        Geocoder geocoder = new Geocoder(getContext());
+//        try {
+//            List<Address> addresses = new ArrayList<>();
+//            addresses = geocoder.getFromLocation(mLat, mLng, 1);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        mLat = ApplicationClass.mLocation.getLatitude();
+        mLng = ApplicationClass.mLocation.getLongitude();
+
+
+        GeoPoint location = new GeoPoint(mLat, mLng);
+        location.addCategory("Basilika");
+        location.addCategory("Roma");
+        location.addMetadata("artefactName", artefact.getArtefactName());
+        location.addMetadata("artefactDescription", artefact.getArtefactDescription());
+        location.addMetadata("artefactCreator", artefact.getUserEmail());
+        location.addMetadata("artefact", artefact);
+        //artefact.setLocation(location);
+
+        Backendless.Geo.savePoint(location, new AsyncCallback<GeoPoint>() {
+            @Override
+            public void handleResponse(GeoPoint response) {
+                Log.d(TAG, "handleResponse: GeoPoint has been saved: " + response.getObjectId());
+                showProgress(false);
+                ApplicationClass.mArtefact = artefact;
+
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(getContext(), "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                showProgress(false);
+
+            }
+        });
     }
 
     private void takeAPictureWithCamera() {
@@ -114,11 +186,29 @@ public class NewArtefactFragment extends Fragment {
         btnAudioRecord = view.findViewById(R.id.button_new_artefact_audio_record);
         btnTakeImage = view.findViewById(R.id.button_new_artefact_image);
 
+
         if (getArguments() != null){
+
+            // artefact image is taken with camera
             byte[] byteArray = getArguments().getByteArray("image");
-            artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-            ivNewArtefact.setImageBitmap(artefactBitmap);
+            if (byteArray.length > 0){
+                artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                ivNewArtefact.setImageBitmap(artefactBitmap);
+            }
+            // artefact gets created via marker
+            double latitude = getArguments().getDouble("latitude");
+            double longitude = getArguments().getDouble("longitude");
+            if (latitude != 0.0 || longitude != 0.0){
+                mLat = latitude;
+                mLng = longitude;
+            }
+
+
         }
+/*        if (getArguments().containsKey("latitude")){
+            mLat = getArguments().getDouble("latitude");
+            mLng = getArguments().getDouble("longitude");
+        }*/
     }
 
     /**
