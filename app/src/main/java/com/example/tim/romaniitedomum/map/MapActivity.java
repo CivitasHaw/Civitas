@@ -124,15 +124,15 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.nav_map:
                 Log.d(TAG, "onNavigationItemSelected: map");
-
+                Toast.makeText(this, "Map clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_info:
                 Log.d(TAG, "onNavigationItemSelected: impressum");
-
+                Toast.makeText(this, "Impressum clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_settings:
                 Log.d(TAG, "onNavigationItemSelected: settings");
-
+                Toast.makeText(this, "Settings clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_logout:
                 Backendless.UserService.logout(new AsyncCallback<Void>() {
@@ -148,16 +148,17 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void handleFault(BackendlessFault fault) {
                         Toast.makeText(MapActivity.this, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
-
                     }
                 });
 
                 break;
             case R.id.nav_send:
                 Log.d(TAG, "onNavigationItemSelected: send");
+                Toast.makeText(this, "Send clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_share:
                 Log.d(TAG, "onNavigationItemSelected: share");
+                Toast.makeText(this, "Share clicked", Toast.LENGTH_SHORT).show();
                 break;
         }
 
