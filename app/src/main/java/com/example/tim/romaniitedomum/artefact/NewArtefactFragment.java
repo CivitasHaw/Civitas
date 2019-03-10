@@ -30,6 +30,7 @@ import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.Artefact;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.map.MapActivity;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -96,6 +97,8 @@ public class NewArtefactFragment extends Fragment {
                     artefact.setArtefactName(artefactName);
                     artefact.setArtefactDescription(artefactDescription);
                     artefact.setUserEmail(ApplicationClass.user.getEmail());
+                    artefact.setLatitude(mLat);
+                    artefact.setLongitude(mLng);
 
 
                     saveDataWithGeoAsync(artefact);
@@ -110,14 +113,6 @@ public class NewArtefactFragment extends Fragment {
     }
 
     private void saveDataWithGeoAsync(final Artefact artefact) {
-
-//        Geocoder geocoder = new Geocoder(getContext());
-//        try {
-//            List<Address> addresses = new ArrayList<>();
-//            addresses = geocoder.getFromLocation(mLat, mLng, 1);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         GeoPoint location = new GeoPoint(mLat, mLng);
         Log.d(TAG, "saveDataWithGeoAsync: mLat: " + mLat);
@@ -139,6 +134,7 @@ public class NewArtefactFragment extends Fragment {
                 etNewArtefactName.setText("");
                 etNewArtefactDescription.setText("");
                 etNewArtefactDate.setText("");
+                startActivity(new Intent(getContext(), MapActivity.class));
 
             }
 

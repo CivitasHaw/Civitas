@@ -186,6 +186,13 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_map_ready), Toast.LENGTH_SHORT).show();
                 mMap = googleMap;
 
+                if (ApplicationClass.mArtefactList.size() > 0){
+                    for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
+                        createMarker(ApplicationClass.mArtefactList.get(i).getLatitude(),
+                                ApplicationClass.mArtefactList.get(i).getLongitude(), ApplicationClass.mArtefactList.get(i).getArtefactName());
+                    }
+                }
+
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
@@ -193,12 +200,6 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                         Log.d(TAG, "onMapLongClick: lat: " + ApplicationClass.mArtefactLatLng.latitude + " lng: " + ApplicationClass.mArtefactLatLng.longitude);
                         navigateToNewArtefactFragment("onMapLongClick");
 
-                        //addMarkerToMap(latLng);
-/*
-                        mMap.addMarker(new MarkerOptions().position(point)
-                                .title("New Place")
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-*/
                     }
                 });
 
@@ -217,16 +218,14 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         });
     }
 
-    public void addMarkerToMap(LatLng latLng) {
-        //String title = ApplicationClass.mArtefact.getArtefactName();
-        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng)
-                .title("title")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-//        mMap.addMarker(new MarkerOptions().position(point)
-//                .title("title")
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+    protected Marker createMarker(double latitude, double longitude, String title){
 
+        return mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .title(title)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
     }
+
 
     private void getDeviceLocation(){
         Log.d(TAG, "getDeviceLocation: getting the devices current location");
