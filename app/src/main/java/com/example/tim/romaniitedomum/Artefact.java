@@ -21,6 +21,8 @@ public class Artefact {
     private String artefactAudioUrl;
     private String artefactDescription;
     private GeoPoint location;
+    private double latitude;
+    private double longitude;
     private List<Artefact> artefactSiblings;
 
     public Artefact() {
@@ -104,6 +106,22 @@ public class Artefact {
 
     public void setArtefactSiblings(List<Artefact> artefactSiblings) {
         this.artefactSiblings = artefactSiblings;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }
 /*    --------------------------------------------------------------------------
