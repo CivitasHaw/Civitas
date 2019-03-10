@@ -7,6 +7,9 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by TimStaats 21.02.2019
  */
@@ -22,6 +25,7 @@ public class ApplicationClass extends Application {
     public static LatLng mTempArtefactLatLng;
     public static LatLng mArtefactLatLng;
     public static Artefact mArtefact;
+    public static List<Artefact> mArtefactList;
 
     @Override
     public void onCreate() {
