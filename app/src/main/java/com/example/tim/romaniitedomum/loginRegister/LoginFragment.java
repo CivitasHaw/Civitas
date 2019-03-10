@@ -24,9 +24,12 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.local.UserIdStorageFactory;
 import com.example.tim.romaniitedomum.ApplicationClass;
+import com.example.tim.romaniitedomum.Artefact;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.example.tim.romaniitedomum.R;
+
+import java.util.List;
 
 /**
  * Created by TimStaats 21.02.2019
@@ -155,11 +158,29 @@ public class LoginFragment extends Fragment {
                     String userObjectId = UserIdStorageFactory.instance().getStorage().get();
 
                     tvLoad.setText(getResources().getText(R.string.login_user));
+
                     Backendless.Data.of(BackendlessUser.class).findById(userObjectId, new AsyncCallback<BackendlessUser>() {
+
                         @Override
                         public void handleResponse(BackendlessUser response) {
                             ApplicationClass.user = response;
-                            navigateToMapActivity();
+
+                            tvLoad.setText(getResources().getText(R.string.retrieve_artefacts_from_backendless));
+                            Backendless.Persistence.of(Artefact.class).find(new AsyncCallback<List<Artefact>>() {
+                                @Override
+                                public void handleResponse(List<Artefact> response) {
+                                    ApplicationClass.mArtefactList = response;
+                                    navigateToMapActivity();
+                                }
+
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                                    showProgress(false);
+                                    navigateToMapActivity();
+                                }
+                            });
+
 
                         }
 
