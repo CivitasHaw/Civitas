@@ -7,8 +7,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,14 +29,8 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.Artefact;
-import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
-import com.example.tim.romaniitedomum.map.MapActivity;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -63,6 +55,7 @@ public class NewArtefactFragment extends Fragment {
     private Artefact mArtefact;
     private double mLat;
     private double mLng;
+    private Bundle args;
 
 
     @Nullable
@@ -93,7 +86,7 @@ public class NewArtefactFragment extends Fragment {
                 artefactDescription = etNewArtefactDescription.getText().toString().trim();
                 artefactDate = etNewArtefactDate.getText().toString().trim();
 
-                if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty()){
+                if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty()) {
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
                 } else {
                     showProgress(true);
@@ -108,8 +101,6 @@ public class NewArtefactFragment extends Fragment {
                     saveDataWithGeoAsync(artefact);
 
 
-
-
                 }
             }
         });
@@ -118,7 +109,7 @@ public class NewArtefactFragment extends Fragment {
         return view;
     }
 
-    private void saveDataWithGeoAsync(final Artefact artefact){
+    private void saveDataWithGeoAsync(final Artefact artefact) {
 
 //        Geocoder geocoder = new Geocoder(getContext());
 //        try {
@@ -128,11 +119,8 @@ public class NewArtefactFragment extends Fragment {
 //            e.printStackTrace();
 //        }
 
-        mLat = ApplicationClass.mLocation.getLatitude();
-        mLng = ApplicationClass.mLocation.getLongitude();
-
-
         GeoPoint location = new GeoPoint(mLat, mLng);
+        Log.d(TAG, "saveDataWithGeoAsync: mLat: " + mLat);
         location.addCategory("Basilika");
         location.addCategory("Roma");
         location.addMetadata("artefactName", artefact.getArtefactName());
@@ -172,9 +160,9 @@ public class NewArtefactFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        artefactActivity = (ArtefactActivity)getActivity();
-        //mainActivity = (MainActivity)getActivity();
-        //mapActivity = (MapActivity)getActivity();
+        artefactActivity = (ArtefactActivity) getActivity();
+        args = getArguments();
+
     }
 
     private void initNewArtefact(View view) {
@@ -191,29 +179,41 @@ public class NewArtefactFragment extends Fragment {
         btnTakeImage = view.findViewById(R.id.button_new_artefact_image);
 
 
-        if (getArguments() != null){
+        Bundle args = getArguments();
+        if (args != null) {
+            String origin = args.getString("origin");
+            LatLng tempLatLng;
 
-            // artefact image is taken with camera
-            byte[] byteArray = getArguments().getByteArray("image");
-            if (byteArray.length > 0){
-                artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                ivNewArtefact.setImageBitmap(artefactBitmap);
+            switch (origin) {
+                case "camera": // artefact image is taken with camera
+                    Log.d(TAG, "initNewArtefact: origin: " + origin);
+                    byte[] byteArray = args.getByteArray("image");
+                    artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    ivNewArtefact.setImageBitmap(artefactBitmap);
+                    mLat = ApplicationClass.mTempArtefactLatLng.latitude;
+                    mLng = ApplicationClass.mTempArtefactLatLng.longitude;
+                    break;
+                case "btnAddArtefact": // artefact gets created at device position
+                    Log.d(TAG, "initNewArtefact: origin: " + origin);
+                    mLat = ApplicationClass.mDeviceLocation.getLatitude();
+                    mLng = ApplicationClass.mDeviceLocation.getLongitude();
+                    tempLatLng = new LatLng(mLat, mLng);
+                    ApplicationClass.mTempArtefactLatLng = tempLatLng;
+                    Log.d(TAG, "initNewArtefact: btnAddArtefact: mLat: " + mLat);
+                    break;
+                case "onMapLongClick": // artefact gets created at marker position
+                    Log.d(TAG, "initNewArtefact: origin: " + origin);
+                    mLat = ApplicationClass.mArtefactLatLng.latitude;
+                    mLng = ApplicationClass.mArtefactLatLng.longitude;
+                    tempLatLng = new LatLng(mLat, mLng);
+                    ApplicationClass.mTempArtefactLatLng = tempLatLng;
+
+                    Log.d(TAG, "initNewArtefact: onMapLongClick: mLat: " + mLat);
+                    break;
             }
-            // artefact gets created via marker
-            double latitude = getArguments().getDouble("latitude");
-            double longitude = getArguments().getDouble("longitude");
-            if (latitude != 0.0 || longitude != 0.0){
-                mLat = latitude;
-                mLng = longitude;
-            }
-
-
         }
-/*        if (getArguments().containsKey("latitude")){
-            mLat = getArguments().getDouble("latitude");
-            mLng = getArguments().getDouble("longitude");
-        }*/
     }
+
 
     /**
      * Shows the progress UI and hides the login form.

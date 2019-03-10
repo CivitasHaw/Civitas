@@ -19,6 +19,7 @@ public class ApplicationClass extends Application {
 
     public static BackendlessUser user;
     public static Location mDeviceLocation;
+    public static LatLng mTempArtefactLatLng;
     public static LatLng mArtefactLatLng;
     public static Artefact mArtefact;
 

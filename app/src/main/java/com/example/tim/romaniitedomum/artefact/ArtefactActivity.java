@@ -8,11 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
-import com.example.tim.romaniitedomum.Artefact;
 import com.example.tim.romaniitedomum.R;
-import com.example.tim.romaniitedomum.map.MapActivity;
 
 import java.io.ByteArrayOutputStream;
 
@@ -30,14 +27,23 @@ public class ArtefactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_artefact);
 
         Intent intent = getIntent();
-        String content = intent.getExtras().getString("artefacts");
+        String content = intent.getStringExtra("artefacts");
         if (content.equals("list")){
             fragmentSwitcher2(new ArtefactListFragment(), true, "ArtefactListFragment");
         } else {
             NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
             Bundle args = new Bundle();
-            args.putDouble("latitude", ApplicationClass.mLocation.getLatitude());
-            args.putDouble("longitude", ApplicationClass.mLocation.getLongitude());
+            String content2 = intent.getStringExtra("origin");
+            if (content2.equals("btnAddArtefact")){ // creating at device location
+                args.putString("origin", "btnAddArtefact");
+                args.putDouble("latitude", ApplicationClass.mDeviceLocation.getLatitude());
+                args.putDouble("longitude", ApplicationClass.mDeviceLocation.getLongitude());
+            } else if (content2.equals("onMapLongClick")){ // creating at marker location
+                args.putString("origin", "onMapLongClick");
+                args.putDouble("latitude", ApplicationClass.mArtefactLatLng.latitude);
+                args.putDouble("longitude", ApplicationClass.mArtefactLatLng.longitude);
+            }
+            newArtefactFragment.setArguments(args);
             fragmentSwitcher2(newArtefactFragment, false, "");
         }
     }
@@ -62,6 +68,8 @@ public class ArtefactActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         Bundle args = new Bundle();
+        String origin = "camera";
+        args.putString("origin", origin);
         args.putByteArray("image", byteArray);
         NewArtefactFragment fragment = new NewArtefactFragment();
         fragment.setArguments(args);

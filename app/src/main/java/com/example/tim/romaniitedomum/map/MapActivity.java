@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
@@ -78,11 +77,16 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         btnAddArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
-                intent.putExtra("artefacts", "newArtefact");
-                startActivity(intent);
+                navigateToNewArtefactFragment("btnAddArtefact");
             }
         });
+    }
+
+    public void navigateToNewArtefactFragment(String origin){
+        Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
+        intent.putExtra("artefacts", "newArtefact");
+        intent.putExtra("origin", origin);
+        startActivity(intent);
     }
 
     private void initDrawerAndToolbar() {
@@ -184,8 +188,12 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
-                    public void onMapLongClick(LatLng point) {
-                        addMarkerToMap(point);
+                    public void onMapLongClick(LatLng latLng) {
+                        ApplicationClass.mArtefactLatLng = latLng;
+                        Log.d(TAG, "onMapLongClick: lat: " + ApplicationClass.mArtefactLatLng.latitude + " lng: " + ApplicationClass.mArtefactLatLng.longitude);
+                        navigateToNewArtefactFragment("onMapLongClick");
+
+                        //addMarkerToMap(latLng);
 /*
                         mMap.addMarker(new MarkerOptions().position(point)
                                 .title("New Place")
@@ -209,9 +217,9 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         });
     }
 
-    public void addMarkerToMap(LatLng point) {
+    public void addMarkerToMap(LatLng latLng) {
         //String title = ApplicationClass.mArtefact.getArtefactName();
-        Marker marker = mMap.addMarker(new MarkerOptions().position(point)
+        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng)
                 .title("title")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 //        mMap.addMarker(new MarkerOptions().position(point)
@@ -232,7 +240,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                         if (task.isSuccessful()){
                             Log.d(TAG, "onComplete: found location");
                             Location currentLocation = (Location) task.getResult();
-                            ApplicationClass.mLocation = currentLocation;
+                            ApplicationClass.mDeviceLocation = currentLocation;
 
                             moveCamera(new LatLng(currentLocation.getLatitude(),
                                     currentLocation.getLongitude()),
