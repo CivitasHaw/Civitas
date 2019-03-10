@@ -139,7 +139,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void handleResponse(Void response) {
                         Log.d(TAG, "handleResponse: logout");
-                        Toast.makeText(MapActivity.this, "User is logged out", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MapActivity.this, getResources().getText(R.string.user_logout), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MapActivity.this, MainActivity.class);
                         startActivity(intent);
                         MapActivity.this.finish();
