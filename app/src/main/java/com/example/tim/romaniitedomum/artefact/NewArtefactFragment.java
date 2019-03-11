@@ -162,6 +162,7 @@ public class NewArtefactFragment extends Fragment {
                 Log.d(TAG, "handleResponse: GeoPoint has been saved: " + response.getObjectId());
                 showProgress(false);
                 ApplicationClass.mArtefact = artefact;
+                ApplicationClass.mArtefactList.add(artefact);
 
                 etNewArtefactName.setText("");
                 etNewArtefactDescription.setText("");
