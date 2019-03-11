@@ -128,7 +128,7 @@ public class NewArtefactFragment extends Fragment {
         location.addMetadata("artefactDescription", artefact.getArtefactDescription());
         location.addMetadata("artefactCreator", artefact.getUserEmail());
         location.addMetadata("artefact", artefact);
-        //artefact.setLocation(location);
+        artefact.setLocation(location);
 
         Backendless.Geo.savePoint(location, new AsyncCallback<GeoPoint>() {
             @Override
