@@ -8,13 +8,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -24,14 +30,20 @@ public class ArtefactListFragment extends Fragment {
 
     private static final String TAG = "ArtefactListFragment";
 
+    public static final int SPAN_COUNT = 2;
+
     private ArtefactActivity artefactActivity;
+
     private View mProgressViewArtefactList;
     private View mFormViewArtefactList;
     private TextView tvLoadArtefactList;
 
     private TextView tvListOfArtefacts;
 
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
+    private ArtefactListAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
     @Nullable
     @Override
@@ -39,6 +51,17 @@ public class ArtefactListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_artefact_list, container, false);
 
         initArtefactList(view);
+
+        mAdapter = new ArtefactListAdapter(ApplicationClass.mArtefactList, ApplicationClass.loader);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(artefactActivity, SPAN_COUNT));
+        mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemclick(int position) {
+                Toast.makeText(artefactActivity, "Click: " + ApplicationClass.mArtefactList.get(position).getArtefactName(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
@@ -52,8 +75,10 @@ public class ArtefactListFragment extends Fragment {
 
         tvListOfArtefacts = view.findViewById(R.id.text_list_of_artefacts);
 
-    }
+        mRecyclerView = view.findViewById(R.id.recyclerview_list_of_artefacts);
+        mLayoutManager = new LinearLayoutManager(artefactActivity);
 
+    }
 
 
     @Override

@@ -51,4 +51,7 @@
     <string name="user_logout">Logout successful</string>
     <string name="toast_backendless_image_upload">Photo successfully uploaded</string>
     <string name="toast_backendless_create_new_artefact">Busy creating new artefact... please wait...</string>
+    <string name="cardview_default_category">#roma, #basilika</string>
+    <string name="cardview_default_description">super rare artefact, mint</string>
+    <string name="cardview_default_name">Name of artefact</string>
 </resources>
