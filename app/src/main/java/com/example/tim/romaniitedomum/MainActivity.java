@@ -11,6 +11,8 @@ import android.widget.Toast;
 import com.example.tim.romaniitedomum.loginRegister.LoginFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * Created by TimStaats 21.02.2019
@@ -26,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader.getInstance().init(configuration);
+        ApplicationClass.loader = ImageLoader.getInstance();
 
         if (isServicesOk()){
             fragmentSwitch(new LoginFragment(), false, "");
