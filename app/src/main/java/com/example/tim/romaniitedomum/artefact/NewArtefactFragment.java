@@ -99,12 +99,12 @@ public class NewArtefactFragment extends Fragment {
                     showProgress(true);
                     tvLoadNewArtefact.setText(getResources().getText(R.string.new_artefact_save_image));
 
-                    Artefact artefact = new Artefact();
-                    artefact.setArtefactName(artefactName);
-                    artefact.setArtefactDescription(artefactDescription);
-                    artefact.setUserEmail(ApplicationClass.user.getEmail());
-                    artefact.setLatitude(mLat);
-                    artefact.setLongitude(mLng);
+                    mArtefact = new Artefact();
+                    mArtefact.setArtefactName(artefactName);
+                    mArtefact.setArtefactDescription(artefactDescription);
+                    mArtefact.setUserEmail(ApplicationClass.user.getEmail());
+                    mArtefact.setLatitude(mLat);
+                    mArtefact.setLongitude(mLng);
 
 
                     saveDataWithGeoAsync(artefact);
