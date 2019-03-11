@@ -24,6 +24,7 @@ public class ArtefactListFragment extends Fragment {
 
     private static final String TAG = "ArtefactListFragment";
 
+    private ArtefactActivity artefactActivity;
     private View mProgressViewArtefactList;
     private View mFormViewArtefactList;
     private TextView tvLoadArtefactList;
@@ -55,7 +56,12 @@ public class ArtefactListFragment extends Fragment {
 
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        artefactActivity = (ArtefactActivity) getActivity();
+    }
 
     /**
      * Shows the progress UI and hides the login form.
