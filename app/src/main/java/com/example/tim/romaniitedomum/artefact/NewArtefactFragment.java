@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.files.BackendlessFile;
 import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.Artefact;
@@ -44,6 +45,9 @@ public class NewArtefactFragment extends Fragment {
     public static final String ORIGIN_CAMERA = "camera";
     public static final String ORIGIN_MAP_LONG_CLICK = "onMapLongClick";
     public static final String ORIGIN_BTN_ADD_ARTEFACT = "btnAddArtefact";
+    public static final String BACKENDLESS_FILE_PATH = "artefactImages";
+    public static final int BITMAP_QUALITY = 100;
+
     private ArtefactActivity artefactActivity;
 
     private View mProgressViewNewArtefact;
@@ -106,8 +110,30 @@ public class NewArtefactFragment extends Fragment {
                     mArtefact.setLatitude(mLat);
                     mArtefact.setLongitude(mLng);
 
+                    String fileName = artefactName + ".png";
 
-                    saveDataWithGeoAsync(artefact);
+                    Backendless.Files.Android.upload(artefactBitmap, Bitmap.CompressFormat.PNG, BITMAP_QUALITY,
+                            fileName, BACKENDLESS_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+                        @Override
+                        public void handleResponse(BackendlessFile response) {
+
+                            mArtefact.setArtefactImageUrl(response.getFileURL());
+                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_image_upload), Toast.LENGTH_SHORT).show();
+                            showProgress(false);
+
+                            showProgress(true);
+                            tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
+                            saveDataWithGeoAsync(mArtefact);
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            showProgress(false);
+                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
 
 
                 }
