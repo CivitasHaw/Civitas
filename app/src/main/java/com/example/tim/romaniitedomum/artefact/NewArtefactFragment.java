@@ -59,7 +59,7 @@ public class NewArtefactFragment extends Fragment {
     private Artefact mArtefact;
     private double mLat;
     private double mLng;
-    private Bundle args;
+    private Bundle mArgs;
 
 
     @Nullable
@@ -163,7 +163,7 @@ public class NewArtefactFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         artefactActivity = (ArtefactActivity) getActivity();
-        args = getArguments();
+        mArgs = getArguments();
 
     }
 
@@ -181,15 +181,15 @@ public class NewArtefactFragment extends Fragment {
         btnTakeImage = view.findViewById(R.id.button_new_artefact_image);
 
 
-        Bundle args = getArguments();
-        if (args != null) {
-            String origin = args.getString("origin");
+        //mArgs = getArguments();
+        if (mArgs != null) {
+            String origin = mArgs.getString("origin");
             LatLng tempLatLng;
 
             switch (origin) {
                 case ORIGIN_CAMERA: // artefact image is taken with camera
                     Log.d(TAG, "initNewArtefact: origin: " + origin);
-                    byte[] byteArray = args.getByteArray("image");
+                    byte[] byteArray = mArgs.getByteArray("image");
                     artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                     ivNewArtefact.setImageBitmap(artefactBitmap);
                     mLat = ApplicationClass.mTempArtefactLatLng.latitude;
