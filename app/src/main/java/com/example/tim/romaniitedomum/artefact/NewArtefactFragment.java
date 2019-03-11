@@ -29,7 +29,6 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.files.BackendlessFile;
 import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
-import com.example.tim.romaniitedomum.Artefact;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.google.android.gms.maps.model.LatLng;

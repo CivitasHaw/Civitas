@@ -24,7 +24,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.local.UserIdStorageFactory;
 import com.example.tim.romaniitedomum.ApplicationClass;
-import com.example.tim.romaniitedomum.Artefact;
+import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.example.tim.romaniitedomum.R;

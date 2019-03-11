@@ -1,4 +1,4 @@
-package com.example.tim.romaniitedomum;
+package com.example.tim.romaniitedomum.artefact;
 
 import com.backendless.geo.GeoPoint;
 

@@ -5,10 +5,10 @@ import android.location.Location;
 
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
+import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by TimStaats 21.02.2019
