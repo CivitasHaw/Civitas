@@ -49,4 +49,6 @@
     <string name="new_artefact_save_image">Saving image... please wait...</string>
     <string name="retrieve_artefacts_from_backendless">Retrieve artefacts... please wait...</string>
     <string name="user_logout">Logout successful</string>
+    <string name="toast_backendless_image_upload">Photo successfully uploaded</string>
+    <string name="toast_backendless_create_new_artefact">Busy creating new artefact... please wait...</string>
 </resources>
