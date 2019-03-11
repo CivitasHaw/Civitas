@@ -7,6 +7,7 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.google.android.gms.maps.model.LatLng;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ApplicationClass extends Application {
     public static LatLng mArtefactLatLng;
     public static Artefact mArtefact;
     public static List<Artefact> mArtefactList;
+    public static ImageLoader loader;
 
     @Override
     public void onCreate() {
