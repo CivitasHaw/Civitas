@@ -41,6 +41,9 @@ public class NewArtefactFragment extends Fragment {
 
     private static final String TAG = "NewArtefactFragment";
 
+    public static final String ORIGIN_CAMERA = "camera";
+    public static final String ORIGIN_MAP_LONG_CLICK = "onMapLongClick";
+    public static final String ORIGIN_BTN_ADD_ARTEFACT = "btnAddArtefact";
     private ArtefactActivity artefactActivity;
 
     private View mProgressViewNewArtefact;
@@ -181,7 +184,7 @@ public class NewArtefactFragment extends Fragment {
             LatLng tempLatLng;
 
             switch (origin) {
-                case "camera": // artefact image is taken with camera
+                case ORIGIN_CAMERA: // artefact image is taken with camera
                     Log.d(TAG, "initNewArtefact: origin: " + origin);
                     byte[] byteArray = args.getByteArray("image");
                     artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
@@ -189,7 +192,7 @@ public class NewArtefactFragment extends Fragment {
                     mLat = ApplicationClass.mTempArtefactLatLng.latitude;
                     mLng = ApplicationClass.mTempArtefactLatLng.longitude;
                     break;
-                case "btnAddArtefact": // artefact gets created at device position
+                case ORIGIN_BTN_ADD_ARTEFACT: // artefact gets created at device position
                     Log.d(TAG, "initNewArtefact: origin: " + origin);
                     mLat = ApplicationClass.mDeviceLocation.getLatitude();
                     mLng = ApplicationClass.mDeviceLocation.getLongitude();
@@ -197,7 +200,7 @@ public class NewArtefactFragment extends Fragment {
                     ApplicationClass.mTempArtefactLatLng = tempLatLng;
                     Log.d(TAG, "initNewArtefact: btnAddArtefact: mLat: " + mLat);
                     break;
-                case "onMapLongClick": // artefact gets created at marker position
+                case ORIGIN_MAP_LONG_CLICK: // artefact gets created at marker position
                     Log.d(TAG, "initNewArtefact: origin: " + origin);
                     mLat = ApplicationClass.mArtefactLatLng.latitude;
                     mLng = ApplicationClass.mArtefactLatLng.longitude;
