@@ -90,7 +90,10 @@ public class NewArtefactFragment extends Fragment {
                 artefactDescription = etNewArtefactDescription.getText().toString().trim();
                 artefactDate = etNewArtefactDate.getText().toString().trim();
 
-                if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty()) {
+                String imageIsTakenFromCamera = mArgs.getString("origin");
+
+                if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() || !imageIsTakenFromCamera.equals("camera")) {
+                    Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
                 } else {
                     showProgress(true);
