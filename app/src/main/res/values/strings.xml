@@ -54,4 +54,9 @@
     <string name="cardview_default_category">#roma, #basilika</string>
     <string name="cardview_default_description">super rare artefact, mint</string>
     <string name="cardview_default_name">Name of artefact</string>
+    <string name="artefact_image">Artefact Image</string>
+    <string name="artefact_detail_name">Artefact detail name</string>
+    <string name="artefact_detail_category">Artefact detail category</string>
+    <string name="artefact_detail_description">Artefact detail description</string>
+    <string name="button_artefact_detail_show_marker_on_map">Show marker</string>
 </resources>
