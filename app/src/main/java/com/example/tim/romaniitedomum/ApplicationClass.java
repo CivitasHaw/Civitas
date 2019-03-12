@@ -28,6 +28,7 @@ public class ApplicationClass extends Application {
     public static Artefact mArtefact;
     public static List<Artefact> mArtefactList;
     public static ImageLoader loader;
+    public static int position;
 
     @Override
     public void onCreate() {
