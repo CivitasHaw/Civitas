@@ -62,6 +62,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private String s;
 
 
     @Override
@@ -69,9 +70,15 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        s = "";
         initDrawerAndToolbar();
 
         getLocationPermission();
+
+        // navigating from Artefact chosen in ArtefactDetailFragment to belonging marker
+        if (getIntent() != null){
+            s = getIntent().getStringExtra("origin");
+        }
 
 
         btnAddArtefact.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +193,15 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
             public void onMapReady(GoogleMap googleMap) {
                 Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_map_ready), Toast.LENGTH_SHORT).show();
                 mMap = googleMap;
+
+/*
+                if (!s.isEmpty()){
+                    if (s.equals("artefactDetail")){
+                        moveCamera(new LatLng(ApplicationClass.mArtefactList.get(ApplicationClass.position).getLatitude(),
+                                ApplicationClass.mArtefactList.get(ApplicationClass.position).getLongitude()), DEFAULT_ZOOM);
+                    }
+                }
+*/
 
                 if (ApplicationClass.mArtefactList.size() > 0){
                     for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
