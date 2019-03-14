@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class ArtefactDetailFragment extends Fragment {
     private ImageView ivArtefactDetail;
     private TextView tvArtefactDetailName, tvArtefactDetailCategory, tvArtefactDetailDescription;
     private Button btnArtefactDetailMarker;
+    private ProgressBar mProgress;
 
     private ImageLoader mLoader;
     private int mPosition;
@@ -57,6 +59,7 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailCategory = view.findViewById(R.id.text_artefact_detail_category);
         tvArtefactDetailDescription = view.findViewById(R.id.text_artefact_detail_description);
         btnArtefactDetailMarker = view.findViewById(R.id.button_artefact_detail_show_marker_on_map);
+        mProgress = view.findViewById(R.id.progress_artefact_detail);
 
         mLoader = ApplicationClass.loader;
         mPosition = ApplicationClass.position;
@@ -64,6 +67,7 @@ public class ArtefactDetailFragment extends Fragment {
         mLoader.displayImage(ApplicationClass.mArtefactList.get(mPosition).getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
+                mProgress.setVisibility(View.VISIBLE);
 
             }
 
@@ -74,7 +78,7 @@ public class ArtefactDetailFragment extends Fragment {
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                Toast.makeText(getContext(), "Image successfully loaded", Toast.LENGTH_SHORT).show();
+                mProgress.setVisibility(View.INVISIBLE);
             }
 
             @Override
