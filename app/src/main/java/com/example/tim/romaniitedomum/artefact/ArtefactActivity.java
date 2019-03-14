@@ -30,6 +30,14 @@ public class ArtefactActivity extends AppCompatActivity {
         String content = intent.getStringExtra("artefacts");
         if (content.equals("list")){
             fragmentSwitcher2(new ArtefactListFragment(), true, "ArtefactListFragment");
+        } else if (content.equals("markerClick")){
+            ArtefactDetailFragment artefactDetailFragment = new ArtefactDetailFragment();
+            Bundle b = new Bundle();
+            b.putString("artefactName", intent.getStringExtra("artefactName"));
+            b.putDouble("latitude", intent.getDoubleExtra("latitude", 0.0));
+            b.putDouble("longitude", intent.getDoubleExtra("longitude", 0.0));
+            artefactDetailFragment.setArguments(b);
+            fragmentSwitcher2(artefactDetailFragment, false,"ArtefactDetailFragment");
         } else {
             NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
             Bundle args = new Bundle();

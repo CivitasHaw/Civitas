@@ -194,14 +194,34 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_map_ready), Toast.LENGTH_SHORT).show();
                 mMap = googleMap;
 
+                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+
+                        double lat = marker.getPosition().latitude;
+                        double lng = marker.getPosition().longitude;
+                        String title = marker.getTitle();
+
+                        for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
+                            if (ApplicationClass.mArtefactList.get(i).getArtefactName().equals(title) &&
+                                    ApplicationClass.mArtefactList.get(i).getLatitude() == lat &&
+                                    ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
+                                Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
+                                intent.putExtra("artefacts", "markerClick");
+                                intent.putExtra("artefactName", title);
+                                intent.putExtra("latitude", lat);
+                                intent.putExtra("longitude", lng);
+                                startActivity(intent);
+                            }
+                        }
+                        return true;
 /*
                 if (!s.isEmpty()){
                     if (s.equals("artefactDetail")){
                         moveCamera(new LatLng(ApplicationClass.mArtefactList.get(ApplicationClass.position).getLatitude(),
                                 ApplicationClass.mArtefactList.get(ApplicationClass.position).getLongitude()), DEFAULT_ZOOM);
                     }
-                }
-*/
+                });
 
                 if (ApplicationClass.mArtefactList.size() > 0){
                     for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {

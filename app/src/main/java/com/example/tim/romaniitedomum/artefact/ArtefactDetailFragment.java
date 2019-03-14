@@ -41,6 +41,8 @@ public class ArtefactDetailFragment extends Fragment {
     private ImageLoader mLoader;
     private int mPosition;
 
+    private Bundle args;
+
 
     @Nullable
     @Override
@@ -65,30 +67,7 @@ public class ArtefactDetailFragment extends Fragment {
         btnArtefactDetailSaveRating = view.findViewById(R.id.button_artefact_detail_save_rating);
 
         mLoader = ApplicationClass.loader;
-        mPosition = ApplicationClass.position;
 
-        mLoader.displayImage(ApplicationClass.mArtefactList.get(mPosition).getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-                mProgress.setVisibility(View.VISIBLE);
-
-            }
-
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                mProgress.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onLoadingCancelled(String imageUri, View view) {
-
-            }
-        });
 
         mRating.setNumStars(5);
         mRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -106,8 +85,72 @@ public class ArtefactDetailFragment extends Fragment {
             }
         });
 
-        tvArtefactDetailName.setText(ApplicationClass.mArtefactList.get(mPosition).getArtefactName());
-        tvArtefactDetailDescription.setText(ApplicationClass.mArtefactList.get(mPosition).getArtefactDescription());
+        if (args != null){
+            String artefactName = args.getString("artefactName");
+            double lat = args.getDouble("latitude");
+            double lng = args.getDouble("longitude");
+            for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
+                if (ApplicationClass.mArtefactList.get(i).getArtefactName().equals(artefactName) &&
+                        ApplicationClass.mArtefactList.get(i).getLatitude() == lat &&
+                        ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
+
+                    tvArtefactDetailName.setText(ApplicationClass.mArtefactList.get(i).getArtefactName());
+                    tvArtefactDetailDescription.setText(ApplicationClass.mArtefactList.get(i).getArtefactDescription());
+                    mLoader.displayImage(ApplicationClass.mArtefactList.get(i).getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+                            mProgress.setVisibility(View.VISIBLE);
+
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            mProgress.setVisibility(View.INVISIBLE);
+
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+
+                        }
+                    });
+                }
+            }
+
+        } else {
+            mPosition = ApplicationClass.position;
+
+            mLoader.displayImage(ApplicationClass.mArtefactList.get(mPosition).getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    mProgress.setVisibility(View.VISIBLE);
+
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    mProgress.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+
+                }
+            });
+
+            tvArtefactDetailName.setText(ApplicationClass.mArtefactList.get(mPosition).getArtefactName());
+            tvArtefactDetailDescription.setText(ApplicationClass.mArtefactList.get(mPosition).getArtefactDescription());
+        }
 
         btnArtefactDetailMarker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,5 +167,6 @@ public class ArtefactDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         artefactActivity = (ArtefactActivity)getActivity();
+        args = getArguments();
     }
 }
