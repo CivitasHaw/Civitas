@@ -70,15 +70,29 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        s = "";
         initDrawerAndToolbar();
 
         getLocationPermission();
 
-        // navigating from Artefact chosen in ArtefactDetailFragment to belonging marker
-        if (getIntent() != null){
-            s = getIntent().getStringExtra("origin");
-        }
+/*        s = "";
+
+        try {
+            // navigating from Artefact chosen in ArtefactDetailFragment to belonging marker
+
+            if (getIntent() != null) {
+                Intent i = getIntent();
+                s = i.getStringExtra("origin");
+                //s = getIntent().getStringExtra("origin");
+
+                if (s.equals("artefactDetail")) {
+                    moveCamera(new LatLng(ApplicationClass.mArtefactList.get(ApplicationClass.position).getLatitude(),
+                            ApplicationClass.mArtefactList.get(ApplicationClass.position).getLongitude()), DEFAULT_ZOOM);
+                }
+
+            }
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onCreate: getIntent(): " + e.getMessage());
+        }*/
 
 
         btnAddArtefact.setOnClickListener(new View.OnClickListener() {
