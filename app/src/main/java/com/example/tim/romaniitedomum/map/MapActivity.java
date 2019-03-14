@@ -89,7 +89,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         });
     }
 
-    public void navigateToNewArtefactFragment(String origin){
+    public void navigateToNewArtefactFragment(String origin) {
         Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
         intent.putExtra("artefacts", "newArtefact");
         intent.putExtra("origin", origin);
@@ -121,7 +121,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.nav_artefacts:
                 Log.d(TAG, "onNavigationItemSelected: artefacts");
                 Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
@@ -176,7 +176,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     // for navigation_drawer needed
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -215,15 +215,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                             }
                         }
                         return true;
-/*
-                if (!s.isEmpty()){
-                    if (s.equals("artefactDetail")){
-                        moveCamera(new LatLng(ApplicationClass.mArtefactList.get(ApplicationClass.position).getLatitude(),
-                                ApplicationClass.mArtefactList.get(ApplicationClass.position).getLongitude()), DEFAULT_ZOOM);
                     }
                 });
 
-                if (ApplicationClass.mArtefactList.size() > 0){
+                if (ApplicationClass.mArtefactList.size() > 0) {
                     for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
                         createMarker(ApplicationClass.mArtefactList.get(i).getLatitude(),
                                 ApplicationClass.mArtefactList.get(i).getLongitude(), ApplicationClass.mArtefactList.get(i).getArtefactName());
@@ -255,7 +250,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         });
     }
 
-    protected Marker createMarker(double latitude, double longitude, String title){
+    protected Marker createMarker(double latitude, double longitude, String title) {
 
         return mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
@@ -264,47 +259,47 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
 
-    private void getDeviceLocation(){
+    private void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation: getting the devices current location");
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try {
-            if (mLocationPermissionGranted){
+            if (mLocationPermissionGranted) {
                 final Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
                     public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: found location");
                             Location currentLocation = (Location) task.getResult();
                             ApplicationClass.mDeviceLocation = currentLocation;
 
                             moveCamera(new LatLng(currentLocation.getLatitude(),
-                                    currentLocation.getLongitude()),
+                                            currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
                             Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_location_null), Toast.LENGTH_SHORT).show();
                         }
-                        
+
                     }
                 });
             }
-            
+
         } catch (SecurityException e) {
             Log.e(TAG, "getDeviceLocation: " + e.getMessage());
         }
     }
-    
-    private void moveCamera(LatLng latLng, float zoom){
+
+    private void moveCamera(LatLng latLng, float zoom) {
         Log.d(TAG, "moveCamera: moving camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
-    private void getLocationPermission(){
+    private void getLocationPermission() {
         String[] permissions = {FINE_LOCATION, COARSE_LOCATION};
 
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(), FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(), COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionGranted = true;
                 initMap();
             } else {
@@ -323,11 +318,11 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
 
-        switch (requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if (grantResults.length > 0){
-                    for (int i = 0; i < grantResults.length; i++){
-                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                             mLocationPermissionGranted = false;
                             return;
                         }
