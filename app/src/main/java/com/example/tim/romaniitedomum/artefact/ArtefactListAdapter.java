@@ -1,5 +1,6 @@
 package com.example.tim.romaniitedomum.artefact;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -7,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tim.romaniitedomum.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
@@ -40,6 +44,7 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
 
         public ImageView mIvArtefact;
         public TextView mTvArtefactName, mTvArtefactCategory, mTvArtefactDescription;
+        public ProgressBar mProgress;
 
         public ArtefactListViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -48,6 +53,7 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
             mTvArtefactName = itemView.findViewById(R.id.text_cardview_artefact_name);
             mTvArtefactCategory = itemView.findViewById(R.id.text_cardview_artefact_category);
             mTvArtefactDescription = itemView.findViewById(R.id.text_cardview_artefact_description);
+            mProgress = itemView.findViewById(R.id.progress_cardview_artefact);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,11 +86,31 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArtefactListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ArtefactListViewHolder holder, int position) {
 
         Artefact currentArtefact = mArtefactList.get(position);
 
-        mImageLoader.displayImage(mArtefactList.get(position).getArtefactImageUrl(), holder.mIvArtefact);
+        mImageLoader.displayImage(mArtefactList.get(position).getArtefactImageUrl(), holder.mIvArtefact, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+                holder.mProgress.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                holder.mProgress.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+
+            }
+        });
         holder.mTvArtefactName.setText(currentArtefact.getArtefactName());
         holder.mTvArtefactDescription.setText(currentArtefact.getArtefactDescription());
 
