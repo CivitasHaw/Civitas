@@ -9,17 +9,17 @@
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map"
-            android:title="@string/ic_map" />
+            android:title="@string/ic_drawer_map" />
 
         <item
             android:id="@+id/nav_artefacts"
             android:icon="@drawable/ic_blur"
-            android:title="@string/ic_artefacts" />
+            android:title="@string/ic_drawer_artefacts" />
 
         <item
             android:id="@+id/nav_info"
             android:icon="@drawable/ic_info"
-            android:title="@string/ic_info" />
+            android:title="@string/ic_drawer_info" />
 
     </group>
 
@@ -29,22 +29,22 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_share"
-                android:title="@string/ic_share" />
+                android:title="@string/ic_drawer_share" />
 
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_send"
-                android:title="@string/ic_send" />
+                android:title="@string/ic_drawer_send" />
 
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
-                android:title="@string/ic_settings" />
+                android:title="@string/ic_drawer_settings" />
 
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout"
-                android:title="@string/ic_logout" />
+                android:title="@string/ic_drawer_logout" />
         </menu>
     </item>
 </menu>
