@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,9 +35,9 @@ public class ArtefactDetailFragment extends Fragment {
 
     private ImageView ivArtefactDetail;
     private TextView tvArtefactDetailName, tvArtefactDetailCategory, tvArtefactDetailDescription;
-    private Button btnArtefactDetailMarker;
+    private Button btnArtefactDetailMarker, btnArtefactDetailSaveRating;
     private ProgressBar mProgress;
-
+    private RatingBar mRating;
     private ImageLoader mLoader;
     private int mPosition;
 
@@ -60,6 +61,8 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailDescription = view.findViewById(R.id.text_artefact_detail_description);
         btnArtefactDetailMarker = view.findViewById(R.id.button_artefact_detail_show_marker_on_map);
         mProgress = view.findViewById(R.id.progress_artefact_detail);
+        mRating = view.findViewById(R.id.ratingbar_artefact_detail);
+        btnArtefactDetailSaveRating = view.findViewById(R.id.button_artefact_detail_save_rating);
 
         mLoader = ApplicationClass.loader;
         mPosition = ApplicationClass.position;
@@ -84,6 +87,22 @@ public class ArtefactDetailFragment extends Fragment {
             @Override
             public void onLoadingCancelled(String imageUri, View view) {
 
+            }
+        });
+
+        mRating.setNumStars(5);
+        mRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+
+            }
+        });
+
+        btnArtefactDetailSaveRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                float rate = mRating.getRating();
+                Toast.makeText(getContext(), "Rate: " + rate, Toast.LENGTH_SHORT).show();
             }
         });
 

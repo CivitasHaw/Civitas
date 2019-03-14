@@ -10,9 +10,9 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
 
             <RelativeLayout
@@ -24,31 +24,49 @@
                     style="?android:attr/progressBarStyleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_centerInParent="true" />
+                    android:layout_marginBottom="8dp" />
 
                 <ImageView
                     android:id="@+id/image_artefact_detail"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/civitas_main_logo" />
 
             </RelativeLayout>
 
-
-            <RatingBar
-                android:id="@+id/ratingbar_artefact_detail"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RatingBar
+                    android:id="@+id/ratingbar_artefact_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:rating="2" />
+
+                <Button
+                    android:id="@+id/button_artefact_detail_save_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/buttons"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/artefact_detail_save_rating" />
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/text_artefact_detail_name"
@@ -72,15 +90,12 @@
             <Button
                 android:id="@+id/button_artefact_detail_show_marker_on_map"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/buttons"
-                android:text="@string/button_artefact_detail_show_marker_on_map"
-                android:layout_height="wrap_content" />
+                android:text="@string/button_artefact_detail_show_marker_on_map" />
         </LinearLayout>
 
     </ScrollView>
-
-
-
 
 
 </RelativeLayout>
