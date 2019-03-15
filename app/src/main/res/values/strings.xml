@@ -61,4 +61,5 @@
     <string name="button_artefact_detail_show_marker_on_map">Show marker</string>
     <string name="artefact_detail_save_rating">rate</string>
     <string name="origin">origin</string>
+    <string name="navigate_to_artefact_activity">artefacts</string>
 </resources>

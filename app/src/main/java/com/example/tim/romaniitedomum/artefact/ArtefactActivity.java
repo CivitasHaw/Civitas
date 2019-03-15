@@ -47,7 +47,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         initDrawerAndToolbar();
 
         Intent intent = getIntent();
-        String content = intent.getStringExtra("artefacts");
+        String content = intent.getStringExtra(getResources().getString(R.string.navigate_to_artefact_activity));
         if (content.equals("list")){
             fragmentSwitcher2(new ArtefactListFragment(), true, "ArtefactListFragment");
         } else if (content.equals("markerClick")){
@@ -149,7 +149,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_map:
                 Log.d(TAG, "onNavigationItemSelected: map");
                 Intent intent = new Intent(ArtefactActivity.this, MapActivity.class);
-                intent.putExtra("artefacts", "list");
+                intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
                 startActivity(intent);
                 break;
             case R.id.nav_info:

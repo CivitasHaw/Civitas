@@ -105,8 +105,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
     public void navigateToNewArtefactFragment(String origin) {
         Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
-        intent.putExtra("artefacts", "newArtefact");
-        intent.putExtra("origin", origin);
+        intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "newArtefact");
+        intent.putExtra(getResources().getString(R.string.origin), origin);
         startActivity(intent);
     }
 
@@ -139,7 +139,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
             case R.id.nav_artefacts:
                 Log.d(TAG, "onNavigationItemSelected: artefacts");
                 Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
-                intent.putExtra("artefacts", "list");
+                intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
                 startActivity(intent);
 
                 break;
@@ -221,7 +221,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     ApplicationClass.mArtefactList.get(i).getLatitude() == lat &&
                                     ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
                                 Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
-                                intent.putExtra("artefacts", "markerClick");
+                                intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "markerClick");
                                 intent.putExtra("artefactName", title);
                                 intent.putExtra("latitude", lat);
                                 intent.putExtra("longitude", lng);
