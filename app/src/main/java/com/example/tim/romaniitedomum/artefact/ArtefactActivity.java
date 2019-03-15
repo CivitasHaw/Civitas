@@ -61,13 +61,13 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         } else {
             NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
             Bundle args = new Bundle();
-            String content2 = intent.getStringExtra("origin");
-            if (content2.equals("btnAddArtefact")){ // creating at device location
-                args.putString("origin", "btnAddArtefact");
+            String content2 = intent.getStringExtra(getResources().getString(R.string.origin));
+            if (content2.equals("btnAddArtefact")){ // creating Artefact at device location
+                args.putString(getResources().getString(R.string.origin), "btnAddArtefact");
                 args.putDouble("latitude", ApplicationClass.mDeviceLocation.getLatitude());
                 args.putDouble("longitude", ApplicationClass.mDeviceLocation.getLongitude());
-            } else if (content2.equals("onMapLongClick")){ // creating at marker location
-                args.putString("origin", "onMapLongClick");
+            } else if (content2.equals("onMapLongClick")){ // creating Artefact at marker location
+                args.putString(getResources().getString(R.string.origin), "onMapLongClick");
                 args.putDouble("latitude", ApplicationClass.mArtefactLatLng.latitude);
                 args.putDouble("longitude", ApplicationClass.mArtefactLatLng.longitude);
             }
@@ -131,7 +131,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         byte[] byteArray = stream.toByteArray();
         Bundle args = new Bundle();
         String origin = "camera";
-        args.putString("origin", origin);
+        args.putString(getResources().getString(R.string.origin), origin);
         args.putByteArray("image", byteArray);
         NewArtefactFragment fragment = new NewArtefactFragment();
         fragment.setArguments(args);

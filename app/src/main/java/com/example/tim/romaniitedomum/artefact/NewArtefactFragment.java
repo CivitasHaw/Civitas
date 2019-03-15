@@ -93,7 +93,7 @@ public class NewArtefactFragment extends Fragment {
                 artefactDescription = etNewArtefactDescription.getText().toString().trim();
                 artefactDate = etNewArtefactDate.getText().toString().trim();
 
-                String imageIsTakenFromCamera = mArgs.getString("origin");
+                String imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
 
                 if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() || !imageIsTakenFromCamera.equals("camera")) {
                     Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
@@ -209,7 +209,7 @@ public class NewArtefactFragment extends Fragment {
 
         //mArgs = getArguments();
         if (mArgs != null) {
-            String origin = mArgs.getString("origin");
+            String origin = mArgs.getString(getResources().getString(R.string.origin));
             LatLng tempLatLng;
 
             switch (origin) {
