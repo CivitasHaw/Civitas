@@ -30,107 +30,128 @@
         android:textStyle="bold"
         android:visibility="gone" />
 
-    <LinearLayout
-        android:id="@+id/form_new_artefact"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/button_new_artefact_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/buttons"
-            android:text="@string/button_new_artefact_image" />
-
-        <ImageView
-            android:id="@+id/image_new_artefact"
-            android:layout_width="200dp"
-            android:layout_height="140dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:clickable="true"
-            android:src="@drawable/civitas_main_logo" />
-
-        <Button
-            android:id="@+id/button_new_artefact_audio_record"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/buttons"
-            android:text="@string/button_new_artefact_audio" />
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/audio_layout"
-            android:layout_marginTop="16dp"
+            android:id="@+id/form_new_artefact"
             android:layout_width="match_parent"
-            android:visibility="gone"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
 
             <Button
-                android:id="@+id/button_new_artefact_audio_play"
-                android:layout_width="wrap_content"
-                android:text="@string/button_new_artefact_audio_play"
+                android:id="@+id/button_new_artefact_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/buttons"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:text="@string/button_new_artefact_image" />
+
+            <ImageView
+                android:id="@+id/image_new_artefact"
+                android:layout_width="200dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:src="@drawable/civitas_main_logo" />
 
             <Button
-                android:id="@+id/button_new_artefact_audio_pause"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_new_artefact_audio_pause"
+                android:id="@+id/button_new_artefact_audio_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/buttons"
-                android:layout_height="wrap_content" />
+                android:text="@string/button_new_artefact_audio" />
+
+            <LinearLayout
+                android:id="@+id/audio_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/button_new_artefact_audio_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:text="@string/button_new_artefact_audio_play" />
+
+                <Button
+                    android:id="@+id/button_new_artefact_audio_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:text="@string/button_new_artefact_audio_pause" />
+
+                <Button
+                    android:id="@+id/button_new_artefact_audio_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:text="@string/button_new_artefact_audio_stop" />
+
+                <Button
+                    android:id="@+id/button_new_artefact_audio_remove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:text="@string/button_new_artefact_audio_remove" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edit_new_artefact_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/hint_new_artefact_name" />
+
+            <EditText
+                android:id="@+id/edit_new_artefact_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/hint_new_artefact_description" />
+
+            <EditText
+                android:id="@+id/edit_new_artefact_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/hint_new_artefact_date"
+                android:inputType="number" />
 
             <Button
-                android:id="@+id/button_new_artefact_audio_stop"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_new_artefact_audio_stop"
+                android:id="@+id/button_new_artefact_add_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@drawable/buttons"
-                android:layout_height="wrap_content" />
+                android:text="@string/new_artefact_add_category" />
+
+            <Spinner
+                android:id="@+id/spinner_new_artefact_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center">
+            </Spinner>
 
             <Button
-                android:id="@+id/button_new_artefact_audio_remove"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_new_artefact_audio_remove"
+                android:id="@+id/button_new_artefact_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/buttons"
-                android:layout_height="wrap_content" />
+                android:text="@string/button_new_artefact" />
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/edit_new_artefact_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/hint_new_artefact_name" />
-
-        <EditText
-            android:id="@+id/edit_new_artefact_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/hint_new_artefact_description" />
-
-        <EditText
-            android:id="@+id/edit_new_artefact_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:inputType="number"
-            android:hint="@string/hint_new_artefact_date" />
-
-        <Button
-            android:id="@+id/button_new_artefact_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/buttons"
-            android:text="@string/button_new_artefact" />
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

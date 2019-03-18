@@ -62,4 +62,5 @@
     <string name="artefact_detail_save_rating">rate</string>
     <string name="origin">origin</string>
     <string name="navigate_to_artefact_activity">artefacts</string>
+    <string name="new_artefact_add_category">Add Category</string>
 </resources>

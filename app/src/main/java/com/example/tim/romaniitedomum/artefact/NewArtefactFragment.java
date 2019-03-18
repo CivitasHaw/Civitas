@@ -17,9 +17,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,8 @@ import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -55,9 +59,12 @@ public class NewArtefactFragment extends Fragment {
 
     private ImageView ivNewArtefact;
     private EditText etNewArtefactName, etNewArtefactDescription, etNewArtefactDate;
-    private Button btnNewArtefactSave, btnTakeImage, btnAudioRecord;
+    private Button btnNewArtefactSave, btnTakeImage, btnAudioRecord, btnAddCategory;
+    private Spinner spinnerCategories;
+    private CategoryAdapter mAdapter;
+    private ArrayList<CategoryItem> mCategoryList;
 
-    private String artefactName, artefactDescription, artefactDate;
+    private String artefactName, artefactDescription, artefactDate, clickedCategory;
     private Bitmap artefactBitmap;
     private Artefact mArtefact;
     private double mLat;
@@ -71,6 +78,30 @@ public class NewArtefactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_artefact, container, false);
 
         initNewArtefact(view);
+
+        mAdapter = new CategoryAdapter(artefactActivity, mCategoryList);
+        spinnerCategories.setAdapter(mAdapter);
+        spinnerCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                CategoryItem clickedItem = (CategoryItem) parent.getItemAtPosition(position);
+                clickedCategory = clickedItem.getCategoryName();
+                Toast.makeText(getContext(), "category: " + clickedCategory, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        btnAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerCategories.setVisibility(View.VISIBLE);
+                btnAddCategory.setVisibility(View.GONE);
+            }
+        });
 
         ivNewArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,6 +236,15 @@ public class NewArtefactFragment extends Fragment {
         btnNewArtefactSave = view.findViewById(R.id.button_new_artefact_save);
         btnAudioRecord = view.findViewById(R.id.button_new_artefact_audio_record);
         btnTakeImage = view.findViewById(R.id.button_new_artefact_image);
+        btnAddCategory = view.findViewById(R.id.button_new_artefact_add_category);
+        spinnerCategories = view.findViewById(R.id.spinner_new_artefact_category);
+
+        mCategoryList = new ArrayList<>();
+        mCategoryList.add(new CategoryItem("Akropolis", R.drawable.ic_akropolis));
+        mCategoryList.add(new CategoryItem("Blur", R.drawable.ic_blur));
+        mCategoryList.add(new CategoryItem("edit", R.drawable.ic_edit));
+
+
 
 
         //mArgs = getArguments();
