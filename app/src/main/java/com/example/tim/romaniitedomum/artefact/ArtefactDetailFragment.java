@@ -86,6 +86,7 @@ public class ArtefactDetailFragment extends Fragment {
         });
 
         if (args != null){
+            // navigating to artefactDetail from Map Markerclick
             String artefactName = args.getString("artefactName");
             double lat = args.getDouble("latitude");
             double lng = args.getDouble("longitude");
@@ -95,6 +96,8 @@ public class ArtefactDetailFragment extends Fragment {
                         ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
 
                     tvArtefactDetailName.setText(ApplicationClass.mArtefactList.get(i).getArtefactName());
+                    //tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(i).getCategory().getCategoryName());
+                    tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(i).getCategoryName());
                     tvArtefactDetailDescription.setText(ApplicationClass.mArtefactList.get(i).getArtefactDescription());
                     mLoader.displayImage(ApplicationClass.mArtefactList.get(i).getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                         @Override
@@ -123,6 +126,7 @@ public class ArtefactDetailFragment extends Fragment {
             }
 
         } else {
+            // navigating to artefactDetail from ArtefactList item Click
             mPosition = ApplicationClass.position;
 
             mLoader.displayImage(ApplicationClass.mArtefactList.get(mPosition).getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
@@ -149,6 +153,7 @@ public class ArtefactDetailFragment extends Fragment {
             });
 
             tvArtefactDetailName.setText(ApplicationClass.mArtefactList.get(mPosition).getArtefactName());
+            tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(mPosition).getCategoryName());
             tvArtefactDetailDescription.setText(ApplicationClass.mArtefactList.get(mPosition).getArtefactDescription());
         }
 

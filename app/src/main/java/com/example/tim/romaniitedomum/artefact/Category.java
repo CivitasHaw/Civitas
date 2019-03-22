@@ -4,12 +4,12 @@ package com.example.tim.romaniitedomum.artefact;
  * Created by TimStaats 19.03.2019
  */
 
-public class CategoryItem {
+public class Category {
 
     private String mCategoryName;
     private int mCategoryMarkerImage;
 
-    public CategoryItem(String categoryName, int categoryMarker) {
+    public Category(String categoryName, int categoryMarker) {
         this.mCategoryName = categoryName;
         this.mCategoryMarkerImage = categoryMarker;
     }

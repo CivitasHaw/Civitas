@@ -23,6 +23,9 @@ public class Artefact {
     private GeoPoint location;
     private double latitude;
     private double longitude;
+    private String categoryName;
+    private int categoryMarkerImage;
+    //private Category category;
     private List<Artefact> artefactSiblings;
 
     public Artefact() {
@@ -122,6 +125,32 @@ public class Artefact {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+/*
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+*/
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public int getCategoryMarkerImage() {
+        return categoryMarkerImage;
+    }
+
+    public void setCategoryMarkerImage(int categoryMarkerImage) {
+        this.categoryMarkerImage = categoryMarkerImage;
     }
 }
 /*    --------------------------------------------------------------------------

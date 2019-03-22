@@ -62,11 +62,12 @@ public class NewArtefactFragment extends Fragment {
     private Button btnNewArtefactSave, btnTakeImage, btnAudioRecord, btnAddCategory;
     private Spinner spinnerCategories;
     private CategoryAdapter mAdapter;
-    private ArrayList<CategoryItem> mCategoryList;
+    private ArrayList<Category> mCategoryList;
 
     private String artefactName, artefactDescription, artefactDate, clickedCategory;
     private Bitmap artefactBitmap;
     private Artefact mArtefact;
+    private Category mCategory;
     private double mLat;
     private double mLng;
     private Bundle mArgs;
@@ -84,8 +85,8 @@ public class NewArtefactFragment extends Fragment {
         spinnerCategories.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CategoryItem clickedItem = (CategoryItem) parent.getItemAtPosition(position);
-                clickedCategory = clickedItem.getCategoryName();
+                mCategory = (Category) parent.getItemAtPosition(position);
+                clickedCategory = mCategory.getCategoryName();
                 Toast.makeText(getContext(), "category: " + clickedCategory, Toast.LENGTH_SHORT).show();
             }
 
@@ -126,7 +127,8 @@ public class NewArtefactFragment extends Fragment {
 
                 String imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
 
-                if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() || !imageIsTakenFromCamera.equals("camera")) {
+                if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() ||
+                        !imageIsTakenFromCamera.equals("camera") || clickedCategory.equals(""))  {
                     Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
                 } else {
@@ -139,6 +141,9 @@ public class NewArtefactFragment extends Fragment {
                     mArtefact.setUserEmail(ApplicationClass.user.getEmail());
                     mArtefact.setLatitude(mLat);
                     mArtefact.setLongitude(mLng);
+                    //mArtefact.setCategory(new Category(mCategory.getCategoryName(), mCategory.getCategoryMarkerImage()));
+                    mArtefact.setCategoryName(mCategory.getCategoryName());
+                    mArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
 
                     String fileName = artefactName + ".png";
 
@@ -178,8 +183,8 @@ public class NewArtefactFragment extends Fragment {
 
         GeoPoint location = new GeoPoint(mLat, mLng);
         Log.d(TAG, "saveDataWithGeoAsync: mLat: " + mLat);
-        location.addCategory("Basilika");
-        location.addCategory("Roma");
+        //location.addCategory(artefact.getCategory().getCategoryName());
+        location.addCategory(artefact.getCategoryName());
         location.addMetadata("artefactName", artefact.getArtefactName());
         location.addMetadata("artefactDescription", artefact.getArtefactDescription());
         location.addMetadata("artefactCreator", artefact.getUserEmail());
@@ -240,9 +245,9 @@ public class NewArtefactFragment extends Fragment {
         spinnerCategories = view.findViewById(R.id.spinner_new_artefact_category);
 
         mCategoryList = new ArrayList<>();
-        mCategoryList.add(new CategoryItem("Akropolis", R.drawable.ic_akropolis));
-        mCategoryList.add(new CategoryItem("Blur", R.drawable.ic_blur));
-        mCategoryList.add(new CategoryItem("edit", R.drawable.ic_edit));
+        mCategoryList.add(new Category("Akropolis", R.drawable.ic_akropolis));
+        mCategoryList.add(new Category("Blur", R.drawable.ic_blur));
+        mCategoryList.add(new Category("edit", R.drawable.ic_edit));
 
 
 

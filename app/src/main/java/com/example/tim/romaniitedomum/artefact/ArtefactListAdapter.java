@@ -112,6 +112,8 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
             }
         });
         holder.mTvArtefactName.setText(currentArtefact.getArtefactName());
+        //holder.mTvArtefactCategory.setText(currentArtefact.getCategory().getCategoryName());
+        holder.mTvArtefactCategory.setText("#" + currentArtefact.getCategoryName());
         holder.mTvArtefactDescription.setText(currentArtefact.getArtefactDescription());
 
     }

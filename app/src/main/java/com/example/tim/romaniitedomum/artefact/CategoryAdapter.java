@@ -19,9 +19,9 @@ import java.util.ArrayList;
  * Created by TimStaats 19.03.2019
  */
 
-public class CategoryAdapter extends ArrayAdapter<CategoryItem> {
+public class CategoryAdapter extends ArrayAdapter<Category> {
 
-    public CategoryAdapter(Context context, ArrayList<CategoryItem> categoryList) {
+    public CategoryAdapter(Context context, ArrayList<Category> categoryList) {
         super(context, 0, categoryList);
     }
 
@@ -48,7 +48,7 @@ public class CategoryAdapter extends ArrayAdapter<CategoryItem> {
         ImageView ivCategory = convertView.findViewById(R.id.image_category);
         TextView tvCategory = convertView.findViewById(R.id.text_category);
 
-        CategoryItem currentItem = getItem(position);
+        Category currentItem = getItem(position);
 
         if (currentItem != null){
             ivCategory.setImageResource(currentItem.getCategoryMarkerImage());
