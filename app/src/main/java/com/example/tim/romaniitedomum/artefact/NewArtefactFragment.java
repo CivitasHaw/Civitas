@@ -168,9 +168,6 @@ public class NewArtefactFragment extends Fragment {
                         }
                     });
 
-
-
-
                 }
             }
         });
@@ -229,6 +226,20 @@ public class NewArtefactFragment extends Fragment {
 
     }
 
+    private ArrayList<Category> populateCategoryList(){
+        ArrayList<Category> list = new ArrayList<>();
+
+        list.add(new Category("Akropolis", R.drawable.ic_map_akropolis));
+        list.add(new Category("Blur", R.drawable.ic_blur));
+        list.add(new Category("Basilika", R.drawable.ic_map_basilica));
+        list.add(new Category("Bogen", R.drawable.ic_map_bogen));
+        list.add(new Category("Christentum", R.drawable.ic_map_christentum));
+        list.add(new Category("Grabstaette", R.drawable.ic_map_grabstaette));
+        list.add(new Category("Grundungsmythos", R.drawable.ic_map_grundungsmythos));
+
+        return list;
+    }
+
     private void initNewArtefact(View view) {
         mProgressViewNewArtefact = view.findViewById(R.id.progress_new_artefact);
         mFormViewNewArtefact = view.findViewById(R.id.form_new_artefact);
@@ -244,12 +255,7 @@ public class NewArtefactFragment extends Fragment {
         btnAddCategory = view.findViewById(R.id.button_new_artefact_add_category);
         spinnerCategories = view.findViewById(R.id.spinner_new_artefact_category);
 
-        mCategoryList = new ArrayList<>();
-        mCategoryList.add(new Category("Akropolis", R.drawable.ic_akropolis));
-        mCategoryList.add(new Category("Blur", R.drawable.ic_blur));
-        mCategoryList.add(new Category("Basilika", R.drawable.ic_map_basilica));
-
-
+        mCategoryList = populateCategoryList();
 
 
         //mArgs = getArguments();

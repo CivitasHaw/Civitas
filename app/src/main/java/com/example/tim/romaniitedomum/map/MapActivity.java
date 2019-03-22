@@ -305,16 +305,30 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
     private int getMarkerArtefactIcon(Artefact artefact) {
+        //Icons from flaticon.com. They have to be mentioned in the app.
+
         int markerArtefactIcon = 0;
         switch (artefact.getCategoryName()) {
             case "Akropolis":
-                markerArtefactIcon = R.drawable.ic_akropolis;
+                markerArtefactIcon = R.drawable.ic_map_akropolis;
                 break;
             case "Blur":
                 markerArtefactIcon = R.drawable.ic_blur;
                 break;
             case "Basilika":
                 markerArtefactIcon = R.drawable.ic_map_basilica;
+                break;
+            case "Bogen":
+                markerArtefactIcon = R.drawable.ic_map_bogen;
+                break;
+            case "Christentum":
+                markerArtefactIcon = R.drawable.ic_map_christentum;
+                break;
+            case "Grabstaette":
+                markerArtefactIcon = R.drawable.ic_map_grabstaette;
+                break;
+            case "Grundungsmythos":
+                markerArtefactIcon = R.drawable.ic_map_grundungsmythos;
                 break;
             default:
                 markerArtefactIcon = R.drawable.ic_map_default_marker;

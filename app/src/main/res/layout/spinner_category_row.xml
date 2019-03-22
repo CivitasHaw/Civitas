@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/image_category"
         android:layout_width="wrap_content"
-        android:src="@drawable/ic_akropolis"
+        android:src="@drawable/ic_map_akropolis"
         android:layout_height="wrap_content" />
 
     <TextView
