@@ -1,8 +1,12 @@
 package com.example.tim.romaniitedomum.map;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +34,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.artefact.ArtefactActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -37,6 +42,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -202,7 +208,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
         switch (item.getItemId()){
             case R.id.button_my_location:
-                Toast.makeText(this, "click", Toast.LENGTH_SHORT).show();
+                //Log.d(TAG, "onOptionsItemSelected: myLocation: clicked");
                 moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(), ApplicationClass.mDeviceLocation.getLongitude()), DEFAULT_ZOOM);
                 break;
         }
@@ -254,10 +260,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     }
                 });
 
+
                 if (ApplicationClass.mArtefactList.size() > 0) {
                     for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
-                        createMarker(ApplicationClass.mArtefactList.get(i).getLatitude(),
-                                ApplicationClass.mArtefactList.get(i).getLongitude(), ApplicationClass.mArtefactList.get(i).getArtefactName());
+                        createMarker(ApplicationClass.mArtefactList.get(i));
                     }
                 }
 
@@ -286,14 +292,42 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         });
     }
 
-    protected Marker createMarker(double latitude, double longitude, String title) {
+
+    protected Marker createMarker(Artefact artefact) {
+
+        int markerArtefactIcon = getMarkerArtefactIcon(artefact);
 
         return mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(latitude, longitude))
-                .title(title)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                .position(new LatLng(artefact.getLatitude(), artefact.getLongitude()))
+                .title(artefact.getArtefactName())
+                .snippet("snippel")
+                .icon(bitmapDescriptorFromVector(this, markerArtefactIcon)));
     }
 
+    private int getMarkerArtefactIcon(Artefact artefact){
+        int markerArtefactIcon = 0;
+        switch (artefact.getCategoryName()){
+            case "Akropolis":
+                markerArtefactIcon = R.drawable.ic_akropolis;
+                break;
+            case "Blur":
+                markerArtefactIcon = R.drawable.ic_blur;
+                break;
+            case "Edit":
+                markerArtefactIcon = R.drawable.ic_edit;
+                break;
+        }
+        return markerArtefactIcon;
+    }
+
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId){
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0,0,vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
 
     private void getDeviceLocation() {
         Log.d(TAG, "getDeviceLocation: getting the devices current location");

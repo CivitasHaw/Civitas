@@ -247,7 +247,7 @@ public class NewArtefactFragment extends Fragment {
         mCategoryList = new ArrayList<>();
         mCategoryList.add(new Category("Akropolis", R.drawable.ic_akropolis));
         mCategoryList.add(new Category("Blur", R.drawable.ic_blur));
-        mCategoryList.add(new Category("edit", R.drawable.ic_edit));
+        mCategoryList.add(new Category("Edit", R.drawable.ic_edit));
 
 
 
