@@ -206,7 +206,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.button_my_location:
                 //Log.d(TAG, "onOptionsItemSelected: myLocation: clicked");
                 moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(), ApplicationClass.mDeviceLocation.getLongitude()), DEFAULT_ZOOM);
@@ -304,25 +304,28 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 .icon(bitmapDescriptorFromVector(this, markerArtefactIcon)));
     }
 
-    private int getMarkerArtefactIcon(Artefact artefact){
+    private int getMarkerArtefactIcon(Artefact artefact) {
         int markerArtefactIcon = 0;
-        switch (artefact.getCategoryName()){
+        switch (artefact.getCategoryName()) {
             case "Akropolis":
                 markerArtefactIcon = R.drawable.ic_akropolis;
                 break;
             case "Blur":
                 markerArtefactIcon = R.drawable.ic_blur;
                 break;
-            case "Edit":
-                markerArtefactIcon = R.drawable.ic_edit;
+            case "Basilika":
+                markerArtefactIcon = R.drawable.ic_map_basilica;
+                break;
+            default:
+                markerArtefactIcon = R.drawable.ic_map_default_marker;
                 break;
         }
         return markerArtefactIcon;
     }
 
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId){
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0,0,vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.draw(canvas);
