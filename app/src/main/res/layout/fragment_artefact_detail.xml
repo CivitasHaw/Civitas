@@ -72,7 +72,8 @@
                 android:id="@+id/text_artefact_detail_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="18sp"
                 android:text="@string/artefact_detail_name" />
 
             <TextView
