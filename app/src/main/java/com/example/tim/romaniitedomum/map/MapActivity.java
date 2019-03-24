@@ -360,9 +360,19 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                             Location currentLocation = (Location) task.getResult();
                             ApplicationClass.mDeviceLocation = currentLocation;
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(),
+                            if (ApplicationClass.mDeviceLocation != null){
+                                Log.d(TAG, "onComplete: if");
+                                moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(),
+                                                ApplicationClass.mDeviceLocation.getLongitude()),
+                                        DEFAULT_ZOOM);
+                            } else {
+                                Log.d(TAG, "onComplete: else");
+                                moveCamera(new LatLng(9.945,53.456), DEFAULT_ZOOM);
+                            }
+
+/*                            moveCamera(new LatLng(currentLocation.getLatitude(),
                                             currentLocation.getLongitude()),
-                                    DEFAULT_ZOOM);
+                                    DEFAULT_ZOOM);*/
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
                             Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_location_null), Toast.LENGTH_SHORT).show();
