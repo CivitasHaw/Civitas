@@ -59,7 +59,7 @@ public class NewArtefactFragment extends Fragment {
 
     private ImageView ivNewArtefact;
     private EditText etNewArtefactName, etNewArtefactDescription, etNewArtefactDate;
-    private Button btnNewArtefactSave, btnTakeImage, btnAudioRecord, btnAddCategory;
+    private Button btnNewArtefactSave, btnTakeImage, btnAddCategory, btnAudio;
     private Spinner spinnerCategories;
     private CategoryAdapter mAdapter;
     private ArrayList<Category> mCategoryList;
@@ -251,13 +251,19 @@ public class NewArtefactFragment extends Fragment {
         etNewArtefactName = view.findViewById(R.id.edit_new_artefact_name);
         etNewArtefactDescription = view.findViewById(R.id.edit_new_artefact_description);
         btnNewArtefactSave = view.findViewById(R.id.button_new_artefact_save);
-        btnAudioRecord = view.findViewById(R.id.button_new_artefact_audio_record);
+        btnAudio = view.findViewById(R.id.button_new_artefact_audio);
         btnTakeImage = view.findViewById(R.id.button_new_artefact_image);
         btnAddCategory = view.findViewById(R.id.button_new_artefact_add_category);
         spinnerCategories = view.findViewById(R.id.spinner_new_artefact_category);
 
         mCategoryList = populateCategoryList();
 
+        audioLayout = view.findViewById(R.id.layout_audio_player);
+        btnAudioRecord = audioLayout.findViewById(R.id.button_new_artefact_audio_record);
+        btnAudioPlay = audioLayout.findViewById(R.id.button_new_artefact_audio_play);
+        btnAudioStop = audioLayout.findViewById(R.id.button_new_artefact_audio_stop);
+        btnAudioDelete = audioLayout.findViewById(R.id.button_new_artefact_audio_delete);
+        audioLayout.setVisibility(View.GONE);
 
         //mArgs = getArguments();
         if (mArgs != null) {

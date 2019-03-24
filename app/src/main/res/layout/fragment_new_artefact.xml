@@ -59,7 +59,7 @@
                 android:src="@drawable/civitas_main_logo" />
 
             <Button
-                android:id="@+id/button_new_artefact_audio_record"
+                android:id="@+id/button_new_artefact_audio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -67,43 +67,47 @@
                 android:text="@string/button_new_artefact_audio" />
 
             <LinearLayout
-                android:id="@+id/audio_layout"
+                android:id="@+id/layout_audio_player"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:visibility="gone">
 
-                <Button
-                    android:id="@+id/button_new_artefact_audio_play"
+                <ImageButton
+                    android:id="@+id/button_new_artefact_audio_record"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/buttons"
-                    android:text="@string/button_new_artefact_audio_play" />
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_record"
+                    android:background="@drawable/buttons" />
 
-                <Button
-                    android:id="@+id/button_new_artefact_audio_pause"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/buttons"
-                    android:text="@string/button_new_artefact_audio_pause" />
-
-                <Button
+                <ImageButton
                     android:id="@+id/button_new_artefact_audio_stop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/buttons"
-                    android:text="@string/button_new_artefact_audio_stop" />
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_stop"
+                    android:background="@drawable/buttons" />
 
-                <Button
-                    android:id="@+id/button_new_artefact_audio_remove"
+                <ImageButton
+                    android:id="@+id/button_new_artefact_audio_play"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/buttons"
-                    android:text="@string/button_new_artefact_audio_remove" />
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_play"
+                    android:background="@drawable/buttons" />
+
+                <ImageButton
+                    android:id="@+id/button_new_artefact_audio_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_audio_delete"
+                    android:background="@drawable/buttons_pressed" />
 
             </LinearLayout>
 
