@@ -65,7 +65,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/E:/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/communication/ic_location_on_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/E:/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/av/ic_fiber_manual_record_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -75,7 +75,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_map_default_marker" />
+                            <entry key="color" value="a11a1d" />
+                            <entry key="outputName" value="ic_audio_record_red" />
                             <entry key="sourceFile" value="C:\Users\Tim" />
                           </map>
                         </option>

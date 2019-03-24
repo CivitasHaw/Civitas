@@ -1,18 +1,25 @@
 package com.example.tim.romaniitedomum.artefact;
 
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +27,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +44,9 @@ import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -49,7 +60,9 @@ public class NewArtefactFragment extends Fragment {
     public static final String ORIGIN_MAP_LONG_CLICK = "onMapLongClick";
     public static final String ORIGIN_BTN_ADD_ARTEFACT = "btnAddArtefact";
     public static final String BACKENDLESS_FILE_PATH = "artefactImages";
+
     public static final int BITMAP_QUALITY = 100;
+    public static final int REQUEST_PERMISSION_CODE = 1000;
 
     private ArtefactActivity artefactActivity;
 
@@ -60,6 +73,14 @@ public class NewArtefactFragment extends Fragment {
     private ImageView ivNewArtefact;
     private EditText etNewArtefactName, etNewArtefactDescription, etNewArtefactDate;
     private Button btnNewArtefactSave, btnTakeImage, btnAddCategory, btnAudio;
+
+    private LinearLayout audioLayout;
+    private MediaRecorder mediaRecorder;
+    private MediaPlayer mediaPlayer;
+    private boolean isAudioRecording = false, audioExists = false, isAudioPlaying = false;
+    private ImageButton btnAudioRecord, btnAudioPlay, btnAudioStop, btnAudioDelete;
+    private String audioPathSave = "";
+
     private Spinner spinnerCategories;
     private CategoryAdapter mAdapter;
     private ArrayList<Category> mCategoryList;
@@ -173,7 +194,144 @@ public class NewArtefactFragment extends Fragment {
         });
 
 
+
+        btnAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: audio menu");
+
+                if (checkPermissionFromDevice()){
+                    btnAudio.setVisibility(View.GONE);
+                    audioLayout.setVisibility(View.VISIBLE);
+                    if (!isAudioRecording && !audioExists){
+                        btnAudioDelete.setEnabled(false);
+                        btnAudioDelete.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
+                    }
+                } else {
+                    requestPermission();
+                }
+
+
+            }
+        });
+
+        btnAudioRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: recording");
+                if (!isAudioRecording){
+                    isAudioRecording = true;
+                    btnAudioPlay.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
+                    btnAudioRecord.setImageDrawable(getResources().getDrawable(R.drawable.ic_audio_record_red));
+                    btnAudioRecord.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
+                    audioPathSave = Environment.getExternalStorageDirectory()
+                            .getAbsolutePath() + "/" + UUID.randomUUID().toString() + "_audio_record.3gp";
+                    setupMediaRecorder();
+                    try {
+                        mediaRecorder.prepare();
+                        mediaRecorder.start();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        btnAudioStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: stop recording");
+                if (isAudioRecording){
+                    mediaRecorder.stop();
+                    isAudioRecording = false;
+                    audioExists = true;
+                    btnAudioDelete.setEnabled(true);
+                    btnAudioPlay.setBackground(getResources().getDrawable(R.drawable.buttons));
+                    btnAudioDelete.setBackground(getResources().getDrawable(R.drawable.buttons));
+                    btnAudioRecord.setImageDrawable(getResources().getDrawable(R.drawable.ic_audio_record));
+                    btnAudioRecord.setBackground(getResources().getDrawable(R.drawable.buttons));
+                } else if (isAudioPlaying){
+                    mediaPlayer.stop();
+                    mediaPlayer.release();
+                    setupMediaRecorder();
+                    isAudioPlaying = false;
+                    btnAudioPlay.setBackground(getResources().getDrawable(R.drawable.buttons));
+                }
+            }
+        });
+
+        btnAudioDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (audioExists){
+                    Log.d(TAG, "onClick: delete audio");
+                    audioExists = false;
+                    isAudioPlaying = false;
+                    isAudioRecording = false;
+                    audioLayout.setVisibility(View.GONE);
+                    btnAudio.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        btnAudioPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (audioExists){
+                    mediaPlayer = new MediaPlayer();
+                    try {
+                        mediaPlayer.setDataSource(audioPathSave);
+                        mediaPlayer.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    mediaPlayer.start();
+                    Toast.makeText(getContext(), "Playing...", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onClick: play");
+                    isAudioPlaying = true;
+                    btnAudioPlay.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
+                }
+            }
+        });
+
+
         return view;
+    }
+
+    private void setupMediaRecorder() {
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(audioPathSave);
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
+                REQUEST_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_PERMISSION_CODE:
+            {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
+                } else {
+                    Log.d(TAG, "onRequestPermissionsResult: permission denied");
+                }
+            }
+        }
+    }
+
+    private boolean checkPermissionFromDevice() {
+        int write_external_storage_result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int record_audio_result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO);
+
+        return write_external_storage_result == PackageManager.PERMISSION_GRANTED &&
+                record_audio_result == PackageManager.PERMISSION_GRANTED;
     }
 
     private void saveDataWithGeoAsync(final Artefact artefact) {
