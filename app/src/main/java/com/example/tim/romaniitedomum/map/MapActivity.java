@@ -304,6 +304,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 .icon(bitmapDescriptorFromVector(this, markerArtefactIcon)));
     }
 
+    // if editing icons, also edit -> NewArtefactFragment -> populateCategoryList()
     private int getMarkerArtefactIcon(Artefact artefact) {
         //Icons from flaticon.com. They have to be mentioned in the app.
 
