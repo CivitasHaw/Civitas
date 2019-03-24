@@ -241,6 +241,7 @@ public class NewArtefactFragment extends Fragment {
     }
 
     private void initNewArtefact(View view) {
+        artefactActivity.hideSoftKeyboard();
         mProgressViewNewArtefact = view.findViewById(R.id.progress_new_artefact);
         mFormViewNewArtefact = view.findViewById(R.id.form_new_artefact);
         tvLoadNewArtefact = view.findViewById(R.id.tvLoad_new_artefact);
