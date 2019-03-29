@@ -80,58 +80,6 @@
                 android:clickable="true"
                 android:src="@drawable/civitas_main_logo" />
 
-            <Button
-                android:id="@+id/button_new_artefact_audio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/buttons"
-                android:text="@string/button_new_artefact_audio" />
-
-            <LinearLayout
-                android:id="@+id/layout_audio_player"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="gone">
-
-                <ImageButton
-                    android:id="@+id/button_new_artefact_audio_record"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_audio_record"
-                    android:background="@drawable/buttons" />
-
-                <ImageButton
-                    android:id="@+id/button_new_artefact_audio_stop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_audio_stop"
-                    android:background="@drawable/buttons" />
-
-                <ImageButton
-                    android:id="@+id/button_new_artefact_audio_play"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_audio_play"
-                    android:background="@drawable/buttons" />
-
-                <ImageButton
-                    android:id="@+id/button_new_artefact_audio_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_audio_delete"
-                    android:background="@drawable/buttons_pressed" />
-
-            </LinearLayout>
 
             <EditText
                 android:id="@+id/edit_new_artefact_name"
@@ -158,6 +106,7 @@
             <Button
                 android:id="@+id/button_new_artefact_add_category"
                 android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/buttons"
                 android:text="@string/new_artefact_add_category" />
@@ -165,10 +114,63 @@
             <Spinner
                 android:id="@+id/spinner_new_artefact_category"
                 android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_gravity="center">
-            </Spinner>
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/button_new_artefact_audio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/buttons"
+                android:text="@string/button_new_artefact_audio" />
+
+            <LinearLayout
+                android:id="@+id/layout_audio_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/button_new_artefact_audio_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_record" />
+
+                <ImageButton
+                    android:id="@+id/button_new_artefact_audio_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_stop" />
+
+                <ImageButton
+                    android:id="@+id/button_new_artefact_audio_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_play" />
+
+                <ImageButton
+                    android:id="@+id/button_new_artefact_audio_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons_pressed"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_delete" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button_new_artefact_save"
