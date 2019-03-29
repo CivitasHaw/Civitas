@@ -48,6 +48,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 /**
  * Created by TimStaats 03.03.2019
  */
@@ -73,6 +74,7 @@ public class NewArtefactFragment extends Fragment {
 
     private ImageView ivNewArtefact;
     private EditText etNewArtefactName, etNewArtefactDescription, etNewArtefactDate;
+    private Button btnNewArtefactSave, btnAddCategory, btnAudio;
     private ImageButton btnTakeFotoFromCamera, btnTakeFotoFromGallery;
 
     private LinearLayout audioLayout;
@@ -178,31 +180,53 @@ public class NewArtefactFragment extends Fragment {
 
                     String fileName = artefactName + ".png";
 
+                    // ----------------- Image upload --------------------
                     Backendless.Files.Android.upload(artefactBitmap, Bitmap.CompressFormat.PNG, BITMAP_QUALITY,
-                            fileName, BACKENDLESS_FILE_PATH, new AsyncCallback<BackendlessFile>() {
-                        @Override
-                        public void handleResponse(BackendlessFile response) {
+                            fileName, BACKENDLESS_IMAGE_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+                                @Override
+                                public void handleResponse(BackendlessFile response) {
 
-                            mArtefact.setArtefactImageUrl(response.getFileURL());
-                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_image_upload), Toast.LENGTH_SHORT).show();
-                            showProgress(false);
+                                    mArtefact.setArtefactImageUrl(response.getFileURL());
+                                    Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_image_upload), Toast.LENGTH_SHORT).show();
+                                    showProgress(false);
 
-                            showProgress(true);
-                            tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
-                            saveDataWithGeoAsync(mArtefact);
-                        }
+                                    showProgress(true);
+                                    tvLoadNewArtefact.setText("Uploading audio file... please wait...");
 
-                        @Override
-                        public void handleFault(BackendlessFault fault) {
-                            showProgress(false);
-                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                                    // ---------------------- Audio Upload ----------------------
+                                    Backendless.Files.upload(mAudioFile, BACKENDLESS_AUDIO_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+                                        @Override
+                                        public void handleResponse(BackendlessFile response) {
+
+                                            mArtefact.setArtefactAudioUrl(response.getFileURL());
+                                            Toast.makeText(getContext(), "Audio upload successful", Toast.LENGTH_SHORT).show();
+                                            showProgress(false);
+                                            tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
+                                            saveDataWithGeoAsync(mArtefact);
+                                        }
+
+                                        @Override
+                                        public void handleFault(BackendlessFault fault) {
+                                            showProgress(false);
+                                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+//                                    showProgress(true);
+//                                    tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
+//                                    saveDataWithGeoAsync(mArtefact);
+                                }
+
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    showProgress(false);
+                                    Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                 }
             }
         });
-
 
 
         btnAudio.setOnClickListener(new View.OnClickListener() {
