@@ -15,6 +15,7 @@ public class Artefact {
     private Date created;
     private Date updated;
     private String objectId;
+    private String ownerId;
     private String userEmail;
     private String artefactName;
     private String artefactImageUrl;
@@ -151,6 +152,14 @@ public class Artefact {
 
     public void setCategoryMarkerImage(int categoryMarkerImage) {
         this.categoryMarkerImage = categoryMarkerImage;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 }
 /*    --------------------------------------------------------------------------

@@ -168,6 +168,7 @@ public class NewArtefactFragment extends Fragment {
                     mArtefact.setArtefactName(artefactName);
                     mArtefact.setArtefactDescription(artefactDescription);
                     mArtefact.setUserEmail(ApplicationClass.user.getEmail());
+                    mArtefact.setOwnerId(ApplicationClass.user.getProperty("ownerId").toString());
                     mArtefact.setLatitude(mLat);
                     mArtefact.setLongitude(mLng);
                     //mArtefact.setCategory(new Category(mCategory.getCategoryName(), mCategory.getCategoryMarkerImage()));
