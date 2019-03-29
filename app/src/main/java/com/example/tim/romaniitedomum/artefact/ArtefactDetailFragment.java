@@ -45,6 +45,7 @@ public class ArtefactDetailFragment extends Fragment {
 
     private LinearLayout audioLayout;
     private ImageButton btnAudioPlay, btnAudioPause, btnAudioStop;
+    private Artefact mArtefact = null;
 
     @Nullable
     @Override
@@ -107,11 +108,8 @@ public class ArtefactDetailFragment extends Fragment {
                         ApplicationClass.mArtefactList.get(i).getLatitude() == lat &&
                         ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
 
-                    tvArtefactDetailName.setText(ApplicationClass.mArtefactList.get(i).getArtefactName());
-                    //tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(i).getCategory().getCategoryName());
-                    tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(i).getCategoryName());
-                    tvArtefactDetailDescription.setText(ApplicationClass.mArtefactList.get(i).getArtefactDescription());
-                    mLoader.displayImage(ApplicationClass.mArtefactList.get(i).getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
+                    mArtefact = ApplicationClass.mArtefactList.get(i);
+                    mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String imageUri, View view) {
                             mProgress.setVisibility(View.VISIBLE);
@@ -134,14 +132,20 @@ public class ArtefactDetailFragment extends Fragment {
 
                         }
                     });
+
+                    tvArtefactDetailName.setText(mArtefact.getArtefactName());
+                    //tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(i).getCategory().getCategoryName());
+                    tvArtefactDetailCategory.setText("#" + mArtefact.getCategoryName());
+                    tvArtefactDetailDescription.setText(mArtefact.getArtefactDescription());
                 }
             }
 
         } else {
             // navigating to artefactDetail from ArtefactList item Click
             mPosition = ApplicationClass.position;
+            mArtefact = ApplicationClass.mArtefactList.get(mPosition);
 
-            mLoader.displayImage(ApplicationClass.mArtefactList.get(mPosition).getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
+            mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
                     mProgress.setVisibility(View.VISIBLE);
@@ -164,9 +168,9 @@ public class ArtefactDetailFragment extends Fragment {
                 }
             });
 
-            tvArtefactDetailName.setText(ApplicationClass.mArtefactList.get(mPosition).getArtefactName());
-            tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(mPosition).getCategoryName());
-            tvArtefactDetailDescription.setText(ApplicationClass.mArtefactList.get(mPosition).getArtefactDescription());
+            tvArtefactDetailName.setText(mArtefact.getArtefactName());
+            tvArtefactDetailCategory.setText("#" + mArtefact.getCategoryName());
+            tvArtefactDetailDescription.setText(mArtefact.getArtefactDescription());
         }
 
         btnArtefactDetailMarker.setOnClickListener(new View.OnClickListener() {
