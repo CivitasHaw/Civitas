@@ -156,9 +156,8 @@ public class NewArtefactFragment extends Fragment {
 
                 imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
 
-                if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() ||
-                        !imageIsTakenFromCamera.equals("camera") || clickedCategory.equals(""))  {
-                    Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
+                if (checkFields())  {
+                    //Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
                 } else {
                     showProgress(true);
@@ -305,6 +304,14 @@ public class NewArtefactFragment extends Fragment {
 
 
         return view;
+    }
+
+    private boolean checkFields() {
+        if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() ||
+                !imageIsTakenFromCamera.equals("camera") || clickedCategory.equals("")){
+            return true;
+        }
+        return false;
     }
 
     private void setupMediaRecorder() {
