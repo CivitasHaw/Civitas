@@ -208,10 +208,10 @@ public class NewArtefactFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: audio menu");
 
-                if (checkPermissionFromDevice()){
+                if (checkPermissionFromDevice()) {
                     btnAudio.setVisibility(View.GONE);
                     audioLayout.setVisibility(View.VISIBLE);
-                    if (!isAudioRecording && !audioExists){
+                    if (!isAudioRecording && !audioExists) {
                         btnAudioDelete.setEnabled(false);
                         btnAudioDelete.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
                     }
@@ -227,7 +227,7 @@ public class NewArtefactFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: recording");
-                if (!isAudioRecording){
+                if (!isAudioRecording) {
                     isAudioRecording = true;
                     btnAudioPlay.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
                     btnAudioRecord.setImageDrawable(getResources().getDrawable(R.drawable.ic_audio_record_red));
@@ -248,7 +248,7 @@ public class NewArtefactFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: stop recording");
-                if (isAudioRecording){
+                if (isAudioRecording) {
                     mediaRecorder.stop();
                     isAudioRecording = false;
                     audioExists = true;
@@ -257,7 +257,7 @@ public class NewArtefactFragment extends Fragment {
                     btnAudioDelete.setBackground(getResources().getDrawable(R.drawable.buttons));
                     btnAudioRecord.setImageDrawable(getResources().getDrawable(R.drawable.ic_audio_record));
                     btnAudioRecord.setBackground(getResources().getDrawable(R.drawable.buttons));
-                } else if (isAudioPlaying){
+                } else if (isAudioPlaying) {
                     mediaPlayer.stop();
                     mediaPlayer.release();
                     setupMediaRecorder();
@@ -270,7 +270,7 @@ public class NewArtefactFragment extends Fragment {
         btnAudioDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (audioExists){
+                if (audioExists) {
                     Log.d(TAG, "onClick: delete audio");
                     audioExists = false;
                     isAudioPlaying = false;
@@ -284,7 +284,7 @@ public class NewArtefactFragment extends Fragment {
         btnAudioPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (audioExists){
+                if (audioExists) {
                     mediaPlayer = new MediaPlayer();
                     try {
                         mediaPlayer.setDataSource(audioPathSave);
@@ -324,16 +324,15 @@ public class NewArtefactFragment extends Fragment {
 
     private void requestPermission() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
                 REQUEST_PERMISSION_CODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case REQUEST_PERMISSION_CODE:
-            {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case REQUEST_PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                 } else {
                     Log.d(TAG, "onRequestPermissionsResult: permission denied");
@@ -404,7 +403,7 @@ public class NewArtefactFragment extends Fragment {
 
     }
 
-    private ArrayList<Category> populateCategoryList(){
+    private ArrayList<Category> populateCategoryList() {
         ArrayList<Category> list = new ArrayList<>();
 
         list.add(new Category("Akropolis", R.drawable.ic_map_akropolis));
