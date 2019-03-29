@@ -109,6 +109,11 @@ public class ArtefactDetailFragment extends Fragment {
                         ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
 
                     mArtefact = ApplicationClass.mArtefactList.get(i);
+
+                    if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty("ownerId"))){
+                        Toast.makeText(artefactActivity, "Happy B-Day", Toast.LENGTH_LONG).show();
+                    }
+
                     mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String imageUri, View view) {
