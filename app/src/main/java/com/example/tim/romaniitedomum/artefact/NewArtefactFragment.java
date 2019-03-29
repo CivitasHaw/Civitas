@@ -59,7 +59,7 @@ public class NewArtefactFragment extends Fragment {
     public static final String ORIGIN_CAMERA = "camera";
     public static final String ORIGIN_MAP_LONG_CLICK = "onMapLongClick";
     public static final String ORIGIN_BTN_ADD_ARTEFACT = "btnAddArtefact";
-    public static final String BACKENDLESS_FILE_PATH = "artefactImages";
+    public static final String BACKENDLESS_IMAGE_FILE_PATH = "artefactImages";
 
     public static final int BITMAP_QUALITY = 100;
     public static final int REQUEST_PERMISSION_CODE = 1000;
@@ -72,7 +72,7 @@ public class NewArtefactFragment extends Fragment {
 
     private ImageView ivNewArtefact;
     private EditText etNewArtefactName, etNewArtefactDescription, etNewArtefactDate;
-    private Button btnNewArtefactSave, btnTakeImage, btnAddCategory, btnAudio;
+    private ImageButton btnTakeFotoFromCamera, btnTakeFotoFromGallery;
 
     private LinearLayout audioLayout;
     private MediaRecorder mediaRecorder;
@@ -80,6 +80,7 @@ public class NewArtefactFragment extends Fragment {
     private boolean isAudioRecording = false, audioExists = false, isAudioPlaying = false;
     private ImageButton btnAudioRecord, btnAudioPlay, btnAudioStop, btnAudioDelete;
     private String audioPathSave = "";
+    private String imageIsTakenFromCamera = "";
 
     private Spinner spinnerCategories;
     private CategoryAdapter mAdapter;
@@ -128,14 +129,21 @@ public class NewArtefactFragment extends Fragment {
         ivNewArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takeAPictureWithCamera();
+                takeFotoFromCamera();
             }
         });
 
-        btnTakeImage.setOnClickListener(new View.OnClickListener() {
+        btnTakeFotoFromCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takeAPictureWithCamera();
+                takeFotoFromCamera();
+            }
+        });
+
+        btnTakeFotoFromGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takeFotoFromGallery();
             }
         });
 
@@ -146,7 +154,7 @@ public class NewArtefactFragment extends Fragment {
                 artefactDescription = etNewArtefactDescription.getText().toString().trim();
                 artefactDate = etNewArtefactDate.getText().toString().trim();
 
-                String imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
+                imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
 
                 if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() ||
                         !imageIsTakenFromCamera.equals("camera") || clickedCategory.equals(""))  {
@@ -370,7 +378,11 @@ public class NewArtefactFragment extends Fragment {
         });
     }
 
-    private void takeAPictureWithCamera() {
+    private void takeFotoFromGallery(){
+        Toast.makeText(artefactActivity, "TODO: implement Gallery picker", Toast.LENGTH_SHORT).show();
+    }
+
+    private void takeFotoFromCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 0);
     }
