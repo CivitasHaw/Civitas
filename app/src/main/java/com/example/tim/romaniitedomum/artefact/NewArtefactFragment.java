@@ -430,7 +430,8 @@ public class NewArtefactFragment extends Fragment {
         etNewArtefactDescription = view.findViewById(R.id.edit_new_artefact_description);
         btnNewArtefactSave = view.findViewById(R.id.button_new_artefact_save);
         btnAudio = view.findViewById(R.id.button_new_artefact_audio);
-        btnTakeImage = view.findViewById(R.id.button_new_artefact_image);
+        btnTakeFotoFromCamera = view.findViewById(R.id.button_new_artefact_image_from_camera);
+        btnTakeFotoFromGallery = view.findViewById(R.id.button_new_artefact_image_from_gallery);
         btnAddCategory = view.findViewById(R.id.button_new_artefact_add_category);
         spinnerCategories = view.findViewById(R.id.spinner_new_artefact_category);
 
