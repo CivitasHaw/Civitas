@@ -142,6 +142,11 @@ public class ArtefactDetailFragment extends Fragment {
                     //tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(i).getCategory().getCategoryName());
                     tvArtefactDetailCategory.setText("#" + mArtefact.getCategoryName());
                     tvArtefactDetailDescription.setText(mArtefact.getArtefactDescription());
+                    artefactAudioFileExists(mArtefact);
+//                    if (mArtefact.getArtefactAudioUrl() != null){
+//                        audioLayout.setVisibility(View.VISIBLE);
+//                    }
+
                 }
             }
 
@@ -176,6 +181,7 @@ public class ArtefactDetailFragment extends Fragment {
             tvArtefactDetailName.setText(mArtefact.getArtefactName());
             tvArtefactDetailCategory.setText("#" + mArtefact.getCategoryName());
             tvArtefactDetailDescription.setText(mArtefact.getArtefactDescription());
+            artefactAudioFileExists(mArtefact);
         }
 
         btnArtefactDetailMarker.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +192,14 @@ public class ArtefactDetailFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    private void artefactAudioFileExists(Artefact mArtefact) {
+        if (mArtefact.getArtefactAudioUrl() != null){
+            audioLayout.setVisibility(View.VISIBLE);
+        } else {
+            audioLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
