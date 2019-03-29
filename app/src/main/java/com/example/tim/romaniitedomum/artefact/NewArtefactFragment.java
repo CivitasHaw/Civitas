@@ -44,9 +44,9 @@ import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -60,6 +60,7 @@ public class NewArtefactFragment extends Fragment {
     public static final String ORIGIN_MAP_LONG_CLICK = "onMapLongClick";
     public static final String ORIGIN_BTN_ADD_ARTEFACT = "btnAddArtefact";
     public static final String BACKENDLESS_IMAGE_FILE_PATH = "artefactImages";
+    public static final String BACKENDLESS_AUDIO_FILE_PATH = "artefactAudios";
 
     public static final int BITMAP_QUALITY = 100;
     public static final int REQUEST_PERMISSION_CODE = 1000;
@@ -80,6 +81,7 @@ public class NewArtefactFragment extends Fragment {
     private boolean isAudioRecording = false, audioExists = false, isAudioPlaying = false;
     private ImageButton btnAudioRecord, btnAudioPlay, btnAudioStop, btnAudioDelete;
     private String audioPathSave = "";
+    private File mAudioFile;
     private String imageIsTakenFromCamera = "";
 
     private Spinner spinnerCategories;
@@ -232,15 +234,11 @@ public class NewArtefactFragment extends Fragment {
                     btnAudioPlay.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
                     btnAudioRecord.setImageDrawable(getResources().getDrawable(R.drawable.ic_audio_record_red));
                     btnAudioRecord.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
-                    audioPathSave = Environment.getExternalStorageDirectory()
-                            .getAbsolutePath() + "/" + UUID.randomUUID().toString() + "_audio_record.3gp";
+//                    audioPathSave = Environment.getExternalStorageDirectory()
+//                            .getAbsolutePath() + "/" + UUID.randomUUID().toString() + "_audio_record.3gp";
+                    mediaRecorder = new MediaRecorder();
                     setupMediaRecorder();
-                    try {
-                        mediaRecorder.prepare();
-                        mediaRecorder.start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    mediaRecorder.start();
                 }
             }
         });
@@ -287,7 +285,7 @@ public class NewArtefactFragment extends Fragment {
                 if (audioExists) {
                     mediaPlayer = new MediaPlayer();
                     try {
-                        mediaPlayer.setDataSource(audioPathSave);
+                        mediaPlayer.setDataSource(mAudioFile.getAbsolutePath());
                         mediaPlayer.prepare();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -315,11 +313,23 @@ public class NewArtefactFragment extends Fragment {
     }
 
     private void setupMediaRecorder() {
-        mediaRecorder = new MediaRecorder();
+        mAudioFile = new File(Environment.getExternalStorageDirectory(), artefactName + "_" + artefactDescription + "_audio.3gp");
+
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-        mediaRecorder.setOutputFile(audioPathSave);
+        mediaRecorder.setAudioEncodingBitRate(16);
+        mediaRecorder.setAudioSamplingRate(44100);
+        mediaRecorder.setOutputFile(mAudioFile.getAbsolutePath());
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IOException e) {
+            Toast.makeText(artefactActivity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (IllegalStateException e) {
+            Toast.makeText(artefactActivity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void requestPermission() {
