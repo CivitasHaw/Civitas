@@ -47,34 +47,35 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="16dp">
 
                 <RatingBar
                     android:id="@+id/ratingbar_artefact_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:stepSize="1"
-                    android:rating="2" />
+                    android:rating="2"
+                    android:stepSize="1" />
 
                 <Button
                     android:id="@+id/button_artefact_detail_save_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/buttons"
                     android:layout_marginLeft="8dp"
+                    android:background="@drawable/buttons"
                     android:text="@string/artefact_detail_save_rating" />
 
             </LinearLayout>
-
 
             <TextView
                 android:id="@+id/text_artefact_detail_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
+                android:paddingTop="16dp"
+                android:text="@string/artefact_detail_name"
                 android:textSize="18sp"
-                android:text="@string/artefact_detail_name" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/text_artefact_detail_category"
@@ -88,10 +89,47 @@
                 android:layout_height="wrap_content"
                 android:text="@string/artefact_detail_description" />
 
+            <LinearLayout
+                android:id="@+id/layout_artefact_detail_audio_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <ImageButton
+                    android:id="@+id/button_artefact_detail_audio_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_play" />
+
+                <ImageButton
+                    android:id="@+id/button_artefact_detail_audio_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_pause" />
+
+                <ImageButton
+                    android:id="@+id/button_artefact_detail_audio_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttons"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_audio_stop" />
+
+            </LinearLayout>
+
             <Button
                 android:id="@+id/button_artefact_detail_show_marker_on_map"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/buttons"
                 android:text="@string/button_artefact_detail_show_marker_on_map" />
         </LinearLayout>

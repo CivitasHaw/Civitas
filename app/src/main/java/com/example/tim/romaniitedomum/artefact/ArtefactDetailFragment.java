@@ -43,6 +43,8 @@ public class ArtefactDetailFragment extends Fragment {
 
     private Bundle args;
 
+    private LinearLayout audioLayout;
+    private ImageButton btnAudioPlay, btnAudioPause, btnAudioStop;
 
     @Nullable
     @Override
@@ -51,6 +53,12 @@ public class ArtefactDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_artefact_detail, container, false);
 
         initArtefactDetail(view);
+
+        btnAudioPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });
 
         return view;
 
@@ -65,6 +73,10 @@ public class ArtefactDetailFragment extends Fragment {
         mProgress = view.findViewById(R.id.progress_artefact_detail);
         mRating = view.findViewById(R.id.ratingbar_artefact_detail);
         btnArtefactDetailSaveRating = view.findViewById(R.id.button_artefact_detail_save_rating);
+        audioLayout = view.findViewById(R.id.layout_artefact_detail_audio_player);
+        btnAudioPlay = audioLayout.findViewById(R.id.button_artefact_detail_audio_play);
+        btnAudioPause = audioLayout.findViewById(R.id.button_artefact_detail_audio_pause);
+        btnAudioStop = audioLayout.findViewById(R.id.button_artefact_detail_audio_stop);
 
         mLoader = ApplicationClass.loader;
 
