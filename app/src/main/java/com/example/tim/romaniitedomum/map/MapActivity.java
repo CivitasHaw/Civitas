@@ -229,6 +229,9 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
             super.onBackPressed();
         }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void initMap() {
