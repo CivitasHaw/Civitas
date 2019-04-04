@@ -118,6 +118,11 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         startActivity(intent);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setTitle(R.string.mapactivity_title);
+    }
     private void initDrawerAndToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
