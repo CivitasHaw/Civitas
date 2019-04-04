@@ -58,6 +58,11 @@ public class ArtefactDetailFragment extends Fragment {
         btnAudioPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+    @Override
+    public void onStart() {
+        super.onStart();
+        artefactActivity.setTitle(mArtefact.getArtefactName());
+    }
             }
         });
 
