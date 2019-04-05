@@ -38,8 +38,6 @@ public class ArtefactListFragment extends Fragment {
     private View mFormViewArtefactList;
     private TextView tvLoadArtefactList;
 
-    private TextView tvListOfArtefacts;
-
     private RecyclerView mRecyclerView;
     private ArtefactListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -78,8 +76,6 @@ public class ArtefactListFragment extends Fragment {
         mFormViewArtefactList = view.findViewById(R.id.login_form);
         mProgressViewArtefactList = view.findViewById(R.id.login_progress);
         tvLoadArtefactList = view.findViewById(R.id.tvLoad);
-
-        tvListOfArtefacts = view.findViewById(R.id.text_list_of_artefacts);
 
         mRecyclerView = view.findViewById(R.id.recyclerview_list_of_artefacts);
         mLayoutManager = new LinearLayoutManager(artefactActivity);

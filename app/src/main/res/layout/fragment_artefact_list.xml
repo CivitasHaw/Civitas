@@ -36,15 +36,6 @@
         android:id="@+id/form_artefact_list"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_list_of_artefacts"
-            android:text="@string/list_of_artefacts"
-            android:gravity="center"
-            android:textSize="24dp"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="8dp"
             android:id="@+id/recyclerview_list_of_artefacts"
