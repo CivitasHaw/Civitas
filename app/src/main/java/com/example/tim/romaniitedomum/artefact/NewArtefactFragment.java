@@ -161,7 +161,7 @@ public class NewArtefactFragment extends Fragment {
 
                 imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
 
-                if (checkFields())  {
+                if (checkFields()) {
                     //Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
                 } else {
@@ -331,7 +331,7 @@ public class NewArtefactFragment extends Fragment {
 
     private boolean checkFields() {
         if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() ||
-                !imageIsTakenFromCamera.equals("camera") || clickedCategory.equals("")){
+                !imageIsTakenFromCamera.equals("camera") || clickedCategory.equals("")) {
             return true;
         }
         return false;
