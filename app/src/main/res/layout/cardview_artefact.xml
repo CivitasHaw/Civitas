@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview_artefact"
     android:layout_width="160dp"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
+    android:layout_marginBottom="16dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
@@ -28,20 +29,20 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/image_cardview_artefact"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/image_cardview_artefact"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/civitas_main_logo"
                 android:contentDescription="@string/artefact_image"
-                android:scaleType="fitXY" />
-                <!--android:background="@color/civitas_dark_grey"-->
+                android:scaleType="fitXY"
+                android:src="@drawable/civitas_main_logo" />
+            <!--android:background="@color/civitas_dark_grey"-->
 
 
         </android.support.constraint.ConstraintLayout>
@@ -53,8 +54,8 @@
             android:layout_height="wrap_content"
             android:text="@string/cardview_default_name"
             android:textColor="@color/civitas_dark_grey"
-            android:textStyle="bold"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/text_cardview_artefact_category"
@@ -63,11 +64,32 @@
             android:text="@string/cardview_default_category"
             android:textColor="@color/civitas_dark_grey" />
 
-        <TextView
-            android:id="@+id/text_cardview_artefact_description"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cardview_default_description" />
+            android:layout_weight="5"
+            android:orientation="horizontal">
+
+            <RatingBar
+                android:id="@+id/ratingbar_artefact_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/ratingBarStyleSmall"
+                android:isIndicator="true"
+                android:layout_weight="4"
+                android:clickable="false"
+                android:rating="2"
+                android:stepSize="1" />
+
+            <TextView
+                android:id="@+id/text_rating_average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="(4)" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,8 +44,9 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     public static class ArtefactListViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView mIvArtefact;
-        public TextView mTvArtefactName, mTvArtefactCategory, mTvArtefactDescription;
+        public TextView mTvArtefactName, mTvArtefactCategory, mTvArtefactDescription, mTvAverageRating;
         public ProgressBar mProgress;
+        public RatingBar mRatingBar;
 
         public ArtefactListViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -52,8 +54,11 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
             mIvArtefact = itemView.findViewById(R.id.image_cardview_artefact);
             mTvArtefactName = itemView.findViewById(R.id.text_cardview_artefact_name);
             mTvArtefactCategory = itemView.findViewById(R.id.text_cardview_artefact_category);
-            mTvArtefactDescription = itemView.findViewById(R.id.text_cardview_artefact_description);
+            //mTvArtefactDescription = itemView.findViewById(R.id.text_cardview_artefact_description);
             mProgress = itemView.findViewById(R.id.progress_cardview_artefact);
+            mTvAverageRating = itemView.findViewById(R.id.text_rating_average);
+            mRatingBar = itemView.findViewById(R.id.ratingbar_artefact_list);
+            mRatingBar.setNumStars(5);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -114,7 +119,8 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
         holder.mTvArtefactName.setText(currentArtefact.getArtefactName());
         //holder.mTvArtefactCategory.setText(currentArtefact.getCategory().getCategoryName());
         holder.mTvArtefactCategory.setText("#" + currentArtefact.getCategoryName());
-        holder.mTvArtefactDescription.setText(currentArtefact.getArtefactDescription());
+        //holder.mTvArtefactDescription.setText(currentArtefact.getArtefactDescription());
+        holder.mRatingBar.setNumStars(5);
 
     }
 
