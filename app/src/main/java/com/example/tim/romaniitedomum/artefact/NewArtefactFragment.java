@@ -113,7 +113,8 @@ public class NewArtefactFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mCategory = (Category) parent.getItemAtPosition(position);
                 clickedCategory = mCategory.getCategoryName();
-                Toast.makeText(getContext(), "category: " + clickedCategory, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onItemSelected: category: " + clickedCategory);
+                //Toast.makeText(getContext(), "category: " + clickedCategory, Toast.LENGTH_SHORT).show();
             }
 
             @Override
