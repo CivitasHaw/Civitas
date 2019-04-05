@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -123,6 +124,13 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         super.onStart();
         setTitle(R.string.mapactivity_title);
     }
+
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
     private void initDrawerAndToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -228,6 +236,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         } else {
             super.onBackPressed();
         }
+    }
 
     @Override
     protected void onDestroy() {
