@@ -209,7 +209,7 @@ public class LoginFragment extends Fragment {
         email = textInputLoginEmail.getEditText().getText().toString().trim();
 
         if (email.isEmpty()){
-            textInputLoginEmail.setError("Field can't be empty");
+            textInputLoginEmail.setError(getResources().getString(R.string.login_empty_field_error));
             return false;
         } else {
             textInputLoginEmail.setError(null);
@@ -222,7 +222,7 @@ public class LoginFragment extends Fragment {
         password = textInputLoginPassword.getEditText().getText().toString().trim();
 
         if (password.isEmpty()){
-            textInputLoginPassword.setError("Field can't be empty");
+            textInputLoginPassword.setError(getResources().getString(R.string.login_empty_field_error));
             return false;
         } else {
             textInputLoginPassword.setError(null);
