@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,8 +47,8 @@ public class LoginFragment extends Fragment {
     private View mLoginFormView;
     private TextView tvLoad;
 
-    private EditText etLoginEmail;
-    private EditText etLoginPassword;
+    private TextInputLayout textInputLoginEmail, textInputLoginPassword;
+
     private Button btnLogin;
     private Button btnRegister;
     private TextView tvResetPassword;
@@ -72,42 +74,32 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked");
 
-                email = etLoginEmail.getText().toString().trim();
-                password = etLoginPassword.getText().toString().trim();
-
-                if (email.isEmpty() || password.isEmpty()){
+                if (!validateEmail() | !validatePassword()) {
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "onClick: login: clicked");
 
                     showProgress(true);
                     tvLoad.setText(getResources().getText(R.string.login_user));
-
-
                     Backendless.UserService.login(email, password, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response) {
-
                             ApplicationClass.user = response;
                             Toast.makeText(getContext(), getResources().getText(R.string.toast_login_successful), Toast.LENGTH_SHORT).show();
                             navigateToMapActivity();
-//                            Intent intent = new Intent(getActivity(), MapActivity.class);
-//                            startActivity(intent);
-//                            getActivity().finish();
-
                         }
 
                         @Override
                         public void handleFault(BackendlessFault fault) {
-
                             Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
                             showProgress(false);
-
                         }
                     }, true);
+
                 }
             }
         });
+
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,9 +112,8 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: Reset Password: clicked");
-                email = etLoginEmail.getText().toString().trim();
 
-                if (email.isEmpty()){
+                if (!validateEmail()){
                     Toast.makeText(getContext(), getResources().getText(R.string.toast_forgot_password), Toast.LENGTH_SHORT).show();
                 } else {
                     showProgress(true);
@@ -133,9 +124,6 @@ public class LoginFragment extends Fragment {
                         public void handleResponse(Void response) {
                             Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_reset_password_instructions), Toast.LENGTH_SHORT).show();
                             showProgress(false);
-
-                            etLoginEmail.setText("");
-                            etLoginPassword.setText("");
 
                         }
 
@@ -216,13 +204,40 @@ public class LoginFragment extends Fragment {
         mainActivity.fragmentSwitch(new RegisterFragment(), true, "RegisterFragment");
     }
 
+    private boolean validateEmail(){
+        email = "";
+        email = textInputLoginEmail.getEditText().getText().toString().trim();
+
+        if (email.isEmpty()){
+            textInputLoginEmail.setError("Field can't be empty");
+            return false;
+        } else {
+            textInputLoginEmail.setError(null);
+            //textInputLoginEmail.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validatePassword(){
+        password = textInputLoginPassword.getEditText().getText().toString().trim();
+
+        if (password.isEmpty()){
+            textInputLoginPassword.setError("Field can't be empty");
+            return false;
+        } else {
+            textInputLoginPassword.setError(null);
+            return true;
+        }
+    }
+
     private void initLogin(View view) {
         mLoginFormView = view.findViewById(R.id.login_form);
         mProgressView = view.findViewById(R.id.login_progress);
         tvLoad = view.findViewById(R.id.tvLoad);
 
-        etLoginEmail = view.findViewById(R.id.edit_login_email);
-        etLoginPassword = view.findViewById(R.id.edit_login_password);
+        textInputLoginEmail = view.findViewById(R.id.textinput_login_email);
+        textInputLoginPassword = view.findViewById(R.id.textinput_login_password);
+
         btnLogin = view.findViewById(R.id.button_login_confirm);
         btnRegister = view.findViewById(R.id.button_login_register);
         tvResetPassword = view.findViewById(R.id.text_login_reset_password);
