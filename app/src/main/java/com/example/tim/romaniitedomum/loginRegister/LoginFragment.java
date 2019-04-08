@@ -65,7 +65,6 @@ public class LoginFragment extends Fragment {
         Log.d(TAG, "onCreateView: called");
         initLogin(view);
 
-
         showProgress(true);
         tvLoad.setText(getResources().getText(R.string.login_check_credentials));
 
@@ -86,7 +85,9 @@ public class LoginFragment extends Fragment {
                         public void handleResponse(BackendlessUser response) {
                             ApplicationClass.user = response;
                             Toast.makeText(getContext(), getResources().getText(R.string.toast_login_successful), Toast.LENGTH_SHORT).show();
-                            navigateToMapActivity();
+                            // if user is successful logged in
+                            retrieveArtefactsFromBackendless();
+                            //navigateToMapActivity();
                         }
 
                         @Override
@@ -99,7 +100,6 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
-
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,24 +152,8 @@ public class LoginFragment extends Fragment {
                         @Override
                         public void handleResponse(BackendlessUser response) {
                             ApplicationClass.user = response;
-
-                            tvLoad.setText(getResources().getText(R.string.retrieve_artefacts_from_backendless));
-                            Backendless.Persistence.of(Artefact.class).find(new AsyncCallback<List<Artefact>>() {
-                                @Override
-                                public void handleResponse(List<Artefact> response) {
-                                    ApplicationClass.mArtefactList = response;
-                                    navigateToMapActivity();
-                                }
-
-                                @Override
-                                public void handleFault(BackendlessFault fault) {
-                                    Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                                    showProgress(false);
-                                    navigateToMapActivity();
-                                }
-                            });
-
-
+                            // if user is successful logged in
+                            retrieveArtefactsFromBackendless();
                         }
 
                         @Override
@@ -187,11 +171,28 @@ public class LoginFragment extends Fragment {
             public void handleFault(BackendlessFault fault) {
                 Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
                 showProgress(false);
-
             }
         });
 
         return view;
+    }
+
+    private void retrieveArtefactsFromBackendless() {
+        tvLoad.setText(getResources().getText(R.string.retrieve_artefacts_from_backendless));
+        Backendless.Persistence.of(Artefact.class).find(new AsyncCallback<List<Artefact>>() {
+            @Override
+            public void handleResponse(List<Artefact> response) {
+                ApplicationClass.mArtefactList = response;
+                navigateToMapActivity();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                showProgress(false);
+                navigateToMapActivity();
+            }
+        });
     }
 
     private void navigateToMapActivity(){
