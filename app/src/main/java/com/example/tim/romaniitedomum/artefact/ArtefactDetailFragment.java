@@ -2,7 +2,10 @@ package com.example.tim.romaniitedomum.artefact;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -23,6 +28,16 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
 /**
  * Created by TimStaats 12.03.2019
  */
@@ -30,6 +45,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 public class ArtefactDetailFragment extends Fragment {
 
     private static final String TAG = "ArtefactDetailFragment";
+//    private static final String AUDIO_FILE_PATH = "audio";
 
     private ArtefactActivity artefactActivity;
 
@@ -46,6 +62,8 @@ public class ArtefactDetailFragment extends Fragment {
     private LinearLayout audioLayout;
     private ImageButton btnAudioPlay, btnAudioPause, btnAudioStop;
     private Artefact mArtefact = null;
+//    private File mAudioFile = null;
+
 
     @Nullable
     @Override
@@ -55,20 +73,101 @@ public class ArtefactDetailFragment extends Fragment {
 
         initArtefactDetail(view);
 
-        btnAudioPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        return view;
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         artefactActivity.setTitle(mArtefact.getArtefactName());
     }
-            }
-        });
 
-        return view;
+/*
+    // https://stackoverflow.com/questions/15758856/android-how-to-download-file-from-webserver
+    class DownloadFileFromUrl extends AsyncTask<String, String, File> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected File doInBackground(String... urls) {
+            int count;
+
+            try {
+                URL url = new URL(urls[0]);
+                URLConnection connection = url.openConnection();
+
+                // this will be useful so that you can show a tipical 0-100%
+                // progress bar
+                int lenghtOfFile = connection.getContentLength();
+
+                // download the file
+                InputStream input = new BufferedInputStream(url.openStream(), 8192);
+
+                // Output Stream
+                File file = new File(Environment.getExternalStorageDirectory() + "/myAudio.3gp");
+                OutputStream output = new FileOutputStream(file);
+
+                byte data[] = new byte[1024];
+                long total = 0;
+
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    // publishing the progress...
+                    // After this onProgressUpdate will be called
+                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+
+                    // write data to file
+                    output.write(data, 0, count);
+                }
+
+                // flushing output
+                output.flush();
+
+                // closing streams
+                output.close();
+                input.close();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            super.onPostExecute(file);
+            btnAudioPlay.setEnabled(true);
+            mAudioFile = file;
+            MediaPlayer mediaPlayer = new MediaPlayer();
+            try {
+                mediaPlayer.setDataSource(mAudioFile.getAbsolutePath());
+                //mediaPlayer.setDataSource(file.getAbsolutePath());
+                //mediaPlayer.prepare();
+            } catch (IOException e) {
+                Toast.makeText(artefactActivity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (IllegalStateException e) {
+                Toast.makeText(artefactActivity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            Toast.makeText(artefactActivity, "Fertig", Toast.LENGTH_SHORT).show();
+            //mediaPlayer.start();
+            //btnAudioPlay.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
+        }
+
 
     }
+*/
 
     private void initArtefactDetail(View view) {
         ivArtefactDetail = view.findViewById(R.id.image_artefact_detail);
@@ -86,6 +185,7 @@ public class ArtefactDetailFragment extends Fragment {
 
         mLoader = ApplicationClass.loader;
 
+//        mAudioFile = new File(AUDIO_FILE_PATH);
 
         mRating.setNumStars(5);
         mRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -95,11 +195,20 @@ public class ArtefactDetailFragment extends Fragment {
             }
         });
 
+        //TODO: implement Rating
         btnArtefactDetailSaveRating.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 float rate = mRating.getRating();
                 Toast.makeText(getContext(), "Rate: " + rate, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //TODO: implement Mediaplayer
+        btnAudioPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(artefactActivity, "Clicki", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -114,6 +223,13 @@ public class ArtefactDetailFragment extends Fragment {
                         ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
 
                     mArtefact = ApplicationClass.mArtefactList.get(i);
+/*
+                    if (mArtefact != null) {
+                        if (mArtefact.getArtefactAudioUrl() != null) {
+                            new DownloadFileFromUrl().execute(mArtefact.getArtefactAudioUrl());
+                        }
+                    }
+*/
 
                     if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty("ownerId"))){
                         Toast.makeText(artefactActivity, "Happy B-Day", Toast.LENGTH_LONG).show();
@@ -144,13 +260,10 @@ public class ArtefactDetailFragment extends Fragment {
                     });
 
                     tvArtefactDetailName.setText(mArtefact.getArtefactName());
-                    //tvArtefactDetailCategory.setText("#" + ApplicationClass.mArtefactList.get(i).getCategory().getCategoryName());
                     tvArtefactDetailCategory.setText("#" + mArtefact.getCategoryName());
                     tvArtefactDetailDescription.setText(mArtefact.getArtefactDescription());
                     artefactAudioFileExists(mArtefact);
-//                    if (mArtefact.getArtefactAudioUrl() != null){
-//                        audioLayout.setVisibility(View.VISIBLE);
-//                    }
+
 
                 }
             }
