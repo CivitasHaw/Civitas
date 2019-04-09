@@ -47,6 +47,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -61,7 +62,7 @@ public class NewArtefactFragment extends Fragment {
     public static final String ORIGIN_MAP_LONG_CLICK = "onMapLongClick";
     public static final String ORIGIN_BTN_ADD_ARTEFACT = "btnAddArtefact";
     public static final String BACKENDLESS_IMAGE_FILE_PATH = "artefactImages";
-    public static final String BACKENDLESS_AUDIO_FILE_PATH = "artefactAudios";
+    public static final String BACKENDLESS_AUDIO_FILE_PATH = "/artefactAudios";
 
     public static final int BITMAP_QUALITY = 100;
     public static final int REQUEST_PERMISSION_CODE = 1000;
@@ -191,27 +192,33 @@ public class NewArtefactFragment extends Fragment {
                                     Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_image_upload), Toast.LENGTH_SHORT).show();
                                     showProgress(false);
 
-                                    showProgress(true);
-                                    tvLoadNewArtefact.setText("Uploading audio file... please wait...");
+                                    if (!audioExists) {
+                                        tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
+                                        saveDataWithGeoAsync(mArtefact);
+                                    } else {
+                                        showProgress(true);
+                                        tvLoadNewArtefact.setText("Uploading audio file... please wait...");
 
-                                    // ---------------------- Audio Upload ----------------------
-                                    Backendless.Files.upload(mAudioFile, BACKENDLESS_AUDIO_FILE_PATH, new AsyncCallback<BackendlessFile>() {
-                                        @Override
-                                        public void handleResponse(BackendlessFile response) {
+                                        // ---------------------- Audio Upload ----------------------
+                                        // https://backendless.com/feature-31-uploading-files-to-server-with-the-file-upload-api/
+                                        Backendless.Files.upload(mAudioFile, BACKENDLESS_AUDIO_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+                                            @Override
+                                            public void handleResponse(BackendlessFile response) {
 
-                                            mArtefact.setArtefactAudioUrl(response.getFileURL());
-                                            Toast.makeText(getContext(), "Audio upload successful", Toast.LENGTH_SHORT).show();
-                                            showProgress(false);
-                                            tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
-                                            saveDataWithGeoAsync(mArtefact);
-                                        }
+                                                mArtefact.setArtefactAudioUrl(response.getFileURL());
+                                                Toast.makeText(getContext(), "Audio upload successful", Toast.LENGTH_SHORT).show();
+                                                showProgress(false);
+                                                tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
+                                                saveDataWithGeoAsync(mArtefact);
+                                            }
 
-                                        @Override
-                                        public void handleFault(BackendlessFault fault) {
-                                            showProgress(false);
-                                            Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                            @Override
+                                            public void handleFault(BackendlessFault fault) {
+                                                showProgress(false);
+                                                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
 
 //                                    showProgress(true);
 //                                    tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
@@ -337,8 +344,11 @@ public class NewArtefactFragment extends Fragment {
         return false;
     }
 
+    // https://stackoverflow.com/questions/37338606/mediarecorder-not-saving-audio-to-file
     private void setupMediaRecorder() {
-        mAudioFile = new File(Environment.getExternalStorageDirectory(), artefactName + "_" + artefactDescription + "_audio.3gp");
+        Random r = new Random();
+        int x = r.nextInt(10000);
+        mAudioFile = new File(Environment.getExternalStorageDirectory(), artefactName + "_" + artefactDescription + "_" + x + "_audio.3gp");
 
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -396,6 +406,8 @@ public class NewArtefactFragment extends Fragment {
         location.addMetadata("artefact", artefact);
         artefact.setLocation(location);
 
+        showProgress(true);
+        tvLoadNewArtefact.setText("Adding marker to map... please wait...");
         Backendless.Geo.savePoint(location, new AsyncCallback<GeoPoint>() {
             @Override
             public void handleResponse(GeoPoint response) {
