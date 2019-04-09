@@ -11,16 +11,27 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import java.util.ArrayList;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -41,6 +52,12 @@ public class ArtefactListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ArtefactListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private Switch filterSwitch;
+    private RelativeLayout filterLayout;
+    private EditText etFilter;
+    private Button btnFilterApply;
+    private String filterString = "";
+    private ArrayList<Artefact> filteredList;
 
 
     @Nullable
@@ -67,6 +84,44 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
+        filterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    filterLayout.setVisibility(View.VISIBLE);
+                } else {
+                    filterLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
+/*        btnFilterApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                filterString = etFilter.getText().toString().trim();
+                mAdapter.getFilter().filter(filterString);
+                mAdapter.notifyDataSetChanged();
+            }
+        });*/
+        etFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                Log.d(TAG, "performFiltering: onTextChanged: Text: " + charSequence);
+                mAdapter.getFilter().filter(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
         return view;
     }
 
@@ -79,6 +134,12 @@ public class ArtefactListFragment extends Fragment {
 
         mRecyclerView = view.findViewById(R.id.recyclerview_list_of_artefacts);
         mLayoutManager = new LinearLayoutManager(artefactActivity);
+
+        filterSwitch = view.findViewById(R.id.switch_filter);
+        filterLayout = view.findViewById(R.id.layout_filter);
+        btnFilterApply = filterLayout.findViewById(R.id.button_artefact_list_filter_submit);
+        etFilter = filterLayout.findViewById(R.id.edit_list_filter);
+        filteredList = new ArrayList<>();
 
     }
 
