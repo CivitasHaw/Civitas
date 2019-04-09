@@ -47,6 +47,8 @@ public class LoginFragment extends Fragment {
     private View mLoginFormView;
     private TextView tvLoad;
 
+    // https://www.youtube.com/watch?v=veOZTvAdzJ8
+    // TextInputLayout is replacing EditText
     private TextInputLayout textInputLoginEmail, textInputLoginPassword;
 
     private Button btnLogin;
