@@ -59,19 +59,19 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
 
         Intent intent = getIntent();
         String content = intent.getStringExtra(getResources().getString(R.string.navigate_to_artefact_activity));
+        Bundle args = new Bundle();
         if (content.equals("list")) {
-            fragmentSwitcher2(new ArtefactListFragment(), true, "ArtefactListFragment");
+            ArtefactListFragment artefactListFragment = new ArtefactListFragment();
+            fragmentSwitcher2(artefactListFragment, true, "ArtefactListFragment");
         } else if (content.equals("markerClick")) {
             ArtefactDetailFragment artefactDetailFragment = new ArtefactDetailFragment();
-            Bundle b = new Bundle();
-            b.putString("artefactName", intent.getStringExtra("artefactName"));
-            b.putDouble("latitude", intent.getDoubleExtra("latitude", 0.0));
-            b.putDouble("longitude", intent.getDoubleExtra("longitude", 0.0));
-            artefactDetailFragment.setArguments(b);
+            args.putString("artefactName", intent.getStringExtra("artefactName"));
+            args.putDouble("latitude", intent.getDoubleExtra("latitude", 0.0));
+            args.putDouble("longitude", intent.getDoubleExtra("longitude", 0.0));
+            artefactDetailFragment.setArguments(args);
             fragmentSwitcher2(artefactDetailFragment, false, "ArtefactDetailFragment");
         } else {
             NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
-            Bundle args = new Bundle();
             String content2 = intent.getStringExtra(getResources().getString(R.string.origin));
             if (content2.equals("btnAddArtefact")) { // creating Artefact at device location
                 args.putString(getResources().getString(R.string.origin), "btnAddArtefact");
