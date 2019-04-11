@@ -321,7 +321,10 @@ public class ArtefactDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.toolbar_menu_map, menu);
-        inflater.inflate(R.menu.toolbar_menu_artefact, menu);
+        if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty("ownerId").toString())) {
+            inflater.inflate(R.menu.toolbar_menu_artefact, menu);
+            //TODO: implement editing current artefact
+        }
     }
 
 
