@@ -42,6 +42,8 @@ import java.io.IOException;
 public class ArtefactActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "ArtefactActivity";
+    public static final int PICK_IMAGE = 1;
+
     public boolean isCamera = false;
     public boolean isGallery = false;
     private String mOrigin = "";
@@ -57,25 +59,25 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
 
         Intent intent = getIntent();
         String content = intent.getStringExtra(getResources().getString(R.string.navigate_to_artefact_activity));
-        if (content.equals("list")){
+        if (content.equals("list")) {
             fragmentSwitcher2(new ArtefactListFragment(), true, "ArtefactListFragment");
-        } else if (content.equals("markerClick")){
+        } else if (content.equals("markerClick")) {
             ArtefactDetailFragment artefactDetailFragment = new ArtefactDetailFragment();
             Bundle b = new Bundle();
             b.putString("artefactName", intent.getStringExtra("artefactName"));
             b.putDouble("latitude", intent.getDoubleExtra("latitude", 0.0));
             b.putDouble("longitude", intent.getDoubleExtra("longitude", 0.0));
             artefactDetailFragment.setArguments(b);
-            fragmentSwitcher2(artefactDetailFragment, false,"ArtefactDetailFragment");
+            fragmentSwitcher2(artefactDetailFragment, false, "ArtefactDetailFragment");
         } else {
             NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
             Bundle args = new Bundle();
             String content2 = intent.getStringExtra(getResources().getString(R.string.origin));
-            if (content2.equals("btnAddArtefact")){ // creating Artefact at device location
+            if (content2.equals("btnAddArtefact")) { // creating Artefact at device location
                 args.putString(getResources().getString(R.string.origin), "btnAddArtefact");
                 args.putDouble("latitude", ApplicationClass.mDeviceLocation.getLatitude());
                 args.putDouble("longitude", ApplicationClass.mDeviceLocation.getLongitude());
-            } else if (content2.equals("onMapLongClick")){ // creating Artefact at marker location
+            } else if (content2.equals("onMapLongClick")) { // creating Artefact at marker location
                 args.putString(getResources().getString(R.string.origin), "onMapLongClick");
                 args.putDouble("latitude", ApplicationClass.mArtefactLatLng.latitude);
                 args.putDouble("longitude", ApplicationClass.mArtefactLatLng.longitude);
@@ -119,10 +121,10 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         toggle.syncState();
     }
 
-    public void fragmentSwitcher2(Fragment fragment, boolean toBackstack, String name){
+    public void fragmentSwitcher2(Fragment fragment, boolean toBackstack, String name) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container_artefact_fragment, fragment);
-        if(toBackstack){
+        if (toBackstack) {
             transaction.addToBackStack(name);
         } else {
 
@@ -130,6 +132,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         transaction.commit();
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -237,7 +240,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
 
-    public void hideSoftKeyboard(){
+    public void hideSoftKeyboard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }
