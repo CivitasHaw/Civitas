@@ -240,7 +240,7 @@ public class ArtefactDetailFragment extends Fragment {
                     }
 */
 
-                    if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty("ownerId"))){
+                    if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString())){
                         Toast.makeText(artefactActivity, "Happy B-Day", Toast.LENGTH_LONG).show();
                     }
 
@@ -321,7 +321,7 @@ public class ArtefactDetailFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.toolbar_menu_map, menu);
-        if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty("ownerId").toString())) {
+        if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString())) {
             inflater.inflate(R.menu.toolbar_menu_artefact, menu);
             //TODO: implement editing current artefact
         }

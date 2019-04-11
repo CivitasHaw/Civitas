@@ -67,4 +67,6 @@
     <string name="login_empty_field_error">Field can\'t be empty</string>
     <string name="artefact_detail_author">Author: </string>
     <string name="artefact_detail_created">Created: </string>
+    <string name="backendless_property_ownerid">ownerId</string>
+    <string name="backendless_property_name">name</string>
 </resources>

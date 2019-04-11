@@ -138,7 +138,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
         View header = navigationView.getHeaderView(0);
         TextView tvNavName = header.findViewById(R.id.text_nav_user_name);
-        String name = ApplicationClass.user.getProperty("name").toString();
+        String name = ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_name)).toString();
         tvNavName.setText(name);
         TextView tvNavEmail = header.findViewById(R.id.text_nav_user_email);
         String email = ApplicationClass.user.getEmail();
