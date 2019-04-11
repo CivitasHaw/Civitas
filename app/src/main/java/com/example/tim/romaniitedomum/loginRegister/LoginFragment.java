@@ -28,6 +28,7 @@ import com.backendless.persistence.local.UserIdStorageFactory;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.MainActivity;
+import com.example.tim.romaniitedomum.artefact.ArtefactActivity;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.example.tim.romaniitedomum.R;
 
@@ -47,6 +48,7 @@ public class LoginFragment extends Fragment {
     private View mLoginFormView;
     private TextView tvLoad;
 
+    // source
     // https://www.youtube.com/watch?v=veOZTvAdzJ8
     // TextInputLayout is replacing EditText
     private TextInputLayout textInputLoginEmail, textInputLoginPassword;
