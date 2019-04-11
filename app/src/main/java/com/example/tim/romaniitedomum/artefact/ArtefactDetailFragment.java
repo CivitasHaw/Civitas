@@ -175,6 +175,8 @@ public class ArtefactDetailFragment extends Fragment {
 */
 
     private void initArtefactDetail(View view) {
+
+        artefactActivity.isAtDetailFragment = true;
         ivArtefactDetail = view.findViewById(R.id.image_artefact_detail);
         tvArtefactDetailName = view.findViewById(R.id.text_artefact_detail_name);
         tvArtefactDetailCategory = view.findViewById(R.id.text_artefact_detail_category);
@@ -331,6 +333,8 @@ public class ArtefactDetailFragment extends Fragment {
                 Intent intent = new Intent(artefactActivity, MapActivity.class);
                 intent.putExtra("objectId", mArtefact.getObjectId());
                 intent.putExtra(getResources().getString(R.string.origin), TAG);
+                artefactActivity.isAtDetailFragment = false;
+                artefactActivity.isAtListFragment = false;
                 startActivity(intent);
                 break;
             case R.id.edit_artefact:

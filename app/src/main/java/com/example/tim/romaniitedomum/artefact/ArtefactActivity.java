@@ -46,6 +46,8 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
 
     public boolean isCamera = false;
     public boolean isGallery = false;
+    public boolean isAtListFragment = false;
+    public boolean isAtDetailFragment = false;
     private String mOrigin = "";
 
     private DrawerLayout drawer;
@@ -94,9 +96,19 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            startActivity(new Intent(ArtefactActivity.this, MapActivity.class));
+            if (isAtListFragment && !isAtDetailFragment) {
+                isAtListFragment = false;
+                startActivity(new Intent(ArtefactActivity.this, MapActivity.class));
+            } else if (isAtListFragment && isAtDetailFragment) {
+                isAtListFragment = false;
+                isAtDetailFragment = false;
+                fragmentSwitcher2(new ArtefactListFragment(), false, "");
+            } else {
+                isAtListFragment = false;
+                isAtDetailFragment = false;
+                startActivity(new Intent(ArtefactActivity.this, MapActivity.class));
+            }
         }
-
     }
 
     private void initDrawerAndToolbar() {

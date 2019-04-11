@@ -78,7 +78,7 @@ public class ArtefactListFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
 
                 ApplicationClass.position = position;
-
+                artefactActivity.isAtListFragment = true;
                 Fragment artefactDetailFragment = new ArtefactDetailFragment();
                 artefactActivity.fragmentSwitcher2(artefactDetailFragment, true, "artefactDetailFragment");
             }
