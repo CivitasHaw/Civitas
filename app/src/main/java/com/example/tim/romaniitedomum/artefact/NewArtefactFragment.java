@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -67,7 +66,9 @@ public class NewArtefactFragment extends Fragment {
     public static final String BACKENDLESS_AUDIO_FILE_PATH = "/artefactAudios";
 
     public static final int BITMAP_QUALITY = 100;
-    public static final int REQUEST_PERMISSION_CODE = 1000;
+    public static final int REQUEST_PERMISSION_CODE_AUDIO = 1000;
+    public static final int REQUEST_PERMISSION_CODE_CAMERA = 2000;
+    public static final int REQUEST_PERMISSION_CODE_GALLERY = 3000;
     public static final int PICK_IMAGE = 1;
 
     private ArtefactActivity artefactActivity;
@@ -139,21 +140,21 @@ public class NewArtefactFragment extends Fragment {
         ivNewArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takeFotoFromCamera();
+                takePhotoFromCamera();
             }
         });
 
         btnTakeFotoFromCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takeFotoFromCamera();
+                takePhotoFromCamera();
             }
         });
 
         btnTakeFotoFromGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takeFotoFromGallery();
+                pickImageFromGallery();
             }
         });
 
@@ -257,7 +258,7 @@ public class NewArtefactFragment extends Fragment {
                         btnAudioDelete.setBackground(getResources().getDrawable(R.drawable.buttons_pressed));
                     }
                 } else {
-                    requestPermission();
+                    requestPermissionAudio();
                 }
 
 
@@ -374,28 +375,49 @@ public class NewArtefactFragment extends Fragment {
 
     }
 
-    private void requestPermission() {
+    private void requestPermissionAudio() {
         ActivityCompat.requestPermissions(getActivity(), new String[]{
                         Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO},
-                REQUEST_PERMISSION_CODE);
+                REQUEST_PERMISSION_CODE_AUDIO);
+    }
+
+    private void requestPermissionCamera() {
+        requestPermissions(new String[]{
+                        Manifest.permission.CAMERA},
+                REQUEST_PERMISSION_CODE_CAMERA);
+    }
+
+    private void requestPermissionGallery() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE},
+                REQUEST_PERMISSION_CODE_GALLERY);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_PERMISSION_CODE: {
+            case REQUEST_PERMISSION_CODE_AUDIO: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                 } else {
                     Log.d(TAG, "onRequestPermissionsResult: permission denied");
                 }
+                break;
             }
-            case 555: {
+            case REQUEST_PERMISSION_CODE_GALLERY: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     pickImage();
                 } else {
-                    checkAndroidVersion();
+                    checkAndroidVersionAndPermissionForGallery();
                 }
+                break;
+            }case REQUEST_PERMISSION_CODE_CAMERA: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    takePhoto();
+                } else {
+                    requestPermissionCamera();
+                }
+                break;
             }
         }
     }
@@ -446,11 +468,12 @@ public class NewArtefactFragment extends Fragment {
         });
     }
 
-    public void checkAndroidVersion(){
+    public void checkAndroidVersionAndPermissionForGallery(){
         //REQUEST PERMISSION
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 555);
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_CODE_GALLERY);
             } catch (Exception e) {
                 e.getMessage();
             }
@@ -459,9 +482,8 @@ public class NewArtefactFragment extends Fragment {
         }
     }
     //TODO: implement Gallery picker
-    private void takeFotoFromGallery() {
-        checkAndroidVersion();
-        //Toast.makeText(artefactActivity, "gallery image", Toast.LENGTH_SHORT).show();
+    private void pickImageFromGallery() {
+        checkAndroidVersionAndPermissionForGallery();
     }
 
     private void pickImage() {
@@ -472,10 +494,14 @@ public class NewArtefactFragment extends Fragment {
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
-    private void takeFotoFromCamera() {
+    private void takePhotoFromCamera() {
+        requestPermissionCamera();
+    }
+
+    private void takePhoto() {
         artefactActivity.isCamera = true;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, REQUEST_PERMISSION_CODE_CAMERA);
     }
 
     @Override
