@@ -1,8 +1,12 @@
 package com.example.tim.romaniitedomum.artefact;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -29,6 +33,7 @@ import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.map.MapActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -37,6 +42,9 @@ import java.io.ByteArrayOutputStream;
 public class ArtefactActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "ArtefactActivity";
+    public boolean isCamera = false;
+    public boolean isGallery = false;
+    private String mOrigin = "";
 
     private DrawerLayout drawer;
 
@@ -126,25 +134,52 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
+
+        NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
         Bundle args = new Bundle();
-        String origin = "camera";
-        args.putString(getResources().getString(R.string.origin), origin);
-        args.putByteArray("image", byteArray);
-        NewArtefactFragment fragment = new NewArtefactFragment();
-        fragment.setArguments(args);
 
         if (resultCode == Activity.RESULT_OK) {
-        fragmentSwitcher2(fragment, false, "");
+            if (isGallery == true) {
+                Uri uri = data.getData();
+                try {
+                    //Bitmap b = ScalingUtilities.decodeFile(uri, )
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    Bitmap thumbBitmap = ThumbnailUtils.extractThumbnail(bitmap, 120, 120);
+               /* Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(
+                        getContentResolver(),
+                        uri,
+                        MediaStore.Images.Thumbnails.MINI_KIND,
+                        (BitmapFactory.Options) null);*/
+
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    //bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    thumbBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    mOrigin = "gallery";
+                    args.putString(getResources().getString(R.string.origin), mOrigin);
+                    args.putByteArray("image", byteArray);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                isGallery = false;
+            } else if (isCamera == true) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                mOrigin = "camera";
+                args.putString(getResources().getString(R.string.origin), mOrigin);
+                args.putByteArray("image", byteArray);
+                isCamera = false;
+            }
         } else {
             isCamera = false;
             isGallery = false;
             mOrigin = "";
             args.putString(getResources().getString(R.string.origin), mOrigin);
         }
+        newArtefactFragment.setArguments(args);
+        fragmentSwitcher2(newArtefactFragment, false, "");
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -59,6 +60,7 @@ public class NewArtefactFragment extends Fragment {
     private static final String TAG = "NewArtefactFragment";
 
     public static final String ORIGIN_CAMERA = "camera";
+    public static final String ORIGIN_GALLERY = "gallery";
     public static final String ORIGIN_MAP_LONG_CLICK = "onMapLongClick";
     public static final String ORIGIN_BTN_ADD_ARTEFACT = "btnAddArtefact";
     public static final String BACKENDLESS_IMAGE_FILE_PATH = "artefactImages";
@@ -66,6 +68,7 @@ public class NewArtefactFragment extends Fragment {
 
     public static final int BITMAP_QUALITY = 100;
     public static final int REQUEST_PERMISSION_CODE = 1000;
+    public static final int PICK_IMAGE = 1;
 
     private ArtefactActivity artefactActivity;
 
@@ -99,6 +102,7 @@ public class NewArtefactFragment extends Fragment {
     private double mLng;
     private Bundle mArgs;
 
+    private boolean isImageSelected = false;
 
     @Nullable
     @Override
@@ -161,6 +165,9 @@ public class NewArtefactFragment extends Fragment {
                 artefactDate = etNewArtefactDate.getText().toString().trim();
 
                 imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
+                if (!imageIsTakenFromCamera.isEmpty()){
+                    isImageSelected = true;
+                }
 
                 if (checkFields()) {
                     //Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
@@ -337,8 +344,8 @@ public class NewArtefactFragment extends Fragment {
     }
 
     private boolean checkFields() {
-        if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() ||
-                !imageIsTakenFromCamera.equals("camera") || clickedCategory.equals("")) {
+        if (artefactDate.isEmpty() || artefactDescription.isEmpty() || artefactName.isEmpty() || !isImageSelected
+                /*!imageIsTakenFromCamera.equals("camera")*/ || clickedCategory.equals("")) {
             return true;
         }
         return false;
@@ -381,6 +388,13 @@ public class NewArtefactFragment extends Fragment {
                     Log.d(TAG, "onRequestPermissionsResult: permission granted");
                 } else {
                     Log.d(TAG, "onRequestPermissionsResult: permission denied");
+                }
+            }
+            case 555: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    pickImage();
+                } else {
+                    checkAndroidVersion();
                 }
             }
         }
@@ -432,11 +446,34 @@ public class NewArtefactFragment extends Fragment {
         });
     }
 
-    private void takeFotoFromGallery(){
-        Toast.makeText(artefactActivity, "TODO: implement Gallery picker", Toast.LENGTH_SHORT).show();
+    public void checkAndroidVersion(){
+        //REQUEST PERMISSION
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 555);
+            } catch (Exception e) {
+                e.getMessage();
+            }
+        } else {
+            pickImage();
+        }
+    }
+    //TODO: implement Gallery picker
+    private void takeFotoFromGallery() {
+        checkAndroidVersion();
+        //Toast.makeText(artefactActivity, "gallery image", Toast.LENGTH_SHORT).show();
+    }
+
+    private void pickImage() {
+        artefactActivity.isGallery = true;
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
     private void takeFotoFromCamera() {
+        artefactActivity.isCamera = true;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, 0);
     }
@@ -494,11 +531,19 @@ public class NewArtefactFragment extends Fragment {
         if (mArgs != null) {
             String origin = mArgs.getString(getResources().getString(R.string.origin));
             LatLng tempLatLng;
-
+            byte[] byteArray = null;
             switch (origin) {
                 case ORIGIN_CAMERA: // artefact image is taken with camera
                     Log.d(TAG, "initNewArtefact: origin: " + origin);
-                    byte[] byteArray = mArgs.getByteArray("image");
+                    byteArray = mArgs.getByteArray("image");
+                    artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    ivNewArtefact.setImageBitmap(artefactBitmap);
+                    mLat = ApplicationClass.mTempArtefactLatLng.latitude;
+                    mLng = ApplicationClass.mTempArtefactLatLng.longitude;
+                    break;
+                case ORIGIN_GALLERY:
+                    Log.d(TAG, "initNewArtefact: origin: " + origin);
+                    byteArray = mArgs.getByteArray("image");
                     artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                     ivNewArtefact.setImageBitmap(artefactBitmap);
                     mLat = ApplicationClass.mTempArtefactLatLng.latitude;
