@@ -65,4 +65,6 @@
     <string name="new_artefact_add_category">Add Category</string>
     <string name="mapactivity_title">ArtefactMap</string>
     <string name="login_empty_field_error">Field can\'t be empty</string>
+    <string name="artefact_detail_author">Author: </string>
+    <string name="artefact_detail_created">Created: </string>
 </resources>

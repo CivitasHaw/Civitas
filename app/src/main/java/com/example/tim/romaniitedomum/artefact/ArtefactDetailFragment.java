@@ -37,6 +37,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 
 /**
  * Created by TimStaats 12.03.2019
@@ -51,6 +52,7 @@ public class ArtefactDetailFragment extends Fragment {
 
     private ImageView ivArtefactDetail;
     private TextView tvArtefactDetailName, tvArtefactDetailCategory, tvArtefactDetailDescription;
+    private TextView tvArtefactDetailAuthor, tvArtefactDetailCreated;
     private Button btnArtefactDetailMarker, btnArtefactDetailSaveRating;
     private ProgressBar mProgress;
     private RatingBar mRating;
@@ -174,6 +176,8 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailName = view.findViewById(R.id.text_artefact_detail_name);
         tvArtefactDetailCategory = view.findViewById(R.id.text_artefact_detail_category);
         tvArtefactDetailDescription = view.findViewById(R.id.text_artefact_detail_description);
+        tvArtefactDetailAuthor = view.findViewById(R.id.text_artefact_detail_author);
+        tvArtefactDetailCreated = view.findViewById(R.id.text_artefact_detail_created);
         btnArtefactDetailMarker = view.findViewById(R.id.button_artefact_detail_show_marker_on_map);
         mProgress = view.findViewById(R.id.progress_artefact_detail);
         mRating = view.findViewById(R.id.ratingbar_artefact_detail);
@@ -259,9 +263,7 @@ public class ArtefactDetailFragment extends Fragment {
                         }
                     });
 
-                    tvArtefactDetailName.setText(mArtefact.getArtefactName());
-                    tvArtefactDetailCategory.setText("#" + mArtefact.getCategoryName());
-                    tvArtefactDetailDescription.setText(mArtefact.getArtefactDescription());
+                    fillArtefactTextViews(mArtefact);
                     artefactAudioFileExists(mArtefact);
 
 
@@ -296,9 +298,7 @@ public class ArtefactDetailFragment extends Fragment {
                 }
             });
 
-            tvArtefactDetailName.setText(mArtefact.getArtefactName());
-            tvArtefactDetailCategory.setText("#" + mArtefact.getCategoryName());
-            tvArtefactDetailDescription.setText(mArtefact.getArtefactDescription());
+            fillArtefactTextViews(mArtefact);
             artefactAudioFileExists(mArtefact);
         }
 
@@ -310,6 +310,18 @@ public class ArtefactDetailFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    private void fillArtefactTextViews(Artefact artefact) {
+        String author = getResources().getString(R.string.artefact_detail_author) + " " + artefact.getAuthorName() + " ";
+        Date date = mArtefact.getCreated();
+        String d = getResources().getString(R.string.artefact_detail_created) + " " + date.toLocaleString();
+        String category = "#" + artefact.getCategoryName();
+        tvArtefactDetailName.setText(artefact.getArtefactName());
+        tvArtefactDetailAuthor.setText(author);
+        tvArtefactDetailCreated.setText(d);
+        tvArtefactDetailCategory.setText(category);
+        tvArtefactDetailDescription.setText(artefact.getArtefactDescription());
     }
 
     private void artefactAudioFileExists(Artefact mArtefact) {

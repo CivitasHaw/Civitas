@@ -18,6 +18,7 @@ public class Artefact {
     private String objectId;
     private String ownerId;
     private String userEmail;
+    private String authorName;
     private String artefactName;
     private String artefactImageUrl;
     private String artefactAudioUrl;
@@ -63,6 +64,14 @@ public class Artefact {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public String getArtefactName() {

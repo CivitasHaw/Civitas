@@ -181,6 +181,7 @@ public class NewArtefactFragment extends Fragment {
                     mArtefact.setArtefactName(artefactName);
                     mArtefact.setArtefactDescription(artefactDescription);
                     mArtefact.setUserEmail(ApplicationClass.user.getEmail());
+                    mArtefact.setAuthorName(ApplicationClass.user.getProperty("name").toString());
                     mArtefact.setOwnerId(ApplicationClass.user.getProperty("ownerId").toString());
                     mArtefact.setLatitude(mLat);
                     mArtefact.setLongitude(mLng);
