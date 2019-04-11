@@ -327,12 +327,6 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
         int markerArtefactIcon = 0;
         switch (artefact.getCategoryName()) {
-            case "Akropolis":
-                markerArtefactIcon = R.drawable.ic_map_akropolis;
-                break;
-            case "Blur":
-                markerArtefactIcon = R.drawable.ic_blur;
-                break;
             case "Basilika":
                 markerArtefactIcon = R.drawable.ic_map_basilica;
                 break;
@@ -347,6 +341,24 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case "Grundungsmythos":
                 markerArtefactIcon = R.drawable.ic_map_grundungsmythos;
+                break;
+            case "Infrastruktur":
+                markerArtefactIcon = R.drawable.ic_map_infrastruktur;
+                break;
+            case "Kultstaette":
+                markerArtefactIcon = R.drawable.ic_map_kultstaette;
+                break;
+            case "Platzanlage":
+                markerArtefactIcon = R.drawable.ic_map_platzanlage;
+                break;
+            case "Spielstaette":
+                markerArtefactIcon = R.drawable.ic_map_spielstaette;
+                break;
+            case "Therme":
+                markerArtefactIcon = R.drawable.ic_map_therme;
+                break;
+            case "Wohnkomplex":
+                markerArtefactIcon = R.drawable.ic_map_wohnkomplex;
                 break;
             default:
                 markerArtefactIcon = R.drawable.ic_map_default_marker;

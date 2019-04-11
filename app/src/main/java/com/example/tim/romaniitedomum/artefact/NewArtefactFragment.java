@@ -490,13 +490,18 @@ public class NewArtefactFragment extends Fragment {
     private ArrayList<Category> populateCategoryList() {
         ArrayList<Category> list = new ArrayList<>();
 
-        list.add(new Category("Akropolis", R.drawable.ic_map_akropolis));
-        list.add(new Category("Blur", R.drawable.ic_blur));
         list.add(new Category("Basilika", R.drawable.ic_map_basilica));
         list.add(new Category("Bogen", R.drawable.ic_map_bogen));
         list.add(new Category("Christentum", R.drawable.ic_map_christentum));
         list.add(new Category("Grabstaette", R.drawable.ic_map_grabstaette));
-        list.add(new Category("Grundungsmythos", R.drawable.ic_map_grundungsmythos));
+        list.add(new Category("Gruendungsmytos", R.drawable.ic_map_grundungsmythos));
+        list.add(new Category("Infrastruktur", R.drawable.ic_map_infrastruktur));
+        list.add(new Category("Kultstaette", R.drawable.ic_map_kultstaette));
+        list.add(new Category("Platzanlage", R.drawable.ic_map_platzanlage));
+        list.add(new Category("Politische Institution", R.drawable.ic_map_politische_institution));
+        list.add(new Category("Spielstaette", R.drawable.ic_map_spielstaette));
+        list.add(new Category("Therme", R.drawable.ic_map_therme));
+        list.add(new Category("Wohnkomplex", R.drawable.ic_map_wohnkomplex));
 
         return list;
     }
