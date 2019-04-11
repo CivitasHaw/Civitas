@@ -12,6 +12,7 @@ import java.util.List;
 // in Backendless classnames become a table
 public class Artefact {
 
+    // created, updated and objectId will be automatically created by backendless for each Artefact object
     private Date created;
     private Date updated;
     private String objectId;
