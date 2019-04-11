@@ -10,6 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -312,6 +315,33 @@ public class ArtefactDetailFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.toolbar_menu_map, menu);
+        inflater.inflate(R.menu.toolbar_menu_artefact, menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.button_my_location:
+                Intent intent = new Intent(artefactActivity, MapActivity.class);
+                intent.putExtra("objectId", mArtefact.getObjectId());
+                intent.putExtra(getResources().getString(R.string.origin), TAG);
+                startActivity(intent);
+                break;
+            case R.id.edit_artefact:
+                Toast.makeText(artefactActivity, "Clicki", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void fillArtefactTextViews(Artefact artefact) {
         String author = getResources().getString(R.string.artefact_detail_author) + " " + artefact.getAuthorName() + " ";
         Date date = mArtefact.getCreated();
@@ -336,6 +366,7 @@ public class ArtefactDetailFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
         artefactActivity = (ArtefactActivity)getActivity();
         args = getArguments();
     }
