@@ -137,7 +137,14 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         NewArtefactFragment fragment = new NewArtefactFragment();
         fragment.setArguments(args);
 
+        if (resultCode == Activity.RESULT_OK) {
         fragmentSwitcher2(fragment, false, "");
+        } else {
+            isCamera = false;
+            isGallery = false;
+            mOrigin = "";
+            args.putString(getResources().getString(R.string.origin), mOrigin);
+        }
     }
 
     @Override
