@@ -138,6 +138,8 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
         Bundle args = new Bundle();
 
+        // source
+        // https://stackoverflow.com/questions/40056938/androidhandling-backpress-on-camera-intent
         if (resultCode == Activity.RESULT_OK) {
             if (isGallery == true) {
                 Uri uri = data.getData();

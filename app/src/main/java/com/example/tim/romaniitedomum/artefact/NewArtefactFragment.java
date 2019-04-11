@@ -566,6 +566,9 @@ public class NewArtefactFragment extends Fragment {
 
                     Log.d(TAG, "initNewArtefact: onMapLongClick: mLat: " + mLat);
                     break;
+                default:
+                    Log.d(TAG, "initNewArtefact: backpressed in camera mode");
+                    break;
             }
         }
     }
