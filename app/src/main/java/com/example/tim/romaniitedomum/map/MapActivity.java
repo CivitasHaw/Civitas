@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -168,7 +167,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 Log.d(TAG, "onNavigationItemSelected: map");
                 Toast.makeText(this, "Map clicked", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.nav_info:
+            case R.id.nav_impressum:
                 Log.d(TAG, "onNavigationItemSelected: impressum");
                 Toast.makeText(this, "Impressum clicked", Toast.LENGTH_SHORT).show();
                 break;
@@ -194,6 +193,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 });
 
                 break;
+/*
             case R.id.nav_send:
                 Log.d(TAG, "onNavigationItemSelected: send");
                 Toast.makeText(this, "Send clicked", Toast.LENGTH_SHORT).show();
@@ -202,6 +202,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 Log.d(TAG, "onNavigationItemSelected: share");
                 Toast.makeText(this, "Share clicked", Toast.LENGTH_SHORT).show();
                 break;
+*/
         }
 
         drawer.closeDrawer(GravityCompat.START);

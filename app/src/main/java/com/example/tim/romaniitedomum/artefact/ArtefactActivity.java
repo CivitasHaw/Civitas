@@ -200,7 +200,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                 intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
                 startActivity(intent);
                 break;
-            case R.id.nav_info:
+            case R.id.nav_impressum:
                 Log.d(TAG, "onNavigationItemSelected: impressum");
                 Toast.makeText(this, "Impressum clicked", Toast.LENGTH_SHORT).show();
                 break;
@@ -226,6 +226,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                 });
 
                 break;
+/*
             case R.id.nav_send:
                 Log.d(TAG, "onNavigationItemSelected: send");
                 Toast.makeText(this, "Send clicked", Toast.LENGTH_SHORT).show();
@@ -234,6 +235,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                 Log.d(TAG, "onNavigationItemSelected: share");
                 Toast.makeText(this, "Share clicked", Toast.LENGTH_SHORT).show();
                 break;
+*/
         }
 
         drawer.closeDrawer(GravityCompat.START);
