@@ -27,6 +27,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.map.MapActivity;
@@ -70,6 +73,7 @@ public class ArtefactDetailFragment extends Fragment {
     private LinearLayout audioLayout;
     private ImageButton btnAudioPlay, btnAudioPause, btnAudioStop;
     private Artefact mArtefact = null;
+    private String imageFilePath = "";
 //    private File mAudioFile = null;
 
 
@@ -359,10 +363,14 @@ public class ArtefactDetailFragment extends Fragment {
                 Log.d(TAG, "onOptionsItemSelected: delete: clicked");
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                 dialog.setMessage("Are you sure you want to delete the artefact?")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        .setTitle("Delete Artefact")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.d(TAG, "onClick: ok button clicked");
+                                deleteArtefactFromBackendless(mArtefact);
+                                //deleteGeoPointFromBackendless(mArtefact);
+                                //deleteImageFileFromBackendless(mArtefact);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -378,6 +386,40 @@ public class ArtefactDetailFragment extends Fragment {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteImageFileFromBackendless(String filePath) {
+        Log.d(TAG, "deleteImageFileFromBackendless: file_path: " + filePath);
+        Backendless.Files.remove(filePath, new AsyncCallback<Integer>() {
+            @Override
+            public void handleResponse(Integer response) {
+                Toast.makeText(artefactActivity, "Image successfully deleted!", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "handleResponse: Image successfully deleted!");
+                startActivity(new Intent(getContext(), MapActivity.class));
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void deleteArtefactFromBackendless(final Artefact mArtefact) {
+        Backendless.Persistence.of(Artefact.class).remove(mArtefact, new AsyncCallback<Long>() {
+            @Override
+            public void handleResponse(Long response) {
+                imageFilePath = "artefactImages/" + mArtefact.getArtefactName() + "_" + mArtefact.getArtefactDescription() + ".png";
+                ApplicationClass.mArtefactList.remove(mArtefact);
+                Toast.makeText(artefactActivity, "Artefact successfully deleted", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "handleResponse: Artefact successfully deleted");
+                deleteImageFileFromBackendless(imageFilePath);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void fillArtefactTextViews(Artefact artefact) {
