@@ -30,9 +30,11 @@ import android.widget.Toast;
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.map.MapActivity;
+import com.google.android.gms.maps.model.LatLng;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -404,6 +406,26 @@ public class ArtefactDetailFragment extends Fragment {
             }
         });
     }
+    private void deleteGeoPointFromBackendless(Artefact mArtefact) {
+
+        GeoPoint geoPoint = new GeoPoint(mArtefact.getLocation().getLatitude(), mArtefact.getLocation().getLongitude());
+        Log.d(TAG, "deleteGeoPointFromBackendless: geoPoint.objectId(): " + geoPoint.getObjectId());
+
+ /*       Backendless.Geo.removePoint(geoPoint, new AsyncCallback<Void>() {
+            @Override
+            public void handleResponse(Void response) {
+                Toast.makeText(artefactActivity, "GeoPoint successfully deleted!", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "handleResponse: GeoPoint successfully deleted!");
+                deleteArtefactFromBackendless(mArtefact);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });*/
+    }
+
     private void deleteArtefactFromBackendless(final Artefact mArtefact) {
         Backendless.Persistence.of(Artefact.class).remove(mArtefact, new AsyncCallback<Long>() {
             @Override
