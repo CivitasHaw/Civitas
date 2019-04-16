@@ -190,7 +190,7 @@ public class NewArtefactFragment extends Fragment {
                     mArtefact.setCategoryName(mCategory.getCategoryName());
                     mArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
 
-                    String fileName = artefactName + ".png";
+                    String fileName = artefactName + "_" + artefactDescription + ".png";
 
                     // ----------------- Image upload --------------------
                     Backendless.Files.Android.upload(artefactBitmap, Bitmap.CompressFormat.PNG, BITMAP_QUALITY,
