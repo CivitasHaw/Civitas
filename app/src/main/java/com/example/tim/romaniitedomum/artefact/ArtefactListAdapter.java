@@ -39,16 +39,16 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     private ItemFilter mFilter = new ItemFilter();
 
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemclick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
 
-    public static class ArtefactListViewHolder extends RecyclerView.ViewHolder{
+    public static class ArtefactListViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView mIvArtefact;
         public TextView mTvArtefactName, mTvArtefactCategory, mTvArtefactDescription, mTvAverageRating;
@@ -70,9 +70,9 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "onClick: click");
-                    if (listener != null){
+                    if (listener != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             listener.onItemclick(position);
                         }
                     }
@@ -81,7 +81,7 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
         }
     }
 
-    public ArtefactListAdapter(List<Artefact> artefacts, ImageLoader loader){
+    public ArtefactListAdapter(List<Artefact> artefacts, ImageLoader loader) {
         mArtefactList = artefacts;
         mFilteredArtefactList = artefacts;
         mImageLoader = loader;
@@ -126,8 +126,8 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
 
             }
         });
+
         holder.mTvArtefactName.setText(currentArtefact.getArtefactName());
-        //holder.mTvArtefactCategory.setText(currentArtefact.getCategory().getCategoryName());
         holder.mTvArtefactCategory.setText("#" + currentArtefact.getCategoryName());
         //holder.mTvArtefactDescription.setText(currentArtefact.getArtefactDescription());
 
@@ -140,9 +140,9 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     }
 
     /**
-     *      Source
-     *      https://gist.github.com/fjfish/3024308
-     *      https://stackoverflow.com/questions/24769257/custom-listview-adapter-with-filter-android
+     * Source
+     * https://gist.github.com/fjfish/3024308
+     * https://stackoverflow.com/questions/24769257/custom-listview-adapter-with-filter-android
      */
     @Override
     public Filter getFilter() {
@@ -160,9 +160,9 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
             FilterResults results = new FilterResults();
 
             final List<Artefact> list = mFilteredArtefactList;
-            Log.d(TAG, "performFiltering: list.size(): " + list.size());
+            //Log.d(TAG, "performFiltering: list.size(): " + list.size());
             for (int i = 0; i < list.size(); i++) {
-                Log.d(TAG, "performFiltering: list: " + list.get(i).getArtefactName());
+                //Log.d(TAG, "performFiltering: list: " + list.get(i).getArtefactName());
             }
 
             int count = list.size();
@@ -172,8 +172,8 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
 
             for (int i = 0; i < count; i++) {
                 filterableArtefact = list.get(i);
-                if (filterableArtefact.getArtefactName().toLowerCase().contains(filterString)){
-                    Log.d(TAG, "performFiltering: " + filterableArtefact.getArtefactName());
+                if (filterableArtefact.getArtefactName().toLowerCase().contains(filterString)) {
+                    //Log.d(TAG, "performFiltering: " + filterableArtefact.getArtefactName());
                     nlist.add(filterableArtefact);
                 }
             }
@@ -189,7 +189,7 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
                 }
             }*/
 
-            if (filterString.isEmpty()){
+            if (filterString.isEmpty()) {
                 results.values = list;
                 results.count = list.size();
             } else {
