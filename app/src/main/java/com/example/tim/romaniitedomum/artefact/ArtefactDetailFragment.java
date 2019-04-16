@@ -255,7 +255,8 @@ public class ArtefactDetailFragment extends Fragment {
 
                         @Override
                         public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+                            ivArtefactDetail.setImageResource(R.drawable.civitas_main_logo);
+                            mProgress.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -291,7 +292,8 @@ public class ArtefactDetailFragment extends Fragment {
 
                 @Override
                 public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+                    ivArtefactDetail.setImageResource(R.drawable.civitas_main_logo);
+                    mProgress.setVisibility(View.INVISIBLE);
                 }
 
                 @Override

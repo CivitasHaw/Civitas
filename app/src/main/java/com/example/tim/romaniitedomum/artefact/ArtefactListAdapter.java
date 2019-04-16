@@ -112,7 +112,8 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-
+                holder.mIvArtefact.setImageResource(R.drawable.civitas_main_logo);
+                holder.mProgress.setVisibility(View.INVISIBLE);
             }
 
             @Override
