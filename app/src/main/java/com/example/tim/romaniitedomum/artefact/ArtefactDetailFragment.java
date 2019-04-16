@@ -1,5 +1,6 @@
 package com.example.tim.romaniitedomum.artefact;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -9,6 +10,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -352,6 +355,24 @@ public class ArtefactDetailFragment extends Fragment {
                 break;
             case R.id.edit_artefact:
                 Toast.makeText(artefactActivity, "Clicki", Toast.LENGTH_SHORT).show();
+            case R.id.delete_artefact:
+                Log.d(TAG, "onOptionsItemSelected: delete: clicked");
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                dialog.setMessage("Are you sure you want to delete the artefact?")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(TAG, "onClick: ok button clicked");
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(TAG, "onClick: no button clicked");
+                            }
+                        })
+                        .show();
+
                 break;
         }
 
