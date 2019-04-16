@@ -359,8 +359,11 @@ public class ArtefactDetailFragment extends Fragment {
                 artefactActivity.isAtListFragment = false;
                 startActivity(intent);
                 break;
+            // TODO: edit artefact
             case R.id.edit_artefact:
-                Toast.makeText(artefactActivity, "Clicki", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onOptionsItemSelected: edit: clicked");
+                //Toast.makeText(artefactActivity, "Clicki", Toast.LENGTH_SHORT).show();
+                break;
             case R.id.delete_artefact:
                 Log.d(TAG, "onOptionsItemSelected: delete: clicked");
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
