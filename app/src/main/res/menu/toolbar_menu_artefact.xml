@@ -3,8 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/edit_artefact"
-        android:icon="@drawable/ic_edit"
+        android:icon="@drawable/ic_artefact_edit"
+        android:title="Edit"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/delete_artefact"
+        android:icon="@drawable/ic_artefact_delete"
+        android:title="Delete"
+        app:showAsAction="always" />
+<!--
+    <item android:id="@+id/edit_artefact"
+        android:icon="@drawable/ic_artefact_edit"
         android:title="Edit"
         app:showAsAction="never" />
+
+    <item android:id="@+id/delete_artefact"
+        android:icon="@drawable/ic_artefact_delete"
+        android:title="Delete"
+        app:showAsAction="never" />
+-->
 
 </menu>
