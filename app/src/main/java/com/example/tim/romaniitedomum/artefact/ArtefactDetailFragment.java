@@ -409,6 +409,8 @@ public class ArtefactDetailFragment extends Fragment {
             }
         });
     }
+
+    //TODO: change saving algorithm for artefact -> image -> audio -> geoPoint
     private void deleteGeoPointFromBackendless(Artefact mArtefact) {
 
         GeoPoint geoPoint = new GeoPoint(mArtefact.getLocation().getLatitude(), mArtefact.getLocation().getLongitude());
