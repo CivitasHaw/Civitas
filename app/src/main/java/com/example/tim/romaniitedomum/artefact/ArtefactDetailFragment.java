@@ -232,6 +232,8 @@ public class ArtefactDetailFragment extends Fragment {
                         ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
 
                     mArtefact = ApplicationClass.mArtefactList.get(i);
+                    ApplicationClass.position = ApplicationClass.mArtefactList.indexOf(mArtefact);
+                    mPosition = ApplicationClass.position;
 /*
                     if (mArtefact != null) {
                         if (mArtefact.getArtefactAudioUrl() != null) {
