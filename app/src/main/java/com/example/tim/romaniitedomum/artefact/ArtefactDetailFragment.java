@@ -352,7 +352,13 @@ public class ArtefactDetailFragment extends Fragment {
     private void fillArtefactTextViews(Artefact artefact) {
         String author = getResources().getString(R.string.artefact_detail_author) + " " + artefact.getAuthorName() + " ";
         Date date = mArtefact.getCreated();
-        String d = getResources().getString(R.string.artefact_detail_created) + " " + date.toLocaleString();
+        //String d = getResources().getString(R.string.artefact_detail_created) + " " + date.toLocaleString();
+        String d = "";
+        try {
+            d =  "Created: " + date.toLocaleString();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "fillArtefactTextViews: NullpointerException: " + e.getMessage());
+        }
         String category = "#" + artefact.getCategoryName();
         tvArtefactDetailName.setText(artefact.getArtefactName());
         tvArtefactDetailAuthor.setText(author);
