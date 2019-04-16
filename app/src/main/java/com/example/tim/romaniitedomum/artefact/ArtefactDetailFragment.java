@@ -243,7 +243,8 @@ public class ArtefactDetailFragment extends Fragment {
 */
 
                     if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString())){
-                        Toast.makeText(artefactActivity, "Happy B-Day", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "initArtefactDetail: artefact was created by current user");
+                        //Toast.makeText(artefactActivity, "Happy B-Day", Toast.LENGTH_LONG).show();
                     }
 
                     mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
@@ -282,6 +283,11 @@ public class ArtefactDetailFragment extends Fragment {
             // navigating to artefactDetail from ArtefactList item Click
             mPosition = ApplicationClass.position;
             mArtefact = ApplicationClass.mArtefactList.get(mPosition);
+
+            if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString())){
+                Log.d(TAG, "initArtefactDetail: artefact was created by current user");
+                //Toast.makeText(artefactActivity, "Happy B-Day", Toast.LENGTH_LONG).show();
+            }
 
             mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                 @Override
