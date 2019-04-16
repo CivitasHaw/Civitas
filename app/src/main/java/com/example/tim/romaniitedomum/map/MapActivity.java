@@ -34,6 +34,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.artefact.ArtefactActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -328,38 +329,44 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
         int markerArtefactIcon = 0;
         switch (artefact.getCategoryName()) {
-            case "Basilika":
+            case Util.CATEGORY_BASILIKA:
                 markerArtefactIcon = R.drawable.ic_map_basilica;
                 break;
-            case "Bogen":
+            case Util.CATEGORY_BOGEN:
                 markerArtefactIcon = R.drawable.ic_map_bogen;
                 break;
-            case "Christentum":
+            case Util.CATEGORY_CHRISTENTUM:
                 markerArtefactIcon = R.drawable.ic_map_christentum;
                 break;
-            case "Grabstaette":
+            case Util.CATEGORY_GRABSTAETTE:
                 markerArtefactIcon = R.drawable.ic_map_grabstaette;
                 break;
-            case "Grundungsmythos":
+            case Util.CATEGORY_GRUENDUNGSMYTHOS:
                 markerArtefactIcon = R.drawable.ic_map_grundungsmythos;
                 break;
-            case "Infrastruktur":
+            case Util.CATEGORY_INFRASTRUKTUR:
                 markerArtefactIcon = R.drawable.ic_map_infrastruktur;
                 break;
-            case "Kultstaette":
+            case Util.CATEGORY_KULTSTAETTE:
                 markerArtefactIcon = R.drawable.ic_map_kultstaette;
                 break;
-            case "Platzanlage":
+            case Util.CATEGORY_PLATZANLAGE:
                 markerArtefactIcon = R.drawable.ic_map_platzanlage;
                 break;
-            case "Spielstaette":
+            case Util.CATEGORY_SPIELSTAETTE:
                 markerArtefactIcon = R.drawable.ic_map_spielstaette;
                 break;
-            case "Therme":
+            case Util.CATEGORY_THERME:
                 markerArtefactIcon = R.drawable.ic_map_therme;
                 break;
-            case "Wohnkomplex":
+            case Util.CATEGORY_WOHNKOMPLEX:
                 markerArtefactIcon = R.drawable.ic_map_wohnkomplex;
+                break;
+            case Util.CATEGORY_POLITISCHE_INSTITUTION:
+                markerArtefactIcon = R.drawable.ic_map_politische_institution;
+                break;
+            case "SaltAndPepper":
+                markerArtefactIcon = R.drawable.ic_salt_and_pepper;
                 break;
             default:
                 markerArtefactIcon = R.drawable.ic_map_default_marker;
