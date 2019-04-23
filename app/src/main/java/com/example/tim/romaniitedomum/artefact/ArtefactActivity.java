@@ -194,14 +194,14 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Intent intent = null;
         switch (menuItem.getItemId()) {
             case R.id.nav_artefacts:
                 Log.d(TAG, "onNavigationItemSelected: artefacts");
-                Toast.makeText(this, "Artefacts clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_map:
                 Log.d(TAG, "onNavigationItemSelected: map");
-                Intent intent = new Intent(ArtefactActivity.this, MapActivity.class);
+                intent = new Intent(ArtefactActivity.this, MapActivity.class);
                 intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
                 startActivity(intent);
                 break;
