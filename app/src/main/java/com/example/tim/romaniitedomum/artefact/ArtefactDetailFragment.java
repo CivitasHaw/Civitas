@@ -49,6 +49,10 @@ public class ArtefactDetailFragment extends Fragment {
 
     private ArtefactActivity artefactActivity;
 
+    private View mProgressViewArtefactDetail;
+    private View mFormViewArtefactDetail;
+    private TextView tvLoadArtefactDetail;
+
     private ImageView ivArtefactDetail;
     private TextView tvArtefactDetailName, tvArtefactDetailCategory, tvArtefactDetailDescription;
     private TextView tvArtefactDetailAuthor, tvArtefactDetailCreated;
@@ -174,6 +178,10 @@ public class ArtefactDetailFragment extends Fragment {
 
     private void initArtefactDetail(View view) {
 
+        mProgressViewArtefactDetail = view.findViewById(R.id.progress_artefact_detail);
+        mFormViewArtefactDetail = view.findViewById(R.id.form_artefact_detail);
+        tvLoadArtefactDetail = view.findViewById(R.id.tvLoad_artefact_detail);
+
         artefactActivity.isAtDetailFragment = true;
         ivArtefactDetail = view.findViewById(R.id.image_artefact_detail);
         tvArtefactDetailName = view.findViewById(R.id.text_artefact_detail_name);
@@ -182,7 +190,7 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailAuthor = view.findViewById(R.id.text_artefact_detail_author);
         tvArtefactDetailCreated = view.findViewById(R.id.text_artefact_detail_created);
         btnArtefactDetailMarker = view.findViewById(R.id.button_artefact_detail_show_marker_on_map);
-        mProgress = view.findViewById(R.id.progress_artefact_detail);
+        mProgress = view.findViewById(R.id.progress_image_artefact_detail);
         mRating = view.findViewById(R.id.ratingbar_artefact_detail);
         btnArtefactDetailSaveRating = view.findViewById(R.id.button_artefact_detail_save_rating);
         audioLayout = view.findViewById(R.id.layout_artefact_detail_audio_player);
@@ -381,6 +389,8 @@ public class ArtefactDetailFragment extends Fragment {
     }
 
     private void deleteImageFileFromBackendless(String imageFilePath) {
+        tvLoadArtefactDetail.setText("Delete image... please wait...");
+        showProgress(true);
         Log.d(TAG, "deleteImageFileFromBackendless: is called");
         Backendless.Files.remove(imageFilePath, new AsyncCallback<Integer>() {
             @Override
@@ -400,6 +410,7 @@ public class ArtefactDetailFragment extends Fragment {
 
             @Override
             public void handleFault(BackendlessFault fault) {
+                showProgress(false);
                 Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "handleFault: Error: " + fault.getMessage());
             }
@@ -408,7 +419,8 @@ public class ArtefactDetailFragment extends Fragment {
 
     private void deleteAudioFileFromBackendless(String audioFilePath) {
         Log.d(TAG, "deleteAudioFileFromBackendless: is called");
-
+        tvLoadArtefactDetail.setText("Delete Audio file... please wait...");
+        showProgress(true);
         Backendless.Files.remove(audioFilePath, new AsyncCallback<Integer>() {
             @Override
             public void handleResponse(Integer response) {
@@ -419,6 +431,7 @@ public class ArtefactDetailFragment extends Fragment {
 
             @Override
             public void handleFault(BackendlessFault fault) {
+                showProgress(false);
                 Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -426,6 +439,8 @@ public class ArtefactDetailFragment extends Fragment {
 
     //TODO: change saving algorithm for artefact -> image -> audio -> geoPoint
     private void deleteGeoPointFromBackendless(GeoPoint location) {
+        showProgress(true);
+        tvLoadArtefactDetail.setText("Remove Marker... please wait...");
         Log.d(TAG, "deleteGeoPointFromBackendless: is called");
         Backendless.Geo.removePoint(location, new AsyncCallback<Void>() {
             @Override
@@ -437,12 +452,15 @@ public class ArtefactDetailFragment extends Fragment {
 
             @Override
             public void handleFault(BackendlessFault fault) {
+                showProgress(false);
                 Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void deleteArtefactFromBackendless(final Artefact mArtefact) {
+        tvLoadArtefactDetail.setText("Delete Artefact... please wait...");
+        showProgress(true);
         Backendless.Persistence.of(Artefact.class).remove(mArtefact, new AsyncCallback<Long>() {
             @Override
             public void handleResponse(Long response) {
@@ -457,6 +475,7 @@ public class ArtefactDetailFragment extends Fragment {
 
             @Override
             public void handleFault(BackendlessFault fault) {
+                showProgress(false);
                 Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -500,4 +519,51 @@ public class ArtefactDetailFragment extends Fragment {
         artefactActivity = (ArtefactActivity)getActivity();
         args = getArguments();
     }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            mFormViewArtefactDetail.setVisibility(show ? View.GONE : View.VISIBLE);
+            mFormViewArtefactDetail.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mFormViewArtefactDetail.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressViewArtefactDetail.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressViewArtefactDetail.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressViewArtefactDetail.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+
+            tvLoadArtefactDetail.setVisibility(show ? View.VISIBLE : View.GONE);
+            tvLoadArtefactDetail.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    tvLoadArtefactDetail.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressViewArtefactDetail.setVisibility(show ? View.VISIBLE : View.GONE);
+            tvLoadArtefactDetail.setVisibility(show ? View.VISIBLE : View.GONE);
+            mFormViewArtefactDetail.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
 }
