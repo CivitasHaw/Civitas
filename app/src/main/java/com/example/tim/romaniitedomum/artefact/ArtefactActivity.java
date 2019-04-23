@@ -161,19 +161,9 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
             if (isGallery == true) {
                 Uri uri = data.getData();
                 try {
-                    //Bitmap b = ScalingUtilities.decodeFile(uri, )
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                    Bitmap thumbBitmap = ThumbnailUtils.extractThumbnail(bitmap, 120, 120);
-               /* Bitmap bitmap = MediaStore.Images.Thumbnails.getThumbnail(
-                        getContentResolver(),
-                        uri,
-                        MediaStore.Images.Thumbnails.MINI_KIND,
-                        (BitmapFactory.Options) null);*/
-
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    //bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    thumbBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
                     artefactImageBitmap.setByteArray(byteArray);
                     mOrigin = "gallery";
