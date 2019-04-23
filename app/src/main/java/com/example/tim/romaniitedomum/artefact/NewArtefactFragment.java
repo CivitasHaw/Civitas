@@ -47,8 +47,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Date;
 
 
 /**
@@ -104,6 +105,9 @@ public class NewArtefactFragment extends Fragment {
     private double mLng;
     private Bundle mArgs;
 
+    String imageFileName = "";
+    String audioFileName = "";
+
     private boolean isImageSelected = false;
 
     @Nullable
@@ -127,122 +131,6 @@ public class NewArtefactFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-
-        btnAddCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                spinnerCategories.setVisibility(View.VISIBLE);
-                btnAddCategory.setVisibility(View.GONE);
-            }
-        });
-
-        ivNewArtefact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                takePhotoFromCamera();
-            }
-        });
-
-        btnTakeFotoFromCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                takePhotoFromCamera();
-            }
-        });
-
-        btnTakeFotoFromGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pickImageFromGallery();
-            }
-        });
-
-        btnNewArtefactSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                artefactName = etNewArtefactName.getText().toString().trim();
-                artefactDescription = etNewArtefactDescription.getText().toString().trim();
-                artefactDate = etNewArtefactDate.getText().toString().trim();
-
-                imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
-                if (!imageIsTakenFromCamera.isEmpty()){
-                    isImageSelected = true;
-                }
-
-                if (checkFields()) {
-                    //Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
-                    Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
-                } else {
-                    showProgress(true);
-                    tvLoadNewArtefact.setText(getResources().getText(R.string.new_artefact_save_image));
-
-                    mArtefact = new Artefact();
-                    mArtefact.setArtefactName(artefactName);
-                    mArtefact.setArtefactDescription(artefactDescription);
-                    mArtefact.setUserEmail(ApplicationClass.user.getEmail());
-                    mArtefact.setAuthorName(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_name)).toString());
-                    mArtefact.setOwnerId(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString());
-                    mArtefact.setLatitude(mLat);
-                    mArtefact.setLongitude(mLng);
-                    //mArtefact.setCategory(new Category(mCategory.getCategoryName(), mCategory.getCategoryMarkerImage()));
-                    mArtefact.setCategoryName(mCategory.getCategoryName());
-                    mArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
-
-                    String fileName = artefactName + "_" + artefactDescription + ".png";
-
-                    // ----------------- Image upload --------------------
-                    Backendless.Files.Android.upload(artefactBitmap, Bitmap.CompressFormat.PNG, BITMAP_QUALITY,
-                            fileName, BACKENDLESS_IMAGE_FILE_PATH, new AsyncCallback<BackendlessFile>() {
-                                @Override
-                                public void handleResponse(BackendlessFile response) {
-
-                                    mArtefact.setArtefactImageUrl(response.getFileURL());
-                                    Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_image_upload), Toast.LENGTH_SHORT).show();
-                                    showProgress(false);
-
-                                    if (!audioExists) {
-                                        tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
-                                        saveDataWithGeoAsync(mArtefact);
-                                    } else {
-                                        showProgress(true);
-                                        tvLoadNewArtefact.setText("Uploading audio file... please wait...");
-
-                                        // ---------------------- Audio Upload ----------------------
-                                        // https://backendless.com/feature-31-uploading-files-to-server-with-the-file-upload-api/
-                                        Backendless.Files.upload(mAudioFile, BACKENDLESS_AUDIO_FILE_PATH, new AsyncCallback<BackendlessFile>() {
-                                            @Override
-                                            public void handleResponse(BackendlessFile response) {
-
-                                                mArtefact.setArtefactAudioUrl(response.getFileURL());
-                                                Toast.makeText(getContext(), "Audio upload successful", Toast.LENGTH_SHORT).show();
-                                                showProgress(false);
-                                                tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
-                                                saveDataWithGeoAsync(mArtefact);
-                                            }
-
-                                            @Override
-                                            public void handleFault(BackendlessFault fault) {
-                                                showProgress(false);
-                                                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                    }
-
-//                                    showProgress(true);
-//                                    tvLoadNewArtefact.setText(getResources().getText(R.string.toast_backendless_create_new_artefact));
-//                                    saveDataWithGeoAsync(mArtefact);
-                                }
-
-                                @Override
-                                public void handleFault(BackendlessFault fault) {
-                                    showProgress(false);
-                                    Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                }
             }
         });
 
@@ -343,7 +231,192 @@ public class NewArtefactFragment extends Fragment {
         });
 
 
+        btnAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                spinnerCategories.setVisibility(View.VISIBLE);
+                btnAddCategory.setVisibility(View.GONE);
+            }
+        });
+
+        // TODO: delete ivNewArtefact clickable
+        ivNewArtefact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //takePhotoFromCamera();
+            }
+        });
+
+        btnTakeFotoFromCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                takePhotoFromCamera();
+            }
+        });
+
+        btnTakeFotoFromGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pickImageFromGallery();
+            }
+        });
+
+
+        btnNewArtefactSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                artefactName = etNewArtefactName.getText().toString().trim();
+                artefactDescription = etNewArtefactDescription.getText().toString().trim();
+                artefactDate = etNewArtefactDate.getText().toString().trim();
+
+                imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
+                if (!imageIsTakenFromCamera.isEmpty()) {
+                    isImageSelected = true;
+                }
+
+                if (checkFields()) {
+                    //Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
+                    Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
+                } else {
+
+                    // setup artefact content for later usage
+                    mArtefact = new Artefact();
+                    mArtefact.setArtefactName(artefactName);
+                    mArtefact.setArtefactDescription(artefactDescription);
+                    mArtefact.setUserEmail(ApplicationClass.user.getEmail());
+                    mArtefact.setAuthorName(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_name)).toString());
+                    mArtefact.setOwnerId(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString());
+                    mArtefact.setLatitude(mLat);
+                    mArtefact.setLongitude(mLng);
+                    mArtefact.setLocation(new GeoPoint(mLat, mLng));
+                    //mArtefact.setCategory(new Category(mCategory.getCategoryName(), mCategory.getCategoryMarkerImage()));
+                    mArtefact.setCategoryName(mCategory.getCategoryName());
+                    mArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
+
+                    Date date = new Date();
+                    Timestamp timestamp = new Timestamp(date.getTime());
+                    //String imageFileName = artefactName + "_" + artefactDescription + ".png";
+                    imageFileName = "artefactImage_" + artefactName + "_" + timestamp + ".png";
+                    audioFileName = "artefactAudio_" + artefactName + "_" + timestamp + ".3gp";
+
+                    mArtefact.setArtefactImageFileName(imageFileName);
+                    mArtefact.setArtefactAudioFileName(audioFileName);
+
+                    uploadImageToBackendless(artefactBitmap, imageFileName);
+                }
+
+
+            }
+        });
+
         return view;
+    }
+
+    private void uploadImageToBackendless(Bitmap artefactBitmap, String fileName) {
+        showProgress(true);
+        tvLoadNewArtefact.setText(getResources().getText(R.string.new_artefact_save_image));
+
+        Backendless.Files.Android.upload(artefactBitmap, Bitmap.CompressFormat.PNG, BITMAP_QUALITY,
+                fileName, BACKENDLESS_IMAGE_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+            @Override
+            public void handleResponse(BackendlessFile response) {
+                mArtefact.setArtefactImageUrl(response.getFileURL());
+                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_image_upload), Toast.LENGTH_SHORT).show();
+                //showProgress(false);
+
+                if (!audioExists) {
+                    saveGeoPointToBackendless(mLat, mLng);
+                } else {
+                    uploadAudioToBackendless(mAudioFile);
+                }
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                mArtefact.setArtefactAudioUrl("");
+                showProgress(false);
+                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void uploadAudioToBackendless(File audioFile) {
+        showProgress(true);
+        tvLoadNewArtefact.setText(getResources().getString(R.string.new_artefact_save_audio));
+        // ---------------------- Audio Upload ----------------------
+        // https://backendless.com/feature-31-uploading-files-to-server-with-the-file-upload-api/
+        Backendless.Files.upload(audioFile, BACKENDLESS_AUDIO_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+            @Override
+            public void handleResponse(BackendlessFile response) {
+
+                //Toast.makeText(getContext(), "Audio upload successful", Toast.LENGTH_SHORT).show();
+                mArtefact.setArtefactAudioUrl(response.getFileURL());
+                //showProgress(false);
+                saveGeoPointToBackendless(mLat, mLng);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                showProgress(false);
+                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveArtefactToBackendless() {
+        showProgress(true);
+        tvLoadNewArtefact.setText(getResources().getString(R.string.new_artefact_create_artefact));
+        Backendless.Persistence.save(mArtefact, new AsyncCallback<Artefact>() {
+            @Override
+            public void handleResponse(Artefact response) {
+                showProgress(false);
+                ApplicationClass.mArtefact = response;
+                ApplicationClass.mArtefactList.add(response);
+
+                etNewArtefactName.setText("");
+                etNewArtefactDescription.setText("");
+                etNewArtefactDate.setText("");
+                startActivity(new Intent(getContext(), MapActivity.class));
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                showProgress(false);
+                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveGeoPointToBackendless(double mLat, double mLng) {
+        GeoPoint artefactLocation = new GeoPoint(mLat, mLng);
+        artefactLocation.addCategory(mArtefact.getCategoryName());
+        artefactLocation.addMetadata("artefactName", mArtefact.getArtefactName());
+        artefactLocation.addMetadata("artefactDescription", mArtefact.getArtefactName());
+        artefactLocation.addMetadata("artefactAuthor", mArtefact.getAuthorName());
+        artefactLocation.addMetadata("artefactUserEmail", mArtefact.getUserEmail());
+        //artefactLocation.addMetadata("artefact", mArtefact);
+
+        showProgress(true);
+        tvLoadNewArtefact.setText(getResources().getString(R.string.new_artefact_add_marker));
+        Backendless.Geo.savePoint(artefactLocation, new AsyncCallback<GeoPoint>() {
+            @Override
+            public void handleResponse(GeoPoint response) {
+                //showProgress(false);
+                //mArtefact.setLocation(response);
+                mArtefact.setArtefactLocationObjectId(response.getObjectId());
+                Log.d(TAG, "handleResponse: onClick: geoPoint.objectId: " + response.getObjectId());
+                saveArtefactToBackendless();
+
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                showProgress(false);
+                Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
     }
 
     private boolean checkFields() {
@@ -356,9 +429,13 @@ public class NewArtefactFragment extends Fragment {
 
     // https://stackoverflow.com/questions/37338606/mediarecorder-not-saving-audio-to-file
     private void setupMediaRecorder() {
+        /*
         Random r = new Random();
         int x = r.nextInt(10000);
+
         mAudioFile = new File(Environment.getExternalStorageDirectory(), artefactName + "_" + artefactDescription + "_" + x + "_audio.3gp");
+        */
+        mAudioFile = new File(Environment.getExternalStorageDirectory(), audioFileName);
 
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -413,7 +490,8 @@ public class NewArtefactFragment extends Fragment {
                     checkAndroidVersionAndPermissionForGallery();
                 }
                 break;
-            }case REQUEST_PERMISSION_CODE_CAMERA: {
+            }
+            case REQUEST_PERMISSION_CODE_CAMERA: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     takePhoto();
                 } else {
@@ -432,45 +510,8 @@ public class NewArtefactFragment extends Fragment {
                 record_audio_result == PackageManager.PERMISSION_GRANTED;
     }
 
-    private void saveDataWithGeoAsync(final Artefact artefact) {
 
-        GeoPoint location = new GeoPoint(mLat, mLng);
-        Log.d(TAG, "saveDataWithGeoAsync: mLat: " + mLat);
-        //location.addCategory(artefact.getCategory().getCategoryName());
-        location.addCategory(artefact.getCategoryName());
-        location.addMetadata("artefactName", artefact.getArtefactName());
-        location.addMetadata("artefactDescription", artefact.getArtefactDescription());
-        location.addMetadata("artefactCreator", artefact.getUserEmail());
-        location.addMetadata("artefact", artefact);
-        artefact.setLocation(location);
-
-        showProgress(true);
-        tvLoadNewArtefact.setText("Adding marker to map... please wait...");
-        Backendless.Geo.savePoint(location, new AsyncCallback<GeoPoint>() {
-            @Override
-            public void handleResponse(GeoPoint response) {
-                Log.d(TAG, "handleResponse: GeoPoint has been saved: " + response.getObjectId());
-                showProgress(false);
-                ApplicationClass.mArtefact = artefact;
-                ApplicationClass.mArtefactList.add(artefact);
-
-                etNewArtefactName.setText("");
-                etNewArtefactDescription.setText("");
-                etNewArtefactDate.setText("");
-                startActivity(new Intent(getContext(), MapActivity.class));
-
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Toast.makeText(getContext(), "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                showProgress(false);
-
-            }
-        });
-    }
-
-    public void checkAndroidVersionAndPermissionForGallery(){
+    public void checkAndroidVersionAndPermissionForGallery() {
         //REQUEST PERMISSION
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
@@ -483,6 +524,7 @@ public class NewArtefactFragment extends Fragment {
             pickImage();
         }
     }
+
     //TODO: implement Gallery picker
     private void pickImageFromGallery() {
         checkAndroidVersionAndPermissionForGallery();

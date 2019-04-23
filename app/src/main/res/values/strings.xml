@@ -47,6 +47,10 @@
     <string name="button_new_artefact_audio_remove">Remove</string>
     <string name="list_of_artefacts">List of Artefacts</string>
     <string name="new_artefact_save_image">Saving image... please wait...</string>
+    <string name="new_artefact_save_audio">Saving audio... please wait...</string>
+    <string name="new_artefact_add_marker">Adding marker to map... please wait...</string>
+    <string name="new_artefact_create_artefact">Busy creating new artefact... please wait...</string>
+    <string name="new_artefact_add_category">Add Category</string>
     <string name="retrieve_artefacts_from_backendless">Retrieve artefacts... please wait...</string>
     <string name="user_logout">Logout successful</string>
     <string name="toast_backendless_image_upload">Photo successfully uploaded</string>
@@ -62,7 +66,6 @@
     <string name="artefact_detail_save_rating">rate</string>
     <string name="origin">origin</string>
     <string name="navigate_to_artefact_activity">artefacts</string>
-    <string name="new_artefact_add_category">Add Category</string>
     <string name="mapactivity_title">ArtefactMap</string>
     <string name="login_empty_field_error">Field can\'t be empty</string>
     <string name="artefact_detail_author">Author: </string>
