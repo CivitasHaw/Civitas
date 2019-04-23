@@ -30,6 +30,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
 import com.example.tim.romaniitedomum.map.MapActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -150,6 +151,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        ArtefactImageBitmap artefactImageBitmap = ArtefactImageBitmap.getInstance();
         NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
         Bundle args = new Bundle();
 
@@ -169,12 +171,13 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                         (BitmapFactory.Options) null);*/
 
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     //bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     thumbBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
+                    artefactImageBitmap.setByteArray(byteArray);
                     mOrigin = "gallery";
                     args.putString(getResources().getString(R.string.origin), mOrigin);
-                    args.putByteArray("image", byteArray);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -184,9 +187,9 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] byteArray = stream.toByteArray();
+                artefactImageBitmap.setByteArray(byteArray);
                 mOrigin = "camera";
                 args.putString(getResources().getString(R.string.origin), mOrigin);
-                args.putByteArray("image", byteArray);
                 isCamera = false;
             }
         } else {

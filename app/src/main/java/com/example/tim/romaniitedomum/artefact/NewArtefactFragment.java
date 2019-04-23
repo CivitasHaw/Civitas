@@ -41,6 +41,7 @@ import com.backendless.files.BackendlessFile;
 import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.google.android.gms.maps.model.LatLng;
@@ -607,20 +608,18 @@ public class NewArtefactFragment extends Fragment {
         if (mArgs != null) {
             String origin = mArgs.getString(getResources().getString(R.string.origin));
             LatLng tempLatLng;
-            byte[] byteArray = null;
+            ArtefactImageBitmap artefactImageBitmap = ArtefactImageBitmap.getInstance();
             switch (origin) {
                 case ORIGIN_CAMERA: // artefact image is taken with camera
                     Log.d(TAG, "initNewArtefact: origin: " + origin);
-                    byteArray = mArgs.getByteArray("image");
-                    artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    artefactBitmap = BitmapFactory.decodeByteArray(artefactImageBitmap.getByteArray(), 0, artefactImageBitmap.getByteArray().length);
                     ivNewArtefact.setImageBitmap(artefactBitmap);
                     mLat = ApplicationClass.mTempArtefactLatLng.latitude;
                     mLng = ApplicationClass.mTempArtefactLatLng.longitude;
                     break;
                 case ORIGIN_GALLERY:
                     Log.d(TAG, "initNewArtefact: origin: " + origin);
-                    byteArray = mArgs.getByteArray("image");
-                    artefactBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    artefactBitmap = BitmapFactory.decodeByteArray(artefactImageBitmap.getByteArray(), 0, artefactImageBitmap.getByteArray().length);
                     ivNewArtefact.setImageBitmap(artefactBitmap);
                     mLat = ApplicationClass.mTempArtefactLatLng.latitude;
                     mLng = ApplicationClass.mTempArtefactLatLng.longitude;
