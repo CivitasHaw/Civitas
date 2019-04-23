@@ -25,6 +25,7 @@ public class Artefact {
     private String artefactAudioFileName;
     private String artefactAudioUrl;
     private String artefactDescription;
+    private String artefactLocationObjectId;
     private GeoPoint location;
     private double latitude;
     private double longitude;
@@ -34,6 +35,14 @@ public class Artefact {
     private List<Artefact> artefactSiblings;
 
     public Artefact() {
+    }
+
+    public String getArtefactLocationObjectId() {
+        return artefactLocationObjectId;
+    }
+
+    public void setArtefactLocationObjectId(String artefactLocationObjectId) {
+        this.artefactLocationObjectId = artefactLocationObjectId;
     }
 
     public String getArtefactImageFileName() {
