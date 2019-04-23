@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
+import com.backendless.Geo;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.geo.GeoPoint;
@@ -45,7 +46,6 @@ import java.util.Date;
 public class ArtefactDetailFragment extends Fragment {
 
     private static final String TAG = "ArtefactDetailFragment";
-//    private static final String AUDIO_FILE_PATH = "audio";
 
     private ArtefactActivity artefactActivity;
 
@@ -64,6 +64,7 @@ public class ArtefactDetailFragment extends Fragment {
     private ImageButton btnAudioPlay, btnAudioPause, btnAudioStop;
     private Artefact mArtefact = null;
     private String imageFilePath = "";
+    private String audioFilePath = "";
 //    private File mAudioFile = null;
 
 
@@ -352,7 +353,6 @@ public class ArtefactDetailFragment extends Fragment {
             // TODO: edit artefact
             case R.id.edit_artefact:
                 Log.d(TAG, "onOptionsItemSelected: edit: clicked");
-                //Toast.makeText(artefactActivity, "Clicki", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.delete_artefact:
                 Log.d(TAG, "onOptionsItemSelected: delete: clicked");
@@ -362,10 +362,8 @@ public class ArtefactDetailFragment extends Fragment {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d(TAG, "onClick: ok button clicked");
-                                deleteArtefactFromBackendless(mArtefact);
-                                //deleteGeoPointFromBackendless(mArtefact);
-                                //deleteImageFileFromBackendless(mArtefact);
+                                Log.d(TAG, "onClick: yes button clicked");
+                                deleteImageFileFromBackendless(imageFilePath);
                             }
                         })
                         .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -379,18 +377,44 @@ public class ArtefactDetailFragment extends Fragment {
                 break;
         }
 
-
         return super.onOptionsItemSelected(item);
     }
 
-    private void deleteImageFileFromBackendless(String filePath) {
-        Log.d(TAG, "deleteImageFileFromBackendless: file_path: " + filePath);
-        Backendless.Files.remove(filePath, new AsyncCallback<Integer>() {
+    private void deleteImageFileFromBackendless(String imageFilePath) {
+        Log.d(TAG, "deleteImageFileFromBackendless: is called");
+        Backendless.Files.remove(imageFilePath, new AsyncCallback<Integer>() {
             @Override
             public void handleResponse(Integer response) {
                 Toast.makeText(artefactActivity, "Image successfully deleted!", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "handleResponse: Image successfully deleted!");
-                startActivity(new Intent(getContext(), MapActivity.class));
+
+                if (mArtefact.getArtefactAudioUrl()!= null) {
+                    deleteAudioFileFromBackendless(audioFilePath);
+                } else {
+                    GeoPoint artefactLocation = new GeoPoint();
+                    artefactLocation.setObjectId(mArtefact.getArtefactLocationObjectId());
+                    Log.d(TAG, "handleResponse: objectId: " + artefactLocation.getObjectId());
+                    deleteGeoPointFromBackendless(artefactLocation);
+                }
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "handleFault: Error: " + fault.getMessage());
+            }
+        });
+    }
+
+    private void deleteAudioFileFromBackendless(String audioFilePath) {
+        Log.d(TAG, "deleteAudioFileFromBackendless: is called");
+
+        Backendless.Files.remove(audioFilePath, new AsyncCallback<Integer>() {
+            @Override
+            public void handleResponse(Integer response) {
+                GeoPoint artefactLocation = new GeoPoint();
+                artefactLocation.setObjectId(mArtefact.getArtefactLocationObjectId());
+                deleteGeoPointFromBackendless(artefactLocation);
             }
 
             @Override
@@ -401,12 +425,9 @@ public class ArtefactDetailFragment extends Fragment {
     }
 
     //TODO: change saving algorithm for artefact -> image -> audio -> geoPoint
-    private void deleteGeoPointFromBackendless(Artefact mArtefact) {
-
-        GeoPoint geoPoint = new GeoPoint(mArtefact.getLocation().getLatitude(), mArtefact.getLocation().getLongitude());
-        Log.d(TAG, "deleteGeoPointFromBackendless: geoPoint.objectId(): " + geoPoint.getObjectId());
-
- /*       Backendless.Geo.removePoint(geoPoint, new AsyncCallback<Void>() {
+    private void deleteGeoPointFromBackendless(GeoPoint location) {
+        Log.d(TAG, "deleteGeoPointFromBackendless: is called");
+        Backendless.Geo.removePoint(location, new AsyncCallback<Void>() {
             @Override
             public void handleResponse(Void response) {
                 Toast.makeText(artefactActivity, "GeoPoint successfully deleted!", Toast.LENGTH_SHORT).show();
@@ -418,18 +439,20 @@ public class ArtefactDetailFragment extends Fragment {
             public void handleFault(BackendlessFault fault) {
                 Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
     }
 
     private void deleteArtefactFromBackendless(final Artefact mArtefact) {
         Backendless.Persistence.of(Artefact.class).remove(mArtefact, new AsyncCallback<Long>() {
             @Override
             public void handleResponse(Long response) {
-                imageFilePath = "artefactImages/" + mArtefact.getArtefactName() + "_" + mArtefact.getArtefactDescription() + ".png";
-                ApplicationClass.mArtefactList.remove(mArtefact);
+                imageFilePath = "artefactImages/" + mArtefact.getArtefactImageFileName();
                 Toast.makeText(artefactActivity, "Artefact successfully deleted", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "handleResponse: Artefact successfully deleted");
-                deleteImageFileFromBackendless(imageFilePath);
+                ApplicationClass.mArtefactList.remove(mArtefact);
+                ApplicationClass.mArtefact = null;
+
+                startActivity(new Intent(artefactActivity, MapActivity.class));
             }
 
             @Override
@@ -441,8 +464,7 @@ public class ArtefactDetailFragment extends Fragment {
 
     private void fillArtefactTextViews(Artefact artefact) {
         String author = getResources().getString(R.string.artefact_detail_author) + " " + artefact.getAuthorName() + " ";
-        Date date = mArtefact.getCreated();
-        //String d = getResources().getString(R.string.artefact_detail_created) + " " + date.toLocaleString();
+        Date date = artefact.getCreated();
         String d = "";
         try {
             d =  "Created: " + date.toLocaleString();
