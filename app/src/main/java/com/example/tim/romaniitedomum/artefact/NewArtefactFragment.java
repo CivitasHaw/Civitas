@@ -313,6 +313,7 @@ public class NewArtefactFragment extends Fragment {
         return view;
     }
 
+            mArtefact.setArtefactAge(artefactDate);
     private void uploadImageToBackendless(Bitmap artefactBitmap, String fileName) {
         showProgress(true);
         tvLoadNewArtefact.setText(getResources().getText(R.string.new_artefact_save_image));

@@ -20,6 +20,7 @@ public class Artefact {
     private String userEmail;
     private String authorName;
     private String artefactName;
+    private String artefactAge;
     private String artefactImageUrl;
     private String artefactImageFileName;
     private String artefactAudioFileName;
@@ -35,6 +36,14 @@ public class Artefact {
     private List<Artefact> artefactSiblings;
 
     public Artefact() {
+    }
+
+    public String getArtefactAge() {
+        return artefactAge;
+    }
+
+    public void setArtefactAge(String artefactAge) {
+        this.artefactAge = artefactAge;
     }
 
     public String getArtefactLocationObjectId() {
