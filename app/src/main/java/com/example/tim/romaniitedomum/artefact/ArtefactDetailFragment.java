@@ -248,11 +248,6 @@ public class ArtefactDetailFragment extends Fragment {
                     }
 */
 
-                    if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString())){
-                        Log.d(TAG, "initArtefactDetail: artefact was created by current user");
-                        //Toast.makeText(artefactActivity, "Happy B-Day", Toast.LENGTH_LONG).show();
-                    }
-
                     mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String imageUri, View view) {
@@ -290,11 +285,6 @@ public class ArtefactDetailFragment extends Fragment {
             // navigating to artefactDetail from ArtefactList item Click
             mPosition = ApplicationClass.position;
             mArtefact = ApplicationClass.mArtefactList.get(mPosition);
-
-            if (mArtefact.getOwnerId().equals(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString())){
-                Log.d(TAG, "initArtefactDetail: artefact was created by current user");
-                //Toast.makeText(artefactActivity, "Happy B-Day", Toast.LENGTH_LONG).show();
-            }
 
             mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                 @Override
@@ -395,7 +385,6 @@ public class ArtefactDetailFragment extends Fragment {
         Backendless.Files.remove(imageFilePath, new AsyncCallback<Integer>() {
             @Override
             public void handleResponse(Integer response) {
-                Toast.makeText(artefactActivity, "Image successfully deleted!", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "handleResponse: Image successfully deleted!");
 
                 if (mArtefact.getArtefactAudioUrl()!= null) {
@@ -445,7 +434,6 @@ public class ArtefactDetailFragment extends Fragment {
         Backendless.Geo.removePoint(location, new AsyncCallback<Void>() {
             @Override
             public void handleResponse(Void response) {
-                Toast.makeText(artefactActivity, "GeoPoint successfully deleted!", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "handleResponse: GeoPoint successfully deleted!");
                 deleteArtefactFromBackendless(mArtefact);
             }
@@ -464,8 +452,6 @@ public class ArtefactDetailFragment extends Fragment {
         Backendless.Persistence.of(Artefact.class).remove(mArtefact, new AsyncCallback<Long>() {
             @Override
             public void handleResponse(Long response) {
-                imageFilePath = "artefactImages/" + mArtefact.getArtefactImageFileName();
-                Toast.makeText(artefactActivity, "Artefact successfully deleted", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "handleResponse: Artefact successfully deleted");
                 ApplicationClass.mArtefactList.remove(mArtefact);
                 ApplicationClass.mArtefact = null;
