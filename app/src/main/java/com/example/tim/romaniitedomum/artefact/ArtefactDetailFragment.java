@@ -271,6 +271,7 @@ public class ArtefactDetailFragment extends Fragment {
 
                     fillArtefactTextViews(mArtefact);
                     artefactAudioFileExists(mArtefact);
+                    provideFilePath();
 
 
                 }
@@ -312,6 +313,7 @@ public class ArtefactDetailFragment extends Fragment {
 
             fillArtefactTextViews(mArtefact);
             artefactAudioFileExists(mArtefact);
+            provideFilePath();
         }
 
         btnArtefactDetailMarker.setOnClickListener(new View.OnClickListener() {
@@ -453,6 +455,11 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailCreated.setText(d);
         tvArtefactDetailCategory.setText(category);
         tvArtefactDetailDescription.setText(artefact.getArtefactDescription());
+    }
+
+    private void provideFilePath() {
+        audioFilePath = "artefactAudios/" + mArtefact.getArtefactAudioFileName();
+        imageFilePath = "artefactImages/" + mArtefact.getArtefactImageFileName();
     }
 
     private void artefactAudioFileExists(Artefact mArtefact) {
