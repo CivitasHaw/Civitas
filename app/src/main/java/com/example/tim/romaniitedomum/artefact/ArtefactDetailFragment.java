@@ -33,6 +33,7 @@ import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
+import com.google.android.gms.maps.model.LatLng;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -237,6 +238,7 @@ public class ArtefactDetailFragment extends Fragment {
                     mArtefact = ApplicationClass.mArtefactList.get(i);
                     ApplicationClass.position = ApplicationClass.mArtefactList.indexOf(mArtefact);
                     mPosition = ApplicationClass.position;
+                    ApplicationClass.mTempArtefactLatLng = new LatLng(mArtefact.getLatitude(), mArtefact.getLongitude());
 /*
                     if (mArtefact != null) {
                         if (mArtefact.getArtefactAudioUrl() != null) {
@@ -283,6 +285,7 @@ public class ArtefactDetailFragment extends Fragment {
             mPosition = ApplicationClass.position;
             mArtefact = ApplicationClass.mArtefactList.get(mPosition);
             ApplicationClass.mArtefact = mArtefact;
+            ApplicationClass.mTempArtefactLatLng = new LatLng(mArtefact.getLatitude(), mArtefact.getLongitude());
 
             mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                 @Override
@@ -455,7 +458,9 @@ public class ArtefactDetailFragment extends Fragment {
                 ApplicationClass.mArtefactList.remove(artefact);
                 ApplicationClass.mArtefact = null;
 
-                startActivity(new Intent(artefactActivity, MapActivity.class));
+                Intent intent = new Intent(artefactActivity, MapActivity.class);
+                intent.putExtra(getResources().getString(R.string.origin), Util.ORIGIN_DELETE_ARTEFACT);
+                startActivity(intent);
             }
 
             @Override

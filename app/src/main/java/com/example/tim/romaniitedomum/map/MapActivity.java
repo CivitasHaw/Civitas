@@ -424,6 +424,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                                     ApplicationClass.mDeviceLocation.getLongitude()),
                                             DEFAULT_ZOOM);
                                     break;
+                                case Util.ORIGIN_DELETE_ARTEFACT:
+                                    Log.d(TAG, "onComplete: deleteArtefact");
+                                    moveCamera(ApplicationClass.mTempArtefactLatLng, DEFAULT_ZOOM);
+                                    break;
                                 default:
                                     Log.d(TAG, "onComplete: default");
                                     moveCamera(new LatLng(9.945, 53.456), DEFAULT_ZOOM);
@@ -445,7 +449,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
     private void moveCamera(LatLng latLng, float zoom) {
-        Log.d(TAG, "moveCamera: moving camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
+        //Log.d(TAG, "moveCamera: moving camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
         mMap.animateCamera(location);
         //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
