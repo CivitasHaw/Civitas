@@ -31,6 +31,7 @@ import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
+import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -68,9 +69,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
             fragmentSwitcher2(artefactListFragment, true, "ArtefactListFragment");
         } else if (content.equals("markerClick")) {
             ArtefactDetailFragment artefactDetailFragment = new ArtefactDetailFragment();
-            args.putString("artefactName", intent.getStringExtra("artefactName"));
-            args.putDouble("latitude", intent.getDoubleExtra("latitude", 0.0));
-            args.putDouble("longitude", intent.getDoubleExtra("longitude", 0.0));
+            args.putString(Util.ARTEFACT_OBJECT_ID, intent.getStringExtra(Util.ARTEFACT_OBJECT_ID));
             artefactDetailFragment.setArguments(args);
             fragmentSwitcher2(artefactDetailFragment, false, "ArtefactDetailFragment");
         } else {

@@ -31,8 +31,8 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
-import com.google.android.gms.maps.model.LatLng;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -229,13 +229,10 @@ public class ArtefactDetailFragment extends Fragment {
 
         if (args != null){
             // navigating to artefactDetail from Map Markerclick
-            String artefactName = args.getString("artefactName");
-            double lat = args.getDouble("latitude");
-            double lng = args.getDouble("longitude");
+            String artefactObjectId = args.getString(Util.ARTEFACT_OBJECT_ID);
+
             for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
-                if (ApplicationClass.mArtefactList.get(i).getArtefactName().equals(artefactName) &&
-                        ApplicationClass.mArtefactList.get(i).getLatitude() == lat &&
-                        ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
+                if (ApplicationClass.mArtefactList.get(i).getObjectId().equals(artefactObjectId)){
 
                     mArtefact = ApplicationClass.mArtefactList.get(i);
                     ApplicationClass.position = ApplicationClass.mArtefactList.indexOf(mArtefact);

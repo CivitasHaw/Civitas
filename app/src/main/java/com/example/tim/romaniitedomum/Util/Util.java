@@ -15,4 +15,5 @@ public class Util {
     public static final String CATEGORY_SPIELSTAETTE = "Spielstaette";
     public static final String CATEGORY_THERME = "Therme";
 
+    public static final String ARTEFACT_OBJECT_ID = "artefactObjectId";
 }

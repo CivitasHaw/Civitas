@@ -270,9 +270,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
                                 Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
                                 intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "markerClick");
-                                intent.putExtra("artefactName", title);
-                                intent.putExtra("latitude", lat);
-                                intent.putExtra("longitude", lng);
+                                intent.putExtra(Util.ARTEFACT_OBJECT_ID, ApplicationClass.mArtefactList.get(i).getObjectId());
                                 startActivity(intent);
                             }
                         }
