@@ -252,7 +252,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_map_ready), Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onMapReady: map is ready");
+                //Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_map_ready), Toast.LENGTH_SHORT).show();
                 mMap = googleMap;
 
                 mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -473,15 +474,5 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
             }
         }
     }
-
-/*
-
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-        mMap.addMarker(new MarkerOptions().position(latLng)
-                .title("New Place")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-    }
-*/
 
 }
