@@ -378,7 +378,9 @@ public class NewArtefactFragment extends Fragment {
                 etNewArtefactName.setText("");
                 etNewArtefactDescription.setText("");
                 etNewArtefactDate.setText("");
-                startActivity(new Intent(getContext(), MapActivity.class));
+                Intent intent = new Intent(artefactActivity, MapActivity.class);
+                intent.putExtra(getResources().getString(R.string.origin), TAG);
+                startActivity(intent);
             }
 
             @Override

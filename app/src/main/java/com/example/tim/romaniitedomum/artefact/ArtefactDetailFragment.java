@@ -282,6 +282,7 @@ public class ArtefactDetailFragment extends Fragment {
             // navigating to artefactDetail from ArtefactList item Click
             mPosition = ApplicationClass.position;
             mArtefact = ApplicationClass.mArtefactList.get(mPosition);
+            ApplicationClass.mArtefact = mArtefact;
 
             mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
                 @Override
@@ -341,6 +342,7 @@ public class ArtefactDetailFragment extends Fragment {
                 Intent intent = new Intent(artefactActivity, MapActivity.class);
                 intent.putExtra("objectId", mArtefact.getObjectId());
                 intent.putExtra(getResources().getString(R.string.origin), TAG);
+                ApplicationClass.mArtefact = mArtefact;
                 artefactActivity.isAtDetailFragment = false;
                 artefactActivity.isAtListFragment = false;
                 startActivity(intent);

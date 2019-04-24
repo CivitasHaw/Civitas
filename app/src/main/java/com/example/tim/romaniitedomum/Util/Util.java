@@ -2,6 +2,15 @@ package com.example.tim.romaniitedomum.Util;
 
 public class Util {
 
+    // Activity and Fragment TAGs
+    public static final String ARTEFACT_ACTIVITY = "ArtefactActivity";
+    public static final String ARTEFACT_DETAIL_FRAGMENT = "ArtefactDetailFragment";
+    public static final String NEW_ARTEFACT_FRAGMENT = "NewArtefactFragement";
+    public static final String ARTEFACT_LIST_FRAGMENT = "ArtefactListFragment";
+    public static final String LOGIN_FRAGMENT = "LoginFragment";
+    public static final String REGISTER_FRAGMENT = "RegisterFragment";
+    public static final String MAP_ACTIVITY = "MapActivity";
+
     public static final String CATEGORY_POLITISCHE_INSTITUTION = "Politische_Institution";
     public static final String CATEGORY_WOHNKOMPLEX = "Wohnkomplex";
     public static final String CATEGORY_BASILIKA = "Basilika";

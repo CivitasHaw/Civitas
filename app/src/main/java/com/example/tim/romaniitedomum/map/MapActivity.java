@@ -402,19 +402,33 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                             Location currentLocation = (Location) task.getResult();
                             ApplicationClass.mDeviceLocation = currentLocation;
 
-                            if (ApplicationClass.mDeviceLocation != null){
-                                Log.d(TAG, "onComplete: if");
-                                moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(),
-                                                ApplicationClass.mDeviceLocation.getLongitude()),
-                                        DEFAULT_ZOOM);
-                            } else {
-                                Log.d(TAG, "onComplete: else");
-                                moveCamera(new LatLng(9.945,53.456), DEFAULT_ZOOM);
+                            String origin = getIntent().getStringExtra(getResources().getString(R.string.origin));
+                            Log.d(TAG, "onComplete: origin: " + origin);
+                            switch (origin) {
+                                case Util.ARTEFACT_DETAIL_FRAGMENT:
+                                    Log.d(TAG, "onComplete: ArtefactDetailFragment");
+                                    moveCamera(new LatLng(ApplicationClass.mArtefact.getLatitude(),
+                                                    ApplicationClass.mArtefact.getLongitude()),
+                                            DEFAULT_ZOOM);
+                                    break;
+                                case Util.NEW_ARTEFACT_FRAGMENT:
+                                    Log.d(TAG, "onComplete: NewArtefactFragment");
+                                    moveCamera(new LatLng(ApplicationClass.mArtefact.getLatitude(),
+                                                    ApplicationClass.mArtefact.getLongitude()),
+                                            DEFAULT_ZOOM);
+                                    break;
+                                case Util.LOGIN_FRAGMENT:
+                                    Log.d(TAG, "onComplete: LoginFragment");
+                                    moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(),
+                                                    ApplicationClass.mDeviceLocation.getLongitude()),
+                                            DEFAULT_ZOOM);
+                                    break;
+                                default:
+                                    Log.d(TAG, "onComplete: default");
+                                    moveCamera(new LatLng(9.945, 53.456), DEFAULT_ZOOM);
+                                    break;
                             }
 
-/*                            moveCamera(new LatLng(currentLocation.getLatitude(),
-                                            currentLocation.getLongitude()),
-                                    DEFAULT_ZOOM);*/
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
                             Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_location_null), Toast.LENGTH_SHORT).show();

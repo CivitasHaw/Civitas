@@ -97,16 +97,23 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         } else {
             super.onBackPressed();
             if (isAtListFragment && !isAtDetailFragment) {
+                // artefactList via drawer selection
                 isAtListFragment = false;
-                startActivity(new Intent(ArtefactActivity.this, MapActivity.class));
+                Intent intent = new Intent(ArtefactActivity.this, MapActivity.class);
+                intent.putExtra(getResources().getString(R.string.origin), Util.LOGIN_FRAGMENT); // loginFragment for moving camera to deviceLocation
+                startActivity(intent);
             } else if (isAtListFragment && isAtDetailFragment) {
+                // artefactDetail via list
                 isAtListFragment = false;
                 isAtDetailFragment = false;
                 fragmentSwitcher2(new ArtefactListFragment(), false, "");
             } else {
+                // artefactDetail via marker click
                 isAtListFragment = false;
                 isAtDetailFragment = false;
-                startActivity(new Intent(ArtefactActivity.this, MapActivity.class));
+                Intent intent = new Intent(ArtefactActivity.this, MapActivity.class);
+                intent.putExtra(getResources().getString(R.string.origin), Util.ARTEFACT_DETAIL_FRAGMENT);
+                startActivity(intent);
             }
         }
     }
