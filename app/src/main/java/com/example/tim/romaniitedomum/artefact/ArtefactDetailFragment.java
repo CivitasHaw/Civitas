@@ -446,14 +446,14 @@ public class ArtefactDetailFragment extends Fragment {
         });
     }
 
-    private void deleteArtefactFromBackendless(final Artefact mArtefact) {
+    private void deleteArtefactFromBackendless(final Artefact artefact) {
         tvLoadArtefactDetail.setText(getResources().getString(R.string.artefact_detail_delete_artefact));
         showProgress(true);
-        Backendless.Persistence.of(Artefact.class).remove(mArtefact, new AsyncCallback<Long>() {
+        Backendless.Persistence.of(Artefact.class).remove(artefact, new AsyncCallback<Long>() {
             @Override
             public void handleResponse(Long response) {
                 Log.d(TAG, "handleResponse: Artefact successfully deleted");
-                ApplicationClass.mArtefactList.remove(mArtefact);
+                ApplicationClass.mArtefactList.remove(artefact);
                 ApplicationClass.mArtefact = null;
 
                 startActivity(new Intent(artefactActivity, MapActivity.class));
