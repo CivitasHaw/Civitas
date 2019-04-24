@@ -72,4 +72,8 @@
     <string name="artefact_detail_created">Created: </string>
     <string name="backendless_property_ownerid">ownerId</string>
     <string name="backendless_property_name">name</string>
+    <string name="artefact_detail_delete_image">Delete image... please wait...</string>
+    <string name="artefact_detail_delete_audio">Delete Audio file... please wait...</string>
+    <string name="artefact_detail_remove_marker">Remove Marker... please wait...</string>
+    <string name="artefact_detail_delete_artefact">Delete Artefact... please wait...</string>
 </resources>

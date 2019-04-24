@@ -379,7 +379,7 @@ public class ArtefactDetailFragment extends Fragment {
     }
 
     private void deleteImageFileFromBackendless(String imageFilePath) {
-        tvLoadArtefactDetail.setText("Delete image... please wait...");
+        tvLoadArtefactDetail.setText(getResources().getString(R.string.artefact_detail_delete_image));
         showProgress(true);
         Log.d(TAG, "deleteImageFileFromBackendless: is called");
         Backendless.Files.remove(imageFilePath, new AsyncCallback<Integer>() {
@@ -408,7 +408,7 @@ public class ArtefactDetailFragment extends Fragment {
 
     private void deleteAudioFileFromBackendless(String audioFilePath) {
         Log.d(TAG, "deleteAudioFileFromBackendless: is called");
-        tvLoadArtefactDetail.setText("Delete Audio file... please wait...");
+        tvLoadArtefactDetail.setText(getResources().getString(R.string.artefact_detail_delete_audio));
         showProgress(true);
         Backendless.Files.remove(audioFilePath, new AsyncCallback<Integer>() {
             @Override
@@ -429,7 +429,7 @@ public class ArtefactDetailFragment extends Fragment {
     //TODO: change saving algorithm for artefact -> image -> audio -> geoPoint
     private void deleteGeoPointFromBackendless(GeoPoint location) {
         showProgress(true);
-        tvLoadArtefactDetail.setText("Remove Marker... please wait...");
+        tvLoadArtefactDetail.setText(getResources().getString(R.string.artefact_detail_remove_marker));
         Log.d(TAG, "deleteGeoPointFromBackendless: is called");
         Backendless.Geo.removePoint(location, new AsyncCallback<Void>() {
             @Override
@@ -447,7 +447,7 @@ public class ArtefactDetailFragment extends Fragment {
     }
 
     private void deleteArtefactFromBackendless(final Artefact mArtefact) {
-        tvLoadArtefactDetail.setText("Delete Artefact... please wait...");
+        tvLoadArtefactDetail.setText(getResources().getString(R.string.artefact_detail_delete_artefact));
         showProgress(true);
         Backendless.Persistence.of(Artefact.class).remove(mArtefact, new AsyncCallback<Long>() {
             @Override
