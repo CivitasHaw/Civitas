@@ -31,6 +31,7 @@ import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
+import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
 
@@ -50,8 +51,10 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
     public boolean isGallery = false;
     public boolean isAtListFragment = false;
     public boolean isAtDetailFragment = false;
+    public boolean isEditMode = false;
     private String mOrigin = "";
 
+    public UserScreen currentScreen = null;
     private DrawerLayout drawer;
 
     @Override
@@ -96,24 +99,50 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            if (isAtListFragment && !isAtDetailFragment) {
-                // artefactList via drawer selection
-                isAtListFragment = false;
-                Intent intent = new Intent(ArtefactActivity.this, MapActivity.class);
-                intent.putExtra(getResources().getString(R.string.origin), Util.LOGIN_FRAGMENT); // loginFragment for moving camera to deviceLocation
-                startActivity(intent);
-            } else if (isAtListFragment && isAtDetailFragment) {
-                // artefactDetail via list
-                isAtListFragment = false;
-                isAtDetailFragment = false;
-                fragmentSwitcher2(new ArtefactListFragment(), false, "");
-            } else {
-                // artefactDetail via marker click
-                isAtListFragment = false;
-                isAtDetailFragment = false;
-                Intent intent = new Intent(ArtefactActivity.this, MapActivity.class);
-                intent.putExtra(getResources().getString(R.string.origin), Util.ARTEFACT_DETAIL_FRAGMENT);
-                startActivity(intent);
+            Intent intent = null;
+            switch (currentScreen) {
+                case ARTEFACT_DETAIL:
+                    if (isAtListFragment) {
+                        // list -> detail
+                        // isAtListFragment = false;
+                        isAtDetailFragment = false;
+                        fragmentSwitcher2(new ArtefactListFragment(), false, ""); // get back to artefactList
+                    } else {
+                        // map -> detail
+                        intent = new Intent(ArtefactActivity.this, MapActivity.class);
+                        intent.putExtra(getResources().getString(R.string.origin),
+                                Util.ARTEFACT_DETAIL_FRAGMENT); // move camera to artefactLocation
+                        startActivity(intent);
+                    }
+                    break;
+                case ARTEFACT_LIST:
+                    if (isAtListFragment) {
+                        // TODO: move camera to last cameraLocation
+                        isAtListFragment = false;
+                        intent = new Intent(ArtefactActivity.this, MapActivity.class);
+                        intent.putExtra(getResources().getString(R.string.origin),
+                                Util.LOGIN_FRAGMENT); // loginFragment for moving camera to deviceLocation
+                        startActivity(intent);
+                    }
+                    break;
+                case NEW_ARTEFACT:
+                    // TODO: move camera to last cameraLocation if newArtefact was entered via onMapLongClick
+
+                    intent = new Intent(ArtefactActivity.this, MapActivity.class);
+                    intent.putExtra(getResources().getString(R.string.origin), Util.LOGIN_FRAGMENT); // loginFragment for moving camera to deviceLocation
+                    startActivity(intent);
+                    break;
+                case EDIT_ARTEFACT:
+                    if (!isAtListFragment) {
+                        // map -> artefactDetail -> edit
+                        isAtDetailFragment = false;
+                        fragmentSwitcher2(new ArtefactDetailFragment(), false, "");
+                    } else {
+                        // list -> artefactDetail -> edit
+                        isAtListFragment = false;
+                        isAtDetailFragment = false;
+                        fragmentSwitcher2(new ArtefactListFragment(), false, ""); // get back to artefactList
+                    }
             }
         }
     }

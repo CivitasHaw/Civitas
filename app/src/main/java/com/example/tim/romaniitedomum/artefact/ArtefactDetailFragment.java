@@ -31,6 +31,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.google.android.gms.maps.model.LatLng;
@@ -236,6 +237,7 @@ public class ArtefactDetailFragment extends Fragment {
                 if (ApplicationClass.mArtefactList.get(i).getObjectId().equals(artefactObjectId)){
 
                     mArtefact = ApplicationClass.mArtefactList.get(i);
+                    ApplicationClass.mArtefact = mArtefact;
                     ApplicationClass.position = ApplicationClass.mArtefactList.indexOf(mArtefact);
                     mPosition = ApplicationClass.position;
                     ApplicationClass.mTempArtefactLatLng = new LatLng(mArtefact.getLatitude(), mArtefact.getLongitude());
@@ -353,6 +355,13 @@ public class ArtefactDetailFragment extends Fragment {
             // TODO: edit artefact
             case R.id.edit_artefact:
                 Log.d(TAG, "onOptionsItemSelected: edit: clicked");
+                ApplicationClass.mArtefact = mArtefact;
+                Bundle args = new Bundle();
+                args.putString(getResources().getString(R.string.origin), Util.ORIGIN_EDIT_ARTEFACT);
+                //args.putString("objectId", mArtefact.getObjectId());
+                NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
+                newArtefactFragment.setArguments(args);
+                artefactActivity.fragmentSwitcher2(newArtefactFragment, true, "newArtefactFragment");
                 break;
             case R.id.delete_artefact:
                 Log.d(TAG, "onOptionsItemSelected: delete: clicked");
@@ -508,6 +517,7 @@ public class ArtefactDetailFragment extends Fragment {
         setHasOptionsMenu(true);
         artefactActivity = (ArtefactActivity)getActivity();
         args = getArguments();
+        artefactActivity.currentScreen = UserScreen.ARTEFACT_DETAIL;
     }
 
     /**

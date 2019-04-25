@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -78,7 +79,6 @@ public class ArtefactListFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
 
                 ApplicationClass.position = position;
-                artefactActivity.isAtListFragment = true;
                 Fragment artefactDetailFragment = new ArtefactDetailFragment();
                 artefactActivity.fragmentSwitcher2(artefactDetailFragment, true, "artefactDetailFragment");
             }
@@ -149,6 +149,9 @@ public class ArtefactListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         artefactActivity = (ArtefactActivity) getActivity();
+        artefactActivity.currentScreen = UserScreen.ARTEFACT_LIST;
+        artefactActivity.isAtListFragment = true;
+
     }
 
     /**

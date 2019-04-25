@@ -42,6 +42,7 @@ import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
+import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.google.android.gms.maps.model.LatLng;
@@ -558,6 +559,7 @@ public class NewArtefactFragment extends Fragment {
 
         artefactActivity = (ArtefactActivity) getActivity();
         mArgs = getArguments();
+        artefactActivity.currentScreen = UserScreen.NEW_ARTEFACT;
 
     }
 
@@ -644,6 +646,8 @@ public class NewArtefactFragment extends Fragment {
 
                     Log.d(TAG, "initNewArtefact: onMapLongClick: mLat: " + mLat);
                     break;
+                    artefactActivity.currentScreen = UserScreen.EDIT_ARTEFACT;
+                            ApplicationClass.mArtefact = mArtefact;
                 default:
                     Log.d(TAG, "initNewArtefact: backpressed in camera mode");
                     break;
