@@ -440,7 +440,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     break;
                                 default:
                                     Log.d(TAG, "onComplete: default");
-                                    moveCamera(new LatLng(9.945, 53.456), DEFAULT_ZOOM);
+                                    moveCamera(new LatLng(10.022582,53.556617), DEFAULT_ZOOM);
                                     break;
                             }
 
