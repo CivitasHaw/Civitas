@@ -74,7 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="16dp">
+                android:paddingTop="16dp"
+                android:visibility="gone">
 
                 <RatingBar
                     android:id="@+id/ratingbar_artefact_detail"
@@ -102,7 +103,7 @@
                 android:text="@string/artefact_detail_name"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
