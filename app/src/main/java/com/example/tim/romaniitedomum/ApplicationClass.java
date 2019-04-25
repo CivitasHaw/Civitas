@@ -25,6 +25,7 @@ public class ApplicationClass extends Application {
     public static Location mDeviceLocation;
     public static LatLng mTempArtefactLatLng;
     public static LatLng mArtefactLatLng;
+    public static LatLng mScreenPosition;
     public static Artefact mArtefact;
     public static List<Artefact> mArtefactList;
     public static ImageLoader loader;
