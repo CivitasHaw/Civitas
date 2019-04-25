@@ -72,7 +72,6 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-    private String s;
 
 
     @Override
