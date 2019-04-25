@@ -183,7 +183,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/buttons"
-                android:text="@string/button_artefact_detail_show_marker_on_map" />
+                android:text="@string/button_artefact_detail_show_marker_on_map"
+                android:visibility="gone" />
         </LinearLayout>
 
     </ScrollView>
