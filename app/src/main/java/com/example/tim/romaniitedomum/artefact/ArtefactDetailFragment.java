@@ -469,6 +469,7 @@ public class ArtefactDetailFragment extends Fragment {
                 Log.d(TAG, "handleResponse: Artefact successfully deleted");
                 ApplicationClass.mArtefactList.remove(artefact);
                 ApplicationClass.mArtefact = null;
+                mArtefact = null;
 
                 Intent intent = new Intent(artefactActivity, MapActivity.class);
                 intent.putExtra(getResources().getString(R.string.origin), Util.ORIGIN_DELETE_ARTEFACT);
