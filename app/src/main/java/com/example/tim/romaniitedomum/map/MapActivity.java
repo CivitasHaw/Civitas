@@ -210,6 +210,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
 
+    private LatLng getScreenPosition() {
+        return mMap.getProjection().getVisibleRegion().latLngBounds.getCenter();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
