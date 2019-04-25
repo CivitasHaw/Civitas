@@ -72,19 +72,12 @@
             <Button
                 android:id="@+id/button_register_submit"
                 android:text="@string/button_register_submit"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/buttons"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
-<!--
-            <Button
-                android:id="@+id/button_register_login"
-                android:text="@string/button_register_login"
-                android:background="@drawable/buttons"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />-->
 
         </LinearLayout>
 
