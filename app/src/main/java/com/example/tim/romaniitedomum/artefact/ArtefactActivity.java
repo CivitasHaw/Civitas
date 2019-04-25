@@ -125,10 +125,10 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                     }
                     break;
                 case NEW_ARTEFACT:
-                    // TODO: move camera to last cameraLocation if newArtefact was entered via onMapLongClick
-
+                    // mapLongClick -> newArtefact
+                    // floatingButtonClick -> new Artefact
                     intent = new Intent(ArtefactActivity.this, MapActivity.class);
-                    intent.putExtra(getResources().getString(R.string.origin), Util.LOGIN_FRAGMENT); // loginFragment for moving camera to deviceLocation
+                    intent.putExtra(getResources().getString(R.string.origin), Util.ARTEFACT_LIST_FRAGMENT); // ListFragment for moving camera to deviceLocation
                     startActivity(intent);
                     break;
                 case EDIT_ARTEFACT:
