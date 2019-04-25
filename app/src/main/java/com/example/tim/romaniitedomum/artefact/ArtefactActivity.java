@@ -3,7 +3,6 @@ package com.example.tim.romaniitedomum.artefact;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -117,11 +116,11 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                     break;
                 case ARTEFACT_LIST:
                     if (isAtListFragment) {
-                        // TODO: move camera to last cameraLocation
+                        // map -> list
                         isAtListFragment = false;
                         intent = new Intent(ArtefactActivity.this, MapActivity.class);
                         intent.putExtra(getResources().getString(R.string.origin),
-                                Util.LOGIN_FRAGMENT); // loginFragment for moving camera to deviceLocation
+                                Util.ARTEFACT_LIST_FRAGMENT); // moving camera to last screenProjection location
                         startActivity(intent);
                     }
                     break;
@@ -238,6 +237,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                 Log.d(TAG, "onNavigationItemSelected: map");
                 intent = new Intent(ArtefactActivity.this, MapActivity.class);
                 intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
+                intent.putExtra("origin", Util.ARTEFACT_LIST_FRAGMENT);
                 startActivity(intent);
                 break;
             case R.id.nav_impressum:

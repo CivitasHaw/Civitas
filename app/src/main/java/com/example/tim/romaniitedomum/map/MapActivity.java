@@ -113,6 +113,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
     public void navigateToNewArtefactFragment(String origin) {
+        ApplicationClass.mScreenPosition = getScreenPosition();
         Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
         intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "newArtefact");
         intent.putExtra(getResources().getString(R.string.origin), origin);
@@ -159,10 +160,11 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         switch (menuItem.getItemId()) {
             case R.id.nav_artefacts:
                 Log.d(TAG, "onNavigationItemSelected: artefacts");
+                ApplicationClass.mScreenPosition = getScreenPosition();
+                Log.d(TAG, "onMapReady: latLng: " + ApplicationClass.mScreenPosition);
                 Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
                 intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
                 startActivity(intent);
-
                 break;
             case R.id.nav_map:
                 Log.d(TAG, "onNavigationItemSelected: map");
@@ -293,6 +295,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void onMapLongClick(LatLng latLng) {
                         ApplicationClass.mArtefactLatLng = latLng;
+                        ApplicationClass.mScreenPosition = latLng;
                         Log.d(TAG, "onMapLongClick: lat: " + ApplicationClass.mArtefactLatLng.latitude + " lng: " + ApplicationClass.mArtefactLatLng.longitude);
                         navigateToNewArtefactFragment("onMapLongClick");
 
@@ -430,6 +433,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                 case Util.ORIGIN_DELETE_ARTEFACT:
                                     Log.d(TAG, "onComplete: deleteArtefact");
                                     moveCamera(ApplicationClass.mTempArtefactLatLng, DEFAULT_ZOOM);
+                                    break;
+                                case Util.ARTEFACT_LIST_FRAGMENT:
+                                    Log.d(TAG, "onComplete: artefactList");
+                                    moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
                                     break;
                                 default:
                                     Log.d(TAG, "onComplete: default");
