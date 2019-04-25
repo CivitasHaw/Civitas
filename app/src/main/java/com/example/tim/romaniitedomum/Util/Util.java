@@ -11,6 +11,7 @@ public class Util {
     public static final String REGISTER_FRAGMENT = "RegisterFragment";
     public static final String MAP_ACTIVITY = "MapActivity";
 
+    // categories
     public static final String CATEGORY_POLITISCHE_INSTITUTION = "Politische_Institution";
     public static final String CATEGORY_WOHNKOMPLEX = "Wohnkomplex";
     public static final String CATEGORY_BASILIKA = "Basilika";
@@ -24,5 +25,8 @@ public class Util {
     public static final String CATEGORY_SPIELSTAETTE = "Spielstaette";
     public static final String CATEGORY_THERME = "Therme";
 
+    // navigation constants
+    public static final String ORIGIN_EDIT_ARTEFACT = "editArtefact";
+    public static final String ORIGIN_DELETE_ARTEFACT = "deleteArtefact";
     public static final String ARTEFACT_OBJECT_ID = "artefactObjectId";
 }
