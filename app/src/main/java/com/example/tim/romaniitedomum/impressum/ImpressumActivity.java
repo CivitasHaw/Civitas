@@ -9,24 +9,29 @@ import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
 
+/**
+ * created by Tim Staats 26.04.2019
+ */
 
 public class ImpressumActivity extends AppCompatActivity {
 
     private static final String TAG = "ImpressumActivity";
+    private Intent originIntent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_impressum);
         setTitle("Impressum");
+        originIntent = new Intent(ImpressumActivity.this, MapActivity.class);
+        originIntent.putExtra(getResources().getString(R.string.origin), Util.IMPRESSUM_ACTIVITY);
+
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(ImpressumActivity.this, MapActivity.class);
-        intent.putExtra("origin", Util.IMPRESSUM_ACTIVITY);
-        startActivity(intent);
+        startActivity(originIntent);
     }
 
     @Override
