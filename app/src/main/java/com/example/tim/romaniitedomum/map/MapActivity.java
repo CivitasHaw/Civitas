@@ -158,6 +158,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 ApplicationClass.mScreenPosition = getScreenPosition();
                 navigationView.setCheckedItem(R.id.nav_impressum);
                 intent = new Intent(MapActivity.this, ImpressumActivity.class);
+                intent.putExtra("origin", Util.MAP_ACTIVITY);
                 intent.putExtra("impressum", "impressum");
                 startActivity(intent);
                 break;
@@ -429,8 +430,13 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     Log.d(TAG, "onComplete: impressumActivity");
                                     navigationView.setCheckedItem(R.id.nav_map);
                                     moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
+                                case Util.ARTEFACT_ACTIVITY:
+                                    Log.d(TAG, "onComplete: impressumActivity from artefacts");
+                                    navigationView.setCheckedItem(R.id.nav_map);
+                                    moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
                                 default:
                                     Log.d(TAG, "onComplete: default");
+                                    // HAW coordinates
                                     moveCamera(new LatLng(53.556617, 10.022582), DEFAULT_ZOOM);
                                     break;
                             }

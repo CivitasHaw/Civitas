@@ -32,6 +32,7 @@ import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
+import com.example.tim.romaniitedomum.impressum.ImpressumActivity;
 import com.example.tim.romaniitedomum.map.MapActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -228,7 +229,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        Intent intent = null;
+        Intent intent;
         switch (menuItem.getItemId()) {
             case R.id.nav_artefacts:
                 Log.d(TAG, "onNavigationItemSelected: artefacts");
@@ -237,12 +238,15 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                 Log.d(TAG, "onNavigationItemSelected: map");
                 intent = new Intent(ArtefactActivity.this, MapActivity.class);
                 intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
-                intent.putExtra("origin", Util.ARTEFACT_LIST_FRAGMENT);
+                intent.putExtra(getResources().getString(R.string.origin), Util.ARTEFACT_LIST_FRAGMENT);
                 startActivity(intent);
                 break;
             case R.id.nav_impressum:
                 Log.d(TAG, "onNavigationItemSelected: impressum");
-                Toast.makeText(this, "Impressum clicked", Toast.LENGTH_SHORT).show();
+                intent = new Intent(ArtefactActivity.this, ImpressumActivity.class);
+                intent.putExtra(getResources().getString(R.string.origin), Util.ARTEFACT_ACTIVITY);
+                //intent.putExtra("impressum", "impressum");
+                startActivity(intent);
                 break;
             case R.id.nav_settings:
                 Log.d(TAG, "onNavigationItemSelected: settings");
