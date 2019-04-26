@@ -138,12 +138,13 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
+        Intent intent;
         switch (menuItem.getItemId()) {
             case R.id.nav_artefacts:
                 Log.d(TAG, "onNavigationItemSelected: artefacts");
                 ApplicationClass.mScreenPosition = getScreenPosition();
                 Log.d(TAG, "onMapReady: latLng: " + ApplicationClass.mScreenPosition);
-                Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
+                intent = new Intent(MapActivity.this, ArtefactActivity.class);
                 intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
                 startActivity(intent);
                 break;
