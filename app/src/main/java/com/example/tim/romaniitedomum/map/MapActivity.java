@@ -424,7 +424,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     Log.d(TAG, "onComplete: artefactList");
                                     moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
                                     break;
+                                case Util.IMPRESSUM_ACTIVITY:
+                                    Log.d(TAG, "onComplete: impressumActivity");
                                     navigationView.setCheckedItem(R.id.nav_map);
+                                    moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
                                 default:
                                     Log.d(TAG, "onComplete: default");
                                     moveCamera(new LatLng(53.556617, 10.022582), DEFAULT_ZOOM);
