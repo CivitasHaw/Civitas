@@ -37,6 +37,7 @@ import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.artefact.ArtefactActivity;
+import com.example.tim.romaniitedomum.impressum.ImpressumActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -151,7 +152,12 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.nav_impressum:
                 Log.d(TAG, "onNavigationItemSelected: impressum");
-                Toast.makeText(this, "Impressum clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Impressum clicked", Toast.LENGTH_SHORT).show();
+                ApplicationClass.mScreenPosition = getScreenPosition();
+                navigationView.setCheckedItem(R.id.nav_impressum);
+                intent = new Intent(MapActivity.this, ImpressumActivity.class);
+                intent.putExtra("impressum", "impressum");
+                startActivity(intent);
                 break;
             case R.id.nav_settings:
                 Log.d(TAG, "onNavigationItemSelected: settings");
