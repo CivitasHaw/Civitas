@@ -149,6 +149,7 @@ public class ArtefactListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         artefactActivity = (ArtefactActivity) getActivity();
+        artefactActivity.setTitle("Civitas");
         artefactActivity.currentScreen = UserScreen.ARTEFACT_LIST;
         artefactActivity.isAtListFragment = true;
 

@@ -92,7 +92,7 @@ public class ArtefactDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        artefactActivity.setTitle(mArtefact.getArtefactName());
+        artefactActivity.setTitle("Civitas");
     }
 
 /*

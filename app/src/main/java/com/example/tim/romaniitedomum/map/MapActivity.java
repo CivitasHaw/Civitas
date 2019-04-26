@@ -103,7 +103,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     @Override
     protected void onStart() {
         super.onStart();
-        setTitle(R.string.mapactivity_title);
+        setTitle("Civitas");
     }
 
 
