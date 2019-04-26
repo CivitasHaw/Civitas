@@ -558,6 +558,7 @@ public class NewArtefactFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         artefactActivity = (ArtefactActivity) getActivity();
+        artefactActivity.setTitle("New Artefact");
         mArgs = getArguments();
         artefactActivity.currentScreen = UserScreen.NEW_ARTEFACT;
 
