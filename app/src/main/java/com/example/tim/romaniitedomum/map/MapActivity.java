@@ -150,7 +150,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.nav_map:
                 Log.d(TAG, "onNavigationItemSelected: map");
-                Toast.makeText(this, "Map clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Map clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_impressum:
                 Log.d(TAG, "onNavigationItemSelected: impressum");
