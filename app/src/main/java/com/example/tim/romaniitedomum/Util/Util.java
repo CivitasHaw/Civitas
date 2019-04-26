@@ -10,6 +10,7 @@ public class Util {
     public static final String LOGIN_FRAGMENT = "LoginFragment";
     public static final String REGISTER_FRAGMENT = "RegisterFragment";
     public static final String MAP_ACTIVITY = "MapActivity";
+    public static final String IMPRESSUM_ACTIVITY = "ImpressumActivity";
 
     // categories
     public static final String CATEGORY_POLITISCHE_INSTITUTION = "Politische_Institution";
