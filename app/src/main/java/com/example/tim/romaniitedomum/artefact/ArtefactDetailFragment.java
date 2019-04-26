@@ -493,7 +493,7 @@ public class ArtefactDetailFragment extends Fragment {
         } catch (NullPointerException e) {
             Log.e(TAG, "fillArtefactTextViews: NullpointerException: " + e.getMessage());
         }
-        String category = "#" + artefact.getCategoryName();
+        String category = "Category: #" + artefact.getCategoryName();
         tvArtefactDetailName.setText(artefact.getArtefactName());
         tvArtefactDetailAuthor.setText(author);
         tvArtefactDetailCreated.setText(d);
