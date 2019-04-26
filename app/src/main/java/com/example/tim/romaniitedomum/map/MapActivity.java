@@ -67,6 +67,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private static final float DEFAULT_ZOOM = 15f;
 
     private DrawerLayout drawer;
+    private NavigationView navigationView;
     private FloatingActionButton btnAddArtefact;
 
 
@@ -116,7 +117,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
 
         View header = navigationView.getHeaderView(0);
         TextView tvNavName = header.findViewById(R.id.text_nav_user_name);
@@ -423,6 +424,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     Log.d(TAG, "onComplete: artefactList");
                                     moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
                                     break;
+                                    navigationView.setCheckedItem(R.id.nav_map);
                                 default:
                                     Log.d(TAG, "onComplete: default");
                                     moveCamera(new LatLng(53.556617, 10.022582), DEFAULT_ZOOM);
