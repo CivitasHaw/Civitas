@@ -72,8 +72,6 @@ public class ArtefactListFragment extends Fragment {
         mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
             @Override
             public void onItemclick(int position) {
-                Toast.makeText(artefactActivity, "Click: " + ApplicationClass.mArtefactList.get(position).getArtefactName(),
-                        Toast.LENGTH_SHORT).show();
 
                 ApplicationClass.position = position;
                 Fragment artefactDetailFragment = new ArtefactDetailFragment();
