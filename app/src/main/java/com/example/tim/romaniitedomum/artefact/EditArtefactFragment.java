@@ -5,8 +5,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -43,7 +46,11 @@ public class EditArtefactFragment extends Fragment {
     private static final String TAG = "EditArtefactFragment";
 
     public static final int REQUEST_PERMISSION_CODE_CAMERA = 2000;
+    public static final int REQUEST_PERMISSION_CODE_GALLERY = 3000;
+    public static final int PICK_IMAGE = 1;
     public static final String ORIGIN_CAMERA = "camera";
+    public static final String ORIGIN_GALLERY = "gallery";
+    public static final int BITMAP_QUALITY = 100;
     private ArtefactActivity artefactActivity;
 
     private View mProgressViewEditArtefact;
@@ -113,6 +120,7 @@ public class EditArtefactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: btnGallery");
+                pickImageFromGallery();
             }
         });
 
@@ -129,6 +137,15 @@ public class EditArtefactFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void pickImageFromGallery() {
+        artefactActivity.isEditMode = true;
+        artefactActivity.isGallery = true;
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
     }
 
     private void takePhotoWithCamera() {
@@ -172,6 +189,8 @@ public class EditArtefactFragment extends Fragment {
             }
 
         if (mArgs != null) {
+            String origin = mArgs.getString(getResources().getString(R.string.origin));
+            ArtefactImageBitmap artefactImageBitmap = ArtefactImageBitmap.getInstance();
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                 showProgress(false);
@@ -183,6 +202,11 @@ public class EditArtefactFragment extends Fragment {
             switch (origin) {
                 case ORIGIN_CAMERA:
                     Log.d(TAG, "initEditArtefact: origin: camera");
+                    artefactBitmap = BitmapFactory.decodeByteArray(artefactImageBitmap.getByteArray(), 0, artefactImageBitmap.getByteArray().length);
+                    ivArtefact.setImageBitmap(artefactBitmap);
+                    break;
+                case ORIGIN_GALLERY:
+                    Log.d(TAG, "initEditArtefact: origin: gallery");
                     artefactBitmap = BitmapFactory.decodeByteArray(artefactImageBitmap.getByteArray(), 0, artefactImageBitmap.getByteArray().length);
                     ivArtefact.setImageBitmap(artefactBitmap);
                     break;
