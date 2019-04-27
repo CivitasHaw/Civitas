@@ -154,6 +154,10 @@ public class EditArtefactFragment extends Fragment {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_PERMISSION_CODE_CAMERA);
     }
+    private void provideFilePath() {
+        audioFilePath = "artefactAudios/" + mArtefact.getArtefactAudioFileName();
+        imageFilePath = "artefactImages/" + mArtefact.getArtefactImageFileName();
+    }
     private void initEditArtefact(View view) {
         tvLoadEditArtefact = view.findViewById(R.id.tvLoad_edit_artefact);
         mProgressViewEditArtefact = view.findViewById(R.id.progress_edit_artefact);
@@ -173,6 +177,7 @@ public class EditArtefactFragment extends Fragment {
         etArtefactAge = view.findViewById(R.id.edit_edit_artefact_age);
         btnEditArtefact = view.findViewById(R.id.button_edit_artefact_save);
 
+        provideFilePath();
         mCategoryList = populateCategoryList();
         mCategoryAdapter = new CategoryAdapter(artefactActivity, mCategoryList);
         spinnerCategory.setAdapter(mCategoryAdapter);
