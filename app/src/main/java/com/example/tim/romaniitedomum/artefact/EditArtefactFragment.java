@@ -4,6 +4,7 @@ package com.example.tim.romaniitedomum.artefact;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -24,17 +25,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.files.BackendlessFile;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
+import com.example.tim.romaniitedomum.map.MapActivity;
+import com.google.android.gms.maps.model.LatLng;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -45,12 +55,16 @@ public class EditArtefactFragment extends Fragment {
 
     private static final String TAG = "EditArtefactFragment";
 
+    public static final int REQUEST_PERMISSION_CODE_AUDIO = 1000;
     public static final int REQUEST_PERMISSION_CODE_CAMERA = 2000;
     public static final int REQUEST_PERMISSION_CODE_GALLERY = 3000;
     public static final int PICK_IMAGE = 1;
     public static final String ORIGIN_CAMERA = "camera";
     public static final String ORIGIN_GALLERY = "gallery";
+    public static final String BACKENDLESS_IMAGE_FILE_PATH = "artefactImages";
+    public static final String BACKENDLESS_AUDIO_FILE_PATH = "/artefactAudios";
     public static final int BITMAP_QUALITY = 100;
+
     private ArtefactActivity artefactActivity;
 
     private View mProgressViewEditArtefact;
@@ -69,13 +83,17 @@ public class EditArtefactFragment extends Fragment {
     private int categoryPosition;
     private String clickedCategory;
     private Bitmap artefactBitmap;
+    private String imageFileName = "";
+    private String audioFileName = "";
+    private String imageFilePath = "";
+    private String audioFilePath = "";
 
     private Artefact mArtefact;
+    private Artefact mEditArtefact;
     private LinearLayout layoutAudio;
 
     private Bundle mArgs;
     private ImageLoader mLoader;
-
 
 
     @Nullable
@@ -88,7 +106,7 @@ public class EditArtefactFragment extends Fragment {
         initEditArtefact(view);
 
         for (int i = 0; i < mCategoryList.size(); i++) {
-            if (mCategoryList.get(i).getCategoryName().equals(mArtefact.getCategoryName())){
+            if (mCategoryList.get(i).getCategoryName().equals(mArtefact.getCategoryName())) {
                 categoryPosition = i;
             }
         }
@@ -127,12 +145,32 @@ public class EditArtefactFragment extends Fragment {
         btnEditArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mArtefact.setArtefactName(etArtefactName.getText().toString());
+                mArtefact.setArtefactDescription(etArtefactDescription.getText().toString());
+                mArtefact.setArtefactAge(etArtefactAge.getText().toString());
+                mArtefact.setCategoryName(mCategory.getCategoryName());
+                mArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
+
+                Date date = new Date();
+                Timestamp timestamp = new Timestamp(date.getTime());
+                //String imageFileName = artefactName + "_" + artefactDescription + ".png";
+                imageFileName = "artefactImage_" + mArtefact.getArtefactName() + "_" + timestamp + ".png";
+                audioFileName = "artefactAudio_" + mArtefact.getArtefactName() + "_" + timestamp + ".3gp";
+                mArtefact.setArtefactImageFileName(imageFileName);
+                mArtefact.setArtefactAudioFileName(audioFileName);
+                // replace ApplicationClass.mArtefact
+                // delete old imageFile
                 // save new imageFile
+                // delete old audioFile
                 // save new audioFile
                 // update artefact backendless
-                // delete old imageFile
-                // delete old audioFile
-                // replace ApplicationClass.mArtefact
+                ApplicationClass.mArtefactList.remove(mArtefact);
+                if (artefactActivity.isImageChanged) {
+                    deleteImageFileFromBackendless(imageFilePath);
+                } else {
+                    updateArtefactInBackendless();
+                }
+
             }
         });
 
@@ -154,10 +192,107 @@ public class EditArtefactFragment extends Fragment {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_PERMISSION_CODE_CAMERA);
     }
+
+    private void deleteImageFileFromBackendless(String imageFilePath) {
+        tvLoadEditArtefact.setText(getResources().getString(R.string.artefact_detail_delete_image));
+        showProgress(true);
+        Log.d(TAG, "deleteImageFileFromBackendless: is called");
+        Backendless.Files.remove(imageFilePath, new AsyncCallback<Integer>() {
+            @Override
+            public void handleResponse(Integer response) {
+                Log.d(TAG, "handleResponse: Image successfully deleted!");
+
+                if (mArtefact.getArtefactAudioUrl()!= null) {
+                    // TODO: audio
+                    //deleteAudioFileFromBackendless(audioFilePath);
+                } else {
+                    uploadImageToBackendless(artefactBitmap, imageFileName);
+                }
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                showProgress(false);
+                Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "handleFault: Error: " + fault.getMessage());
+            }
+        });
+    }
+
+    private void deleteAudioFileFromBackendless(String audioFilePath) {
+        Log.d(TAG, "deleteAudioFileFromBackendless: is called");
+        tvLoadEditArtefact.setText(getResources().getString(R.string.artefact_detail_delete_audio));
+        showProgress(true);
+        Backendless.Files.remove(audioFilePath, new AsyncCallback<Integer>() {
+            @Override
+            public void handleResponse(Integer response) {
+                updateArtefactInBackendless();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                showProgress(false);
+                Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateArtefactInBackendless() {
+
+        showProgress(true);
+        tvLoadEditArtefact.setText("Updating artefact... please wait...");
+        Backendless.Persistence.save(mArtefact, new AsyncCallback<Artefact>() {
+            @Override
+            public void handleResponse(Artefact response) {
+
+                artefactActivity.isEditMode = false;
+                artefactActivity.isImageChanged = false;
+                ApplicationClass.mArtefact = response;
+                ApplicationClass.mArtefactList.add(response);
                 ApplicationClass.mArtefactLatLng = new LatLng(response.getLatitude(), response.getLongitude());
                 Intent intent = new Intent(artefactActivity, MapActivity.class);
                 intent.putExtra("origin", Util.EDIT_ARTEFACT_FRAGMENT);
                 startActivity(intent);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                showProgress(false);
+            }
+        });
+
+    }
+
+    private void uploadImageToBackendless(Bitmap artefactBitmap, String fileName) {
+        showProgress(true);
+        tvLoadEditArtefact.setText(getResources().getText(R.string.new_artefact_save_image));
+
+        Backendless.Files.Android.upload(artefactBitmap, Bitmap.CompressFormat.PNG, BITMAP_QUALITY,
+                fileName, BACKENDLESS_IMAGE_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+                    @Override
+                    public void handleResponse(BackendlessFile response) {
+                        mArtefact.setArtefactImageUrl(response.getFileURL());
+                        Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_image_upload), Toast.LENGTH_SHORT).show();
+                        updateArtefactInBackendless();
+                        //showProgress(false);
+
+//                        if (!audioExists) {
+//                            saveGeoPointToBackendless(mLat, mLng);
+//                        } else {
+//                            uploadAudioToBackendless(mAudioFile);
+//                        }
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        mArtefact.setArtefactAudioUrl("");
+                        showProgress(false);
+                        Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void provideFilePath() {
         audioFilePath = "artefactAudios/" + mArtefact.getArtefactAudioFileName();
         imageFilePath = "artefactImages/" + mArtefact.getArtefactImageFileName();
