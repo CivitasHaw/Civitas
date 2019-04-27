@@ -60,7 +60,7 @@ public class ArtefactDetailFragment extends Fragment {
 
     private ImageView ivArtefactDetail;
     private TextView tvArtefactDetailName, tvArtefactDetailCategory, tvArtefactDetailDescription;
-    private TextView tvArtefactDetailAuthor, tvArtefactDetailCreated;
+    private TextView tvArtefactDetailAuthor, tvArtefactDetailCreated, tvArtefactDetailUpdated;
     private Button btnArtefactDetailMarker, btnArtefactDetailSaveRating;
     private ProgressBar mProgress;
     private RatingBar mRating;
@@ -194,6 +194,7 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailDescription = view.findViewById(R.id.text_artefact_detail_description);
         tvArtefactDetailAuthor = view.findViewById(R.id.text_artefact_detail_author);
         tvArtefactDetailCreated = view.findViewById(R.id.text_artefact_detail_created);
+        tvArtefactDetailUpdated = view.findViewById(R.id.text_artefact_detail_updated);
         btnArtefactDetailMarker = view.findViewById(R.id.button_artefact_detail_show_marker_on_map);
         mProgress = view.findViewById(R.id.progress_image_artefact_detail);
         mRating = view.findViewById(R.id.ratingbar_artefact_detail);
@@ -486,11 +487,18 @@ public class ArtefactDetailFragment extends Fragment {
     private void fillArtefactTextViews(Artefact artefact) {
         String author = getResources().getString(R.string.artefact_detail_author) + " " + artefact.getAuthorName() + " ";
         Date date = artefact.getCreated();
+        Date update = artefact.getUpdated();
         String d = "";
+        String u = "";
         try {
             d =  "Created: " + date.toLocaleString();
+            u = "Updated: " + update.toLocaleString();
         } catch (NullPointerException e) {
             Log.e(TAG, "fillArtefactTextViews: NullpointerException: " + e.getMessage());
+        }
+        if (artefact.getUpdated() != null) {
+            tvArtefactDetailUpdated.setVisibility(View.VISIBLE);
+            tvArtefactDetailUpdated.setText(u);
         }
         String category = "Category: #" + artefact.getCategoryName();
         tvArtefactDetailName.setText(artefact.getArtefactName());

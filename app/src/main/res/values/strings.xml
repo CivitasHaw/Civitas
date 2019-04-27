@@ -77,4 +77,5 @@
     <string name="artefact_detail_remove_marker">Remove Marker... please wait...</string>
     <string name="artefact_detail_delete_artefact">Delete Artefact... please wait...</string>
     <string name="button_edit_artefact">Edit Artefact</string>
+    <string name="artefact_detail_updated">Updated:</string>
 </resources>
