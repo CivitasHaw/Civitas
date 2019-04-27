@@ -52,6 +52,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
     public boolean isAtListFragment = false;
     public boolean isAtDetailFragment = false;
     public boolean isEditMode = false;
+    public boolean isImageChanged = false;
     private String mOrigin = "";
 
     public UserScreen currentScreen = null;
@@ -99,7 +100,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent intent = null;
+            Intent intent;
             switch (currentScreen) {
                 case ARTEFACT_DETAIL:
                     if (isAtListFragment) {
@@ -133,6 +134,8 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                     startActivity(intent);
                     break;
                 case EDIT_ARTEFACT:
+                    isEditMode = false;
+                    isImageChanged = false;
                     if (!isAtListFragment) {
                         // map -> artefactDetail -> edit
                         isAtDetailFragment = false;
