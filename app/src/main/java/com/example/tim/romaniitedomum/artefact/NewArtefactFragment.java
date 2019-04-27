@@ -591,9 +591,9 @@ public class NewArtefactFragment extends Fragment {
         tvLoadNewArtefact = view.findViewById(R.id.tvLoad_new_artefact);
 
         ivNewArtefact = view.findViewById(R.id.image_new_artefact);
-        etNewArtefactDate = view.findViewById(R.id.edit_new_artefact_date);
-        etNewArtefactName = view.findViewById(R.id.edit_new_artefact_name);
-        etNewArtefactDescription = view.findViewById(R.id.edit_new_artefact_description);
+        etNewArtefactDate = view.findViewById(R.id.et_new_artefact_date);
+        etNewArtefactName = view.findViewById(R.id.et_new_artefact_name);
+        etNewArtefactDescription = view.findViewById(R.id.et_new_artefact_description);
         btnNewArtefactSave = view.findViewById(R.id.button_new_artefact_save);
         btnAudio = view.findViewById(R.id.button_new_artefact_audio);
         btnTakeFotoFromCamera = view.findViewById(R.id.button_new_artefact_image_from_camera);
