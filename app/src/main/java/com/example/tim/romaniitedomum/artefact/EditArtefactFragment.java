@@ -42,6 +42,8 @@ public class EditArtefactFragment extends Fragment {
 
     private static final String TAG = "EditArtefactFragment";
 
+    public static final int REQUEST_PERMISSION_CODE_CAMERA = 2000;
+    public static final String ORIGIN_CAMERA = "camera";
     private ArtefactActivity artefactActivity;
 
     private View mProgressViewEditArtefact;
@@ -59,10 +61,12 @@ public class EditArtefactFragment extends Fragment {
     private Category mCategory;
     private int categoryPosition;
     private String clickedCategory;
+    private Bitmap artefactBitmap;
 
     private Artefact mArtefact;
     private LinearLayout layoutAudio;
 
+    private Bundle mArgs;
     private ImageLoader mLoader;
 
 
@@ -101,6 +105,7 @@ public class EditArtefactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: btnCamera");
+                takePhotoWithCamera();
             }
         });
 
@@ -126,6 +131,12 @@ public class EditArtefactFragment extends Fragment {
         return view;
     }
 
+    private void takePhotoWithCamera() {
+        artefactActivity.isEditMode = true;
+        artefactActivity.isCamera = true;
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_PERMISSION_CODE_CAMERA);
+    }
     private void initEditArtefact(View view) {
         tvLoadEditArtefact = view.findViewById(R.id.tvLoad_edit_artefact);
         mProgressViewEditArtefact = view.findViewById(R.id.progress_edit_artefact);
@@ -160,6 +171,7 @@ public class EditArtefactFragment extends Fragment {
                 tvLoadEditArtefact.setText("Loading artefact... please wait...");
             }
 
+        if (mArgs != null) {
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                 showProgress(false);
@@ -168,6 +180,12 @@ public class EditArtefactFragment extends Fragment {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 showProgress(false);
+            switch (origin) {
+                case ORIGIN_CAMERA:
+                    Log.d(TAG, "initEditArtefact: origin: camera");
+                    artefactBitmap = BitmapFactory.decodeByteArray(artefactImageBitmap.getByteArray(), 0, artefactImageBitmap.getByteArray().length);
+                    ivArtefact.setImageBitmap(artefactBitmap);
+                    break;
             }
 
             @Override
@@ -203,6 +221,7 @@ public class EditArtefactFragment extends Fragment {
 
         artefactActivity = (ArtefactActivity) getActivity();
         artefactActivity.currentScreen = UserScreen.EDIT_ARTEFACT;
+        mArgs = getArguments();
         mArtefact = ApplicationClass.mArtefact;
     }
 

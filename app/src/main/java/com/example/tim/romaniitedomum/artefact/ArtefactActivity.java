@@ -187,7 +187,13 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         super.onActivityResult(requestCode, resultCode, data);
 
         ArtefactImageBitmap artefactImageBitmap = ArtefactImageBitmap.getInstance();
-        NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
+        Fragment fragment;
+        if (isEditMode) {
+            isImageChanged = true;
+            fragment = new EditArtefactFragment();
+        } else {
+            fragment = new NewArtefactFragment();
+        }
         Bundle args = new Bundle();
 
         // source
@@ -223,8 +229,8 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
             mOrigin = "";
             args.putString(getResources().getString(R.string.origin), mOrigin);
         }
-        newArtefactFragment.setArguments(args);
-        fragmentSwitcher2(newArtefactFragment, false, "");
+        fragment.setArguments(args);
+        fragmentSwitcher2(fragment, false, "");
     }
 
     @Override
