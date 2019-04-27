@@ -434,6 +434,11 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     Log.d(TAG, "onComplete: impressumActivity from artefacts");
                                     navigationView.setCheckedItem(R.id.nav_map);
                                     moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
+                                case Util.EDIT_ARTEFACT_FRAGMENT:
+                                    Log.d(TAG, "onComplete: editArtefact");
+                                    navigationView.setCheckedItem(R.id.nav_map);
+                                    moveCamera(ApplicationClass.mArtefactLatLng, DEFAULT_ZOOM);
+                                    break;
                                 default:
                                     Log.d(TAG, "onComplete: default");
                                     // HAW coordinates

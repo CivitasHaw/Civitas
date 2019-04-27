@@ -6,6 +6,7 @@ public class Util {
     public static final String ARTEFACT_ACTIVITY = "ArtefactActivity";
     public static final String ARTEFACT_DETAIL_FRAGMENT = "ArtefactDetailFragment";
     public static final String NEW_ARTEFACT_FRAGMENT = "NewArtefactFragement";
+    public static final String EDIT_ARTEFACT_FRAGMENT = "EditArtefactFragement";
     public static final String ARTEFACT_LIST_FRAGMENT = "ArtefactListFragment";
     public static final String LOGIN_FRAGMENT = "LoginFragment";
     public static final String REGISTER_FRAGMENT = "RegisterFragment";

@@ -154,6 +154,10 @@ public class EditArtefactFragment extends Fragment {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_PERMISSION_CODE_CAMERA);
     }
+                ApplicationClass.mArtefactLatLng = new LatLng(response.getLatitude(), response.getLongitude());
+                Intent intent = new Intent(artefactActivity, MapActivity.class);
+                intent.putExtra("origin", Util.EDIT_ARTEFACT_FRAGMENT);
+                startActivity(intent);
     private void provideFilePath() {
         audioFilePath = "artefactAudios/" + mArtefact.getArtefactAudioFileName();
         imageFilePath = "artefactImages/" + mArtefact.getArtefactImageFileName();
