@@ -361,10 +361,9 @@ public class ArtefactDetailFragment extends Fragment {
                 ApplicationClass.mArtefact = mArtefact;
                 Bundle args = new Bundle();
                 args.putString(getResources().getString(R.string.origin), Util.ORIGIN_EDIT_ARTEFACT);
-                //args.putString("objectId", mArtefact.getObjectId());
-                NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
-                newArtefactFragment.setArguments(args);
-                artefactActivity.fragmentSwitcher2(newArtefactFragment, true, "newArtefactFragment");
+                EditArtefactFragment editArtefactFragment = new EditArtefactFragment();
+                editArtefactFragment.setArguments(args);
+                artefactActivity.fragmentSwitcher2(editArtefactFragment, true, "EditArtefactFragment");
                 break;
             case R.id.delete_artefact:
                 Log.d(TAG, "onOptionsItemSelected: delete: clicked");
