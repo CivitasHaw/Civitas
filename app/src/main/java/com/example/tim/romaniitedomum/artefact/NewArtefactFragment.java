@@ -380,7 +380,7 @@ public class NewArtefactFragment extends Fragment {
                 etNewArtefactDescription.setText("");
                 etNewArtefactDate.setText("");
                 Intent intent = new Intent(artefactActivity, MapActivity.class);
-                intent.putExtra(getResources().getString(R.string.origin), TAG);
+                intent.putExtra(getResources().getString(R.string.origin), Util.NEW_ARTEFACT_FRAGMENT);
                 startActivity(intent);
             }
 
