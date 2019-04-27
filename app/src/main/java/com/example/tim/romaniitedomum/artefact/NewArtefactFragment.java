@@ -107,8 +107,8 @@ public class NewArtefactFragment extends Fragment {
     private double mLng;
     private Bundle mArgs;
 
-    String imageFileName = "";
-    String audioFileName = "";
+    private String imageFileName = "";
+    private String audioFileName = "";
 
     private boolean isImageSelected = false;
 
