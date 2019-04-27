@@ -267,54 +267,57 @@ public class NewArtefactFragment extends Fragment {
         btnNewArtefactSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                artefactName = etNewArtefactName.getText().toString().trim();
-                artefactDescription = etNewArtefactDescription.getText().toString().trim();
-                artefactDate = etNewArtefactDate.getText().toString().trim();
 
-                imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
-                if (!imageIsTakenFromCamera.isEmpty()) {
-                    isImageSelected = true;
-                }
-
-                if (checkFields()) {
-                    //Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
-                    Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
-                } else {
-
-                    // setup artefact content for later usage
-                    mArtefact = new Artefact();
-                    mArtefact.setArtefactName(artefactName);
-                    mArtefact.setArtefactDescription(artefactDescription);
-                    mArtefact.setUserEmail(ApplicationClass.user.getEmail());
-                    mArtefact.setAuthorName(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_name)).toString());
-                    mArtefact.setOwnerId(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString());
-                    mArtefact.setLatitude(mLat);
-                    mArtefact.setLongitude(mLng);
-                    mArtefact.setLocation(new GeoPoint(mLat, mLng));
-                    //mArtefact.setCategory(new Category(mCategory.getCategoryName(), mCategory.getCategoryMarkerImage()));
-                    mArtefact.setCategoryName(mCategory.getCategoryName());
-                    mArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
-
-                    Date date = new Date();
-                    Timestamp timestamp = new Timestamp(date.getTime());
-                    //String imageFileName = artefactName + "_" + artefactDescription + ".png";
-                    imageFileName = "artefactImage_" + artefactName + "_" + timestamp + ".png";
-                    audioFileName = "artefactAudio_" + artefactName + "_" + timestamp + ".3gp";
-
-                    mArtefact.setArtefactImageFileName(imageFileName);
-                    mArtefact.setArtefactAudioFileName(audioFileName);
-
-                    uploadImageToBackendless(artefactBitmap, imageFileName);
-                }
-
-
+                saveArtefact();
             }
         });
 
         return view;
     }
 
+    private void saveArtefact() {
+        artefactName = etNewArtefactName.getText().toString().trim();
+        artefactDescription = etNewArtefactDescription.getText().toString().trim();
+        artefactDate = etNewArtefactDate.getText().toString().trim();
+
+        imageIsTakenFromCamera = mArgs.getString(getResources().getString(R.string.origin));
+        if (!imageIsTakenFromCamera.isEmpty()) {
+            isImageSelected = true;
+        }
+
+        if (checkFields()) {
+            //Log.d(TAG, "onClick: mArgs: " + imageIsTakenFromCamera);
+            Toast.makeText(getContext(), getResources().getText(R.string.toast_empty_fields), Toast.LENGTH_SHORT).show();
+        } else {
+
+            // setup artefact content for later usage
+            mArtefact = new Artefact();
+            mArtefact.setArtefactName(artefactName);
+            mArtefact.setArtefactDescription(artefactDescription);
             mArtefact.setArtefactAge(artefactDate);
+            mArtefact.setUserEmail(ApplicationClass.user.getEmail());
+            mArtefact.setAuthorName(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_name)).toString());
+            mArtefact.setOwnerId(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString());
+            mArtefact.setLatitude(mLat);
+            mArtefact.setLongitude(mLng);
+            mArtefact.setLocation(new GeoPoint(mLat, mLng));
+            //mArtefact.setCategory(new Category(mCategory.getCategoryName(), mCategory.getCategoryMarkerImage()));
+            mArtefact.setCategoryName(mCategory.getCategoryName());
+            mArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
+
+            Date date = new Date();
+            Timestamp timestamp = new Timestamp(date.getTime());
+            //String imageFileName = artefactName + "_" + artefactDescription + ".png";
+            imageFileName = "artefactImage_" + artefactName + "_" + timestamp + ".png";
+            audioFileName = "artefactAudio_" + artefactName + "_" + timestamp + ".3gp";
+
+            mArtefact.setArtefactImageFileName(imageFileName);
+            mArtefact.setArtefactAudioFileName(audioFileName);
+
+            uploadImageToBackendless(artefactBitmap, imageFileName);
+        }
+    }
+
     private void uploadImageToBackendless(Bitmap artefactBitmap, String fileName) {
         showProgress(true);
         tvLoadNewArtefact.setText(getResources().getText(R.string.new_artefact_save_image));
