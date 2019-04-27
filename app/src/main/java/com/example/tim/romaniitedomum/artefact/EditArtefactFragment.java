@@ -158,6 +158,7 @@ public class EditArtefactFragment extends Fragment {
         audioFilePath = "artefactAudios/" + mArtefact.getArtefactAudioFileName();
         imageFilePath = "artefactImages/" + mArtefact.getArtefactImageFileName();
     }
+
     private void initEditArtefact(View view) {
         tvLoadEditArtefact = view.findViewById(R.id.tvLoad_edit_artefact);
         mProgressViewEditArtefact = view.findViewById(R.id.progress_edit_artefact);
@@ -178,6 +179,7 @@ public class EditArtefactFragment extends Fragment {
         btnEditArtefact = view.findViewById(R.id.button_edit_artefact_save);
 
         provideFilePath();
+
         mCategoryList = populateCategoryList();
         mCategoryAdapter = new CategoryAdapter(artefactActivity, mCategoryList);
         spinnerCategory.setAdapter(mCategoryAdapter);
@@ -186,24 +188,11 @@ public class EditArtefactFragment extends Fragment {
         etArtefactName.setText(mArtefact.getArtefactName());
         etArtefactDescription.setText(mArtefact.getArtefactDescription());
         etArtefactAge.setText(mArtefact.getArtefactAge());
-        mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefact, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-                showProgress(true);
-                tvLoadEditArtefact.setText("Loading artefact... please wait...");
-            }
 
         if (mArgs != null) {
             String origin = mArgs.getString(getResources().getString(R.string.origin));
             ArtefactImageBitmap artefactImageBitmap = ArtefactImageBitmap.getInstance();
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                showProgress(false);
-            }
 
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                showProgress(false);
             switch (origin) {
                 case ORIGIN_CAMERA:
                     Log.d(TAG, "initEditArtefact: origin: camera");
@@ -215,13 +204,34 @@ public class EditArtefactFragment extends Fragment {
                     artefactBitmap = BitmapFactory.decodeByteArray(artefactImageBitmap.getByteArray(), 0, artefactImageBitmap.getByteArray().length);
                     ivArtefact.setImageBitmap(artefactBitmap);
                     break;
-            }
+                default:
+                    Log.d(TAG, "initEditArtefact: default");
+                    mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefact, new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+                            showProgress(true);
+                            tvLoadEditArtefact.setText("Loading artefact... please wait...");
+                        }
 
-            @Override
-            public void onLoadingCancelled(String imageUri, View view) {
-                showProgress(false);
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                            showProgress(false);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            showProgress(false);
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+                            showProgress(false);
+                        }
+                    });
+                    break;
             }
-        });
+        }
+
     }
 
     private ArrayList<Category> populateCategoryList() {
