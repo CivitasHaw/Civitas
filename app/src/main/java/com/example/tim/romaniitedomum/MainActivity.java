@@ -38,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void fragmentSwitch(Fragment fragment, boolean toBackstack, String name){
+    public void fragmentSwitch(Fragment fragment, boolean toBackstack, String name) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
-        if(toBackstack){
+        if (toBackstack) {
             transaction.addToBackStack(name);
         } else {
 
@@ -49,14 +49,14 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    public boolean isServicesOk(){
+    public boolean isServicesOk() {
         Log.d(TAG, "isServicesOk: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(MainActivity.this);
-        if (available == ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             Log.d(TAG, "isServicesOk: Google Play Services is working");
             return true;
-        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             Log.d(TAG, "isServicesOk: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
