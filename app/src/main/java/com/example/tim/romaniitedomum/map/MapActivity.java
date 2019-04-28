@@ -200,6 +200,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
 
+    // source
+    // https://stackoverflow.com/questions/16056366/android-google-maps-how-to-get-the-area-which-is-currently-shown-in-screen-devi/16064924
     private LatLng getScreenPosition() {
         return mMap.getProjection().getVisibleRegion().latLngBounds.getCenter();
     }
