@@ -22,6 +22,9 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.BackendlessDataQuery;
+import com.backendless.persistence.DataQueryBuilder;
+import com.backendless.persistence.QueryOptions;
 import com.backendless.persistence.local.UserIdStorageFactory;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.artefact.Artefact;
@@ -180,7 +183,12 @@ public class LoginFragment extends Fragment {
 
     private void retrieveArtefactsFromBackendless() {
         tvLoad.setText(getResources().getText(R.string.retrieve_artefacts_from_backendless));
-        Backendless.Persistence.of(Artefact.class).find(new AsyncCallback<List<Artefact>>() {
+        // retrieve more than 10 artefact objects
+        // source
+        // https://backendless.com/docs/android/data_data_paging.html
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setPageSize(25).setOffset(0);
+        Backendless.Data.of(Artefact.class).find(queryBuilder, new AsyncCallback<List<Artefact>>() {
             @Override
             public void handleResponse(List<Artefact> response) {
                 ApplicationClass.mArtefactList = response;
