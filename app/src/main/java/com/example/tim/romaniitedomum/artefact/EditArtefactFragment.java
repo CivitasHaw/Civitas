@@ -249,7 +249,6 @@ public class EditArtefactFragment extends Fragment {
                 artefactActivity.isImageChanged = false;
                 ApplicationClass.mArtefact = response;
                 ApplicationClass.mArtefactList.add(response);
-                ApplicationClass.mArtefactLatLng = new LatLng(response.getLatitude(), response.getLongitude());
                 Intent intent = new Intent(artefactActivity, MapActivity.class);
                 intent.putExtra(Util.ORIGIN, Util.EDIT_ARTEFACT_FRAGMENT);
                 startActivity(intent);
@@ -401,6 +400,7 @@ public class EditArtefactFragment extends Fragment {
         artefactActivity.currentScreen = UserScreen.EDIT_ARTEFACT;
         mArgs = getArguments();
         mArtefact = ApplicationClass.mArtefact;
+        ApplicationClass.mArtefactLatLng = new LatLng(ApplicationClass.mArtefact.getLatitude(), ApplicationClass.mArtefact.getLongitude());
     }
 
     /**

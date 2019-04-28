@@ -259,6 +259,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                         double lat = marker.getPosition().latitude;
                         double lng = marker.getPosition().longitude;
                         String title = marker.getTitle();
+                        ApplicationClass.mScreenPosition = getScreenPosition();
 
                         for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
                             if (ApplicationClass.mArtefactList.get(i).getArtefactName().equals(title) &&
@@ -274,7 +275,6 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     }
                 });
 
-
                 if (ApplicationClass.mArtefactList.size() > 0) {
                     for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
                         createMarker(ApplicationClass.mArtefactList.get(i));
@@ -286,6 +286,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     public void onMapLongClick(LatLng latLng) {
                         ApplicationClass.mArtefactLatLng = latLng;
                         ApplicationClass.mScreenPosition = latLng;
+                        ApplicationClass.mScreenPosition = getScreenPosition();
                         Log.d(TAG, "onMapLongClick: lat: " + ApplicationClass.mArtefactLatLng.latitude + " lng: " + ApplicationClass.mArtefactLatLng.longitude);
                         navigateToNewArtefactFragment("onMapLongClick");
 
