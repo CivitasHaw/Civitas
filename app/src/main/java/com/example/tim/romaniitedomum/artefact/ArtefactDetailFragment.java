@@ -61,7 +61,7 @@ public class ArtefactDetailFragment extends Fragment {
     private ImageView ivArtefactDetail;
     private TextView tvArtefactDetailName, tvArtefactDetailCategory, tvArtefactDetailDescription;
     private TextView tvArtefactDetailAuthor, tvArtefactDetailCreated, tvArtefactDetailUpdated;
-    private Button btnArtefactDetailMarker, btnArtefactDetailSaveRating;
+    private Button btnArtefactDetailSaveRating;
     private ProgressBar mProgress;
     private RatingBar mRating;
     private ImageLoader mLoader;
@@ -195,7 +195,6 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailAuthor = view.findViewById(R.id.text_artefact_detail_author);
         tvArtefactDetailCreated = view.findViewById(R.id.text_artefact_detail_created);
         tvArtefactDetailUpdated = view.findViewById(R.id.text_artefact_detail_updated);
-        btnArtefactDetailMarker = view.findViewById(R.id.button_artefact_detail_show_marker_on_map);
         mProgress = view.findViewById(R.id.progress_image_artefact_detail);
         mRating = view.findViewById(R.id.ratingbar_artefact_detail);
         btnArtefactDetailSaveRating = view.findViewById(R.id.button_artefact_detail_save_rating);
@@ -322,14 +321,6 @@ public class ArtefactDetailFragment extends Fragment {
             provideFilePath();
         }
 
-        btnArtefactDetailMarker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(artefactActivity, MapActivity.class);
-                intent.putExtra("origin", "artefactDetail");
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
