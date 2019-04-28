@@ -158,7 +158,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 ApplicationClass.mScreenPosition = getScreenPosition();
                 navigationView.setCheckedItem(R.id.nav_impressum);
                 intent = new Intent(MapActivity.this, ImpressumActivity.class);
-                intent.putExtra("origin", Util.MAP_ACTIVITY);
+                intent.putExtra(Util.ORIGIN, Util.MAP_ACTIVITY);
                 intent.putExtra("impressum", "impressum");
                 startActivity(intent);
                 break;

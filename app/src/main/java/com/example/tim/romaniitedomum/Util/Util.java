@@ -28,6 +28,7 @@ public class Util {
     public static final String CATEGORY_THERME = "Therme";
 
     // navigation constants
+    public static final String ORIGIN = "origin";
     public static final String ORIGIN_EDIT_ARTEFACT = "editArtefact";
     public static final String ORIGIN_DELETE_ARTEFACT = "deleteArtefact";
     public static final String ARTEFACT_OBJECT_ID = "artefactObjectId";

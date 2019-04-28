@@ -251,7 +251,7 @@ public class EditArtefactFragment extends Fragment {
                 ApplicationClass.mArtefactList.add(response);
                 ApplicationClass.mArtefactLatLng = new LatLng(response.getLatitude(), response.getLongitude());
                 Intent intent = new Intent(artefactActivity, MapActivity.class);
-                intent.putExtra("origin", Util.EDIT_ARTEFACT_FRAGMENT);
+                intent.putExtra(Util.ORIGIN, Util.EDIT_ARTEFACT_FRAGMENT);
                 startActivity(intent);
             }
 
