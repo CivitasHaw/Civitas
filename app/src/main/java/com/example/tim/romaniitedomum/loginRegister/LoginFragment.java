@@ -24,7 +24,6 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.DataQueryBuilder;
-import com.backendless.persistence.QueryOptions;
 import com.backendless.persistence.local.UserIdStorageFactory;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.artefact.Artefact;
