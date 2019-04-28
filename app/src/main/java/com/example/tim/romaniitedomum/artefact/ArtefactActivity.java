@@ -244,10 +244,29 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
                 Log.d(TAG, "onNavigationItemSelected: artefacts");
                 break;
             case R.id.nav_map:
-                Log.d(TAG, "onNavigationItemSelected: map");
+                Log.d(TAG, "onNavigationItemSelected: map clicked");
                 intent = new Intent(ArtefactActivity.this, MapActivity.class);
-                intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
-                intent.putExtra(getResources().getString(R.string.origin), Util.ARTEFACT_LIST_FRAGMENT);
+                switch (currentScreen) {                    
+                    case EDIT_ARTEFACT:
+                        Log.d(TAG, "onNavigationItemSelected: edit artefact");
+                        intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
+                        intent.putExtra(getResources().getString(R.string.origin), Util.EDIT_ARTEFACT_FRAGMENT);
+                        break;
+                    case ARTEFACT_LIST:
+                        Log.d(TAG, "onNavigationItemSelected: list");
+                        intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
+                        intent.putExtra(getResources().getString(R.string.origin), Util.ARTEFACT_LIST_FRAGMENT);
+                        break;
+                    case ARTEFACT_DETAIL:
+                        Log.d(TAG, "onNavigationItemSelected: artefact detail");
+                        intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "list");
+                        intent.putExtra(getResources().getString(R.string.origin), Util.ARTEFACT_DETAIL_FRAGMENT);
+                        break;
+                    default:
+                        Log.d(TAG, "onNavigationItemSelected: default");
+                        break;
+                }
+                
                 startActivity(intent);
                 break;
             case R.id.nav_impressum:
