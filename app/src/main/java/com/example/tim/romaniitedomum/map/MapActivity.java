@@ -432,10 +432,12 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     Log.d(TAG, "onComplete: impressumActivity");
                                     navigationView.setCheckedItem(R.id.nav_map);
                                     moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
+                                    break;
                                 case Util.ARTEFACT_ACTIVITY:
                                     Log.d(TAG, "onComplete: impressumActivity from artefacts");
                                     navigationView.setCheckedItem(R.id.nav_map);
                                     moveCamera(ApplicationClass.mScreenPosition, DEFAULT_ZOOM);
+                                    break;
                                 case Util.EDIT_ARTEFACT_FRAGMENT:
                                     Log.d(TAG, "onComplete: editArtefact");
                                     navigationView.setCheckedItem(R.id.nav_map);
