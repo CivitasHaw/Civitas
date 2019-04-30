@@ -15,22 +15,22 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
-import com.example.tim.romaniitedomum.Util.CategoryList;
 import com.example.tim.romaniitedomum.Util.UserScreen;
+import com.example.tim.romaniitedomum.Util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +54,13 @@ public class ArtefactListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ArtefactListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Switch filterSwitch;
     private RelativeLayout filterLayout;
     private EditText etFilter;
     private Spinner spinnerFilterCategory;
     private CategoryAdapter mCategoryAdapter;
     private ArrayList<Category> mCategoryList;
     private Category mCategory;
+    private boolean isFilterActive = false;
 
     private Button btnFilterApply;
     private String filterString = "";
@@ -86,20 +86,6 @@ public class ArtefactListFragment extends Fragment {
                 ApplicationClass.position = position;
                 Fragment artefactDetailFragment = new ArtefactDetailFragment();
                 artefactActivity.fragmentSwitcher2(artefactDetailFragment, true, "artefactDetailFragment");
-            }
-        });
-
-        filterSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    filterLayout.setVisibility(View.VISIBLE);
-                } else {
-                    filterLayout.setVisibility(View.GONE);
-                    etFilter.setText("");
-                    artefactsList = ApplicationClass.mArtefactList;
-                    mAdapter.notifyDataSetChanged();
-                }
             }
         });
 
@@ -151,6 +137,36 @@ public class ArtefactListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.toolbar_menu_artefact_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.list_filter:
+                if (!isFilterActive) {
+                    Log.d(TAG, "onOptionsItemSelected: filter mode on");
+                    item.setIcon(R.drawable.ic_cancel_filter);
+                    filterLayout.setVisibility(View.VISIBLE);
+                } else {
+                    Log.d(TAG, "onOptionsItemSelected: cancle filter mode");
+                    item.setIcon(R.drawable.ic_filter);
+                    filterLayout.setVisibility(View.GONE);
+                    etFilter.setText("");
+                    artefactsList = ApplicationClass.mArtefactList;
+                    mAdapter.notifyDataSetChanged();
+                }
+                isFilterActive = !isFilterActive;
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void initArtefactList(View view) {
 
@@ -161,7 +177,6 @@ public class ArtefactListFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.recyclerview_list_of_artefacts);
         mLayoutManager = new LinearLayoutManager(artefactActivity);
 
-        filterSwitch = view.findViewById(R.id.switch_filter);
         filterLayout = view.findViewById(R.id.layout_filter);
         spinnerFilterCategory = filterLayout.findViewById(R.id.spinner_list_filter_category);
         btnFilterApply = filterLayout.findViewById(R.id.button_artefact_list_filter_submit);
@@ -169,7 +184,7 @@ public class ArtefactListFragment extends Fragment {
         filteredList = new ArrayList<>();
 
         artefactsList = ApplicationClass.mArtefactList;
-        mCategoryList = CategoryList.getCategoryList();
+        mCategoryList = populateCategoryList();
     }
 
 
@@ -177,6 +192,7 @@ public class ArtefactListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
         artefactActivity = (ArtefactActivity) getActivity();
         artefactActivity.setTitle("Civitas");
         artefactActivity.currentScreen = UserScreen.ARTEFACT_LIST;
