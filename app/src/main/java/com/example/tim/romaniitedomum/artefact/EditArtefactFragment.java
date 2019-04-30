@@ -34,7 +34,6 @@ import com.backendless.files.BackendlessFile;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
-import com.example.tim.romaniitedomum.Util.CategoryList;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
