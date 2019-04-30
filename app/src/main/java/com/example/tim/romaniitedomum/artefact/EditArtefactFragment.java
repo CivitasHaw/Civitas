@@ -34,6 +34,7 @@ import com.backendless.files.BackendlessFile;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
+import com.example.tim.romaniitedomum.Util.CategoryList;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
@@ -318,7 +319,7 @@ public class EditArtefactFragment extends Fragment {
 
         provideFilePath();
 
-        mCategoryList = populateCategoryList();
+        mCategoryList = CategoryList.getCategoryList();
         mCategoryAdapter = new CategoryAdapter(artefactActivity, mCategoryList);
         spinnerCategory.setAdapter(mCategoryAdapter);
         mLoader = ApplicationClass.loader;
@@ -372,25 +373,6 @@ public class EditArtefactFragment extends Fragment {
 
     }
 
-    private ArrayList<Category> populateCategoryList() {
-        ArrayList<Category> list = new ArrayList<>();
-
-        list.add(new Category("SaltAndPepper", R.drawable.ic_salt_and_pepper));
-        list.add(new Category(Util.CATEGORY_BASILIKA, R.drawable.ic_map_basilica));
-        list.add(new Category(Util.CATEGORY_BOGEN, R.drawable.ic_map_bogen));
-        list.add(new Category(Util.CATEGORY_CHRISTENTUM, R.drawable.ic_map_christentum));
-        list.add(new Category(Util.CATEGORY_GRABSTAETTE, R.drawable.ic_map_grabstaette));
-        list.add(new Category(Util.CATEGORY_GRUENDUNGSMYTHOS, R.drawable.ic_map_grundungsmythos));
-        list.add(new Category(Util.CATEGORY_INFRASTRUKTUR, R.drawable.ic_map_infrastruktur));
-        list.add(new Category(Util.CATEGORY_KULTSTAETTE, R.drawable.ic_map_kultstaette));
-        list.add(new Category(Util.CATEGORY_PLATZANLAGE, R.drawable.ic_map_platzanlage));
-        list.add(new Category(Util.CATEGORY_POLITISCHE_INSTITUTION, R.drawable.ic_map_politische_institution));
-        list.add(new Category(Util.CATEGORY_SPIELSTAETTE, R.drawable.ic_map_spielstaette));
-        list.add(new Category(Util.CATEGORY_THERME, R.drawable.ic_map_therme));
-        list.add(new Category(Util.CATEGORY_WOHNKOMPLEX, R.drawable.ic_map_wohnkomplex));
-
-        return list;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
