@@ -103,6 +103,8 @@ public class ArtefactListFragment extends Fragment {
         spinnerFilterCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCategory = (Category) parent.getItemAtPosition(position);
+                Log.d(TAG, "onItemSelected: categoryFilter: " + mCategory.getCategoryName());
             }
 
             @Override
