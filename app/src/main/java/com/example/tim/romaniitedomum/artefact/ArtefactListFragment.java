@@ -60,9 +60,12 @@ public class ArtefactListFragment extends Fragment {
     private Spinner spinnerFilterCategory;
     private CategoryAdapter mCategoryAdapter;
     private ArrayList<Category> mCategoryList;
+    private Category mCategory;
+
     private Button btnFilterApply;
     private String filterString = "";
-    private ArrayList<Artefact> filteredList;
+    private List<Artefact> artefactsList;
+    private List<Artefact> filteredList;
 
 
     @Nullable
@@ -72,7 +75,7 @@ public class ArtefactListFragment extends Fragment {
 
         initArtefactList(view);
 
-        mAdapter = new ArtefactListAdapter(ApplicationClass.mArtefactList, ApplicationClass.loader);
+        mAdapter = new ArtefactListAdapter(artefactsList, ApplicationClass.loader);
         mRecyclerView.setLayoutManager(new GridLayoutManager(artefactActivity, SPAN_COUNT));
         mRecyclerView.setAdapter(mAdapter);
 
@@ -93,6 +96,9 @@ public class ArtefactListFragment extends Fragment {
                     filterLayout.setVisibility(View.VISIBLE);
                 } else {
                     filterLayout.setVisibility(View.GONE);
+                    etFilter.setText("");
+                    artefactsList = ApplicationClass.mArtefactList;
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -113,14 +119,16 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
-/*        btnFilterApply.setOnClickListener(new View.OnClickListener() {
+        btnFilterApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                filterString = etFilter.getText().toString().trim();
-                mAdapter.getFilter().filter(filterString);
-                mAdapter.notifyDataSetChanged();
+                mAdapter.isCategoryFilter = true;
+                if (mCategory != null) {
+                    mAdapter.getFilter().filter(mCategory.getCategoryName());
+                }
             }
-        });*/
+        });
+
         etFilter.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
@@ -160,6 +168,7 @@ public class ArtefactListFragment extends Fragment {
         etFilter = filterLayout.findViewById(R.id.edit_list_filter);
         filteredList = new ArrayList<>();
 
+        artefactsList = ApplicationClass.mArtefactList;
         mCategoryList = CategoryList.getCategoryList();
     }
 

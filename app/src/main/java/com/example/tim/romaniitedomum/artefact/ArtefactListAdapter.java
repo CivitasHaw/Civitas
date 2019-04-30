@@ -7,14 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tim.romaniitedomum.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -32,11 +30,56 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
 
     private static final String TAG = "ArtefactListAdapter";
 
+    private List<Artefact> mArtefactListFull;
+    public boolean isCategoryFilter = false;
     private List<Artefact> mArtefactList;
-    private List<Artefact> mFilteredArtefactList;
     private ImageLoader mImageLoader;
     private OnItemClickListener mListener;
-    private ItemFilter mFilter = new ItemFilter();
+
+    /**
+     * credits codingInFlow
+     * https://www.youtube.com/watch?v=sJ-Z9G0SDhc
+     */
+    @Override
+    public Filter getFilter() {
+        return artefactFilter;
+    }
+
+    private Filter artefactFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Artefact> filteredList = new ArrayList<>();
+            
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(mArtefactListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Artefact item: mArtefactListFull) {
+                    if (isCategoryFilter) {
+                        if (item.getCategoryName().toLowerCase().equals(filterPattern)) {
+                            filteredList.add(item);
+                        }
+                    } else {
+                        if (item.getArtefactName().toLowerCase().contains(filterPattern)) {
+                            filteredList.add(item);
+                        }
+                    }
+                }
+                isCategoryFilter = false;
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mArtefactList.clear();
+            mArtefactList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
 
     public interface OnItemClickListener {
@@ -82,8 +125,8 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     }
 
     public ArtefactListAdapter(List<Artefact> artefacts, ImageLoader loader) {
-        mArtefactList = artefacts;
-        mFilteredArtefactList = artefacts;
+        mArtefactListFull = new ArrayList<>(artefacts);
+        this.mArtefactList = artefacts;
         mImageLoader = loader;
     }
 
@@ -100,10 +143,10 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     @Override
     public void onBindViewHolder(@NonNull final ArtefactListViewHolder holder, int position) {
 
-        //Artefact currentArtefact = mArtefactList.get(position);
-        Artefact currentArtefact = mFilteredArtefactList.get(position);
+        //Artefact currentArtefact = mArtefactListFull.get(position);
+        Artefact currentArtefact = mArtefactList.get(position);
 
-        //mImageLoader.displayImage(mArtefactList.get(position).getArtefactImageUrl(), holder.mIvArtefact, new ImageLoadingListener() {
+        //mImageLoader.displayImage(mArtefactListFull.get(position).getArtefactImageUrl(), holder.mIvArtefact, new ImageLoadingListener() {
         mImageLoader.displayImage(currentArtefact.getArtefactImageUrl(), holder.mIvArtefact, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
@@ -135,77 +178,7 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
 
     @Override
     public int getItemCount() {
-        //return mArtefactList.size();
-        return mFilteredArtefactList == null ? 0 : mFilteredArtefactList.size();
+        //return mArtefactListFull.size();
+        return mArtefactList == null ? 0 : mArtefactList.size();
     }
-
-    /**
-     * Source
-     * https://gist.github.com/fjfish/3024308
-     * https://stackoverflow.com/questions/24769257/custom-listview-adapter-with-filter-android
-     */
-    @Override
-    public Filter getFilter() {
-        return mFilter;
-    }
-
-    private class ItemFilter extends Filter {
-
-        Artefact filterableArtefact = new Artefact();
-
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            String filterString = charSequence.toString().toLowerCase();
-
-            FilterResults results = new FilterResults();
-
-            final List<Artefact> list = mFilteredArtefactList;
-            //Log.d(TAG, "performFiltering: list.size(): " + list.size());
-            for (int i = 0; i < list.size(); i++) {
-                //Log.d(TAG, "performFiltering: list: " + list.get(i).getArtefactName());
-            }
-
-            int count = list.size();
-
-            final ArrayList<Artefact> nlist = new ArrayList<>(count);
-            //Artefact filterableArtefact = new Artefact();
-
-            for (int i = 0; i < count; i++) {
-                filterableArtefact = list.get(i);
-                if (filterableArtefact.getArtefactName().toLowerCase().contains(filterString)) {
-                    //Log.d(TAG, "performFiltering: " + filterableArtefact.getArtefactName());
-                    nlist.add(filterableArtefact);
-                }
-            }
-
-    /*        final ArrayList<String> nlist = new ArrayList<>(count);
-
-            String filterableString ;
-
-            for (int i = 0; i < count; i++) {
-                filterableString = list.get(i).getArtefactName();
-                if (filterableString.toLowerCase().contains(filterString)) {
-                    nlist.add(filterableString);
-                }
-            }*/
-
-            if (filterString.isEmpty()) {
-                results.values = list;
-                results.count = list.size();
-            } else {
-                results.values = nlist;
-                results.count = nlist.size();
-            }
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            mFilteredArtefactList = (ArrayList<Artefact>) filterResults.values;
-            notifyDataSetChanged();
-        }
-    }
-
-
 }
