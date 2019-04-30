@@ -399,6 +399,7 @@ public class EditArtefactFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         artefactActivity = (ArtefactActivity) getActivity();
+        artefactActivity.setTitle("Edit Artefact");
         artefactActivity.currentScreen = UserScreen.EDIT_ARTEFACT;
         mArgs = getArguments();
         mArtefact = ApplicationClass.mArtefact;
