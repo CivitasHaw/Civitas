@@ -17,19 +17,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.CategoryList;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TimStaats 03.03.2019
@@ -53,6 +57,9 @@ public class ArtefactListFragment extends Fragment {
     private Switch filterSwitch;
     private RelativeLayout filterLayout;
     private EditText etFilter;
+    private Spinner spinnerFilterCategory;
+    private CategoryAdapter mCategoryAdapter;
+    private ArrayList<Category> mCategoryList;
     private Button btnFilterApply;
     private String filterString = "";
     private ArrayList<Artefact> filteredList;
@@ -87,6 +94,20 @@ public class ArtefactListFragment extends Fragment {
                 } else {
                     filterLayout.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        mCategoryAdapter = new CategoryAdapter(artefactActivity, mCategoryList);
+        spinnerFilterCategory.setAdapter(mCategoryAdapter);
+
+        spinnerFilterCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -132,10 +153,12 @@ public class ArtefactListFragment extends Fragment {
 
         filterSwitch = view.findViewById(R.id.switch_filter);
         filterLayout = view.findViewById(R.id.layout_filter);
+        spinnerFilterCategory = filterLayout.findViewById(R.id.spinner_list_filter_category);
         btnFilterApply = filterLayout.findViewById(R.id.button_artefact_list_filter_submit);
         etFilter = filterLayout.findViewById(R.id.edit_list_filter);
         filteredList = new ArrayList<>();
 
+        mCategoryList = CategoryList.getCategoryList();
     }
 
 
