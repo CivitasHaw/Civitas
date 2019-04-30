@@ -534,7 +534,6 @@ public class NewArtefactFragment extends Fragment {
         }
     }
 
-    //TODO: implement Gallery picker
     private void pickImageFromGallery() {
         checkAndroidVersionAndPermissionForGallery();
     }
