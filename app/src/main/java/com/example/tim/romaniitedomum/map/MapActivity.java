@@ -324,7 +324,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private int getMarkerArtefactIcon(Artefact artefact) {
         //Icons from flaticon.com. They have to be mentioned in the app.
 
-        int markerArtefactIcon = 0;
+        int markerArtefactIcon;
         switch (artefact.getCategoryName()) {
             case Util.CATEGORY_BASILIKA:
                 markerArtefactIcon = R.drawable.ic_map_basilica;
