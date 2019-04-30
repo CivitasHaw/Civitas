@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="8dp"
-    android:orientation="vertical"
     android:background="@color/light_grey"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <ProgressBar
@@ -32,27 +32,27 @@
         android:visibility="gone" />
 
     <LinearLayout
+        android:id="@+id/form_artefact_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/form_artefact_list"
         android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                android:text="Filter"
-                android:layout_margin="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="Filter" />
 
             <Switch
                 android:id="@+id/switch_filter"
-                android:layout_margin="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp" />
 
         </LinearLayout>
 
@@ -64,10 +64,11 @@
 
             <EditText
                 android:id="@+id/edit_list_filter"
-                android:hint="category or name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_height="wrap_content" />
+                android:hint="name" />
+
             <Spinner
                 android:id="@+id/spinner_list_filter_category"
                 android:layout_width="wrap_content"
@@ -77,17 +78,20 @@
 
             <Button
                 android:id="@+id/button_artefact_list_filter_submit"
-                android:text="apply"
-                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/edit_list_filter"
+                android:layout_alignParentRight="true"
+                android:text="apply" />
+
         </RelativeLayout>
 
+
         <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="0dp"
             android:id="@+id/recyclerview_list_of_artefacts"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp">
 
         </android.support.v7.widget.RecyclerView>
 
