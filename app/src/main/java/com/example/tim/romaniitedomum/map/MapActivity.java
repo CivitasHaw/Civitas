@@ -252,26 +252,18 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 //Toast.makeText(MapActivity.this, getResources().getText(R.string.toast_map_ready), Toast.LENGTH_SHORT).show();
                 mMap = googleMap;
 
-                mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                // source
+                // https://stackoverflow.com/questions/17549372/how-to-get-click-event-of-the-marker-text
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
-                    public boolean onMarkerClick(Marker marker) {
-
-                        double lat = marker.getPosition().latitude;
-                        double lng = marker.getPosition().longitude;
-                        String title = marker.getTitle();
+                    public void onInfoWindowClick(Marker marker) {
+                        Log.d(TAG, "onInfoWindowClick: ");
                         ApplicationClass.mScreenPosition = getScreenPosition();
-
-                        for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
-                            if (ApplicationClass.mArtefactList.get(i).getArtefactName().equals(title) &&
-                                    ApplicationClass.mArtefactList.get(i).getLatitude() == lat &&
-                                    ApplicationClass.mArtefactList.get(i).getLongitude() == lng) {
-                                Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
-                                intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "markerClick");
-                                intent.putExtra(Util.ARTEFACT_OBJECT_ID, ApplicationClass.mArtefactList.get(i).getObjectId());
-                                startActivity(intent);
-                            }
-                        }
-                        return true;
+                        Artefact tempArtefact = (Artefact) marker.getTag();
+                        Intent intent = new Intent(MapActivity.this, ArtefactActivity.class);
+                        intent.putExtra(getResources().getString(R.string.navigate_to_artefact_activity), "markerClick");
+                        intent.putExtra(Util.ARTEFACT_OBJECT_ID, tempArtefact.getObjectId());
+                        startActivity(intent);
                     }
                 });
 
