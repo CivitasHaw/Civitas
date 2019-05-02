@@ -285,7 +285,6 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     @Override
                     public void onMapLongClick(LatLng latLng) {
                         ApplicationClass.mArtefactLatLng = latLng;
-                        ApplicationClass.mScreenPosition = latLng;
                         ApplicationClass.mScreenPosition = getScreenPosition();
                         Log.d(TAG, "onMapLongClick: lat: " + ApplicationClass.mArtefactLatLng.latitude + " lng: " + ApplicationClass.mArtefactLatLng.longitude);
                         navigateToNewArtefactFragment("onMapLongClick");
