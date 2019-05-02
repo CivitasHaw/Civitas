@@ -83,8 +83,8 @@ public class EditArtefactFragment extends Fragment {
     private int categoryPosition;
     private String clickedCategory;
     private Bitmap artefactBitmap;
-    private String imageFileName = "";
-    private String audioFileName = "";
+    private String editedImageFileName = "";
+    private String editedAudioFileName = "";
     private String imageFilePath = "";
     private String audioFilePath = "";
 
@@ -153,18 +153,20 @@ public class EditArtefactFragment extends Fragment {
 
                 Date date = new Date();
                 Timestamp timestamp = new Timestamp(date.getTime());
+                editedImageFileName = "artefactImage_" + mEditArtefact.getArtefactName() + "_" + timestamp + ".png";
+                editedAudioFileName = "artefactAudio_" + mEditArtefact.getArtefactName() + "_" + timestamp + ".3gp";
                 //String imageFileName = artefactName + "_" + artefactDescription + ".png";
                 imageFileName = "artefactImage_" + mArtefact.getArtefactName() + "_" + timestamp + ".png";
                 audioFileName = "artefactAudio_" + mArtefact.getArtefactName() + "_" + timestamp + ".3gp";
-                mArtefact.setArtefactImageFileName(imageFileName);
-                mArtefact.setArtefactAudioFileName(audioFileName);
+                mEditArtefact.setArtefactImageFileName(editedImageFileName);
+                mEditArtefact.setArtefactAudioFileName(editedAudioFileName);
                 // replace ApplicationClass.mArtefact
                 // delete old imageFile
                 // save new imageFile
                 // delete old audioFile
                 // save new audioFile
                 // update artefact backendless
-                ApplicationClass.mArtefactList.remove(mArtefact);
+                ApplicationClass.mArtefactList.remove(mOriginalArtefact);
                 if (artefactActivity.isImageChanged) {
                     deleteImageFileFromBackendless(imageFilePath);
                 } else {
