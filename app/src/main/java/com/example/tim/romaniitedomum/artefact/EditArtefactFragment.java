@@ -88,8 +88,8 @@ public class EditArtefactFragment extends Fragment {
     private String imageFilePath = "";
     private String audioFilePath = "";
 
-    private Artefact mArtefact;
     private Artefact mEditArtefact;
+    private Artefact mOriginalArtefact;
     private LinearLayout layoutAudio;
 
     private Bundle mArgs;
@@ -106,7 +106,7 @@ public class EditArtefactFragment extends Fragment {
         initEditArtefact(view);
 
         for (int i = 0; i < mCategoryList.size(); i++) {
-            if (mCategoryList.get(i).getCategoryName().equals(mArtefact.getCategoryName())) {
+            if (mCategoryList.get(i).getCategoryName().equals(mEditArtefact.getCategoryName())) {
                 categoryPosition = i;
             }
         }
@@ -145,19 +145,16 @@ public class EditArtefactFragment extends Fragment {
         btnEditArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mArtefact.setArtefactName(etArtefactName.getText().toString());
-                mArtefact.setArtefactDescription(etArtefactDescription.getText().toString());
-                mArtefact.setArtefactAge(etArtefactAge.getText().toString());
-                mArtefact.setCategoryName(mCategory.getCategoryName());
-                mArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
+                mEditArtefact.setArtefactName(etArtefactName.getText().toString());
+                mEditArtefact.setArtefactDescription(etArtefactDescription.getText().toString());
+                mEditArtefact.setArtefactAge(etArtefactAge.getText().toString());
+                mEditArtefact.setCategoryName(mCategory.getCategoryName());
+                mEditArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
 
                 Date date = new Date();
                 Timestamp timestamp = new Timestamp(date.getTime());
                 editedImageFileName = "artefactImage_" + mEditArtefact.getArtefactName() + "_" + timestamp + ".png";
                 editedAudioFileName = "artefactAudio_" + mEditArtefact.getArtefactName() + "_" + timestamp + ".3gp";
-                //String imageFileName = artefactName + "_" + artefactDescription + ".png";
-                imageFileName = "artefactImage_" + mArtefact.getArtefactName() + "_" + timestamp + ".png";
-                audioFileName = "artefactAudio_" + mArtefact.getArtefactName() + "_" + timestamp + ".3gp";
                 mEditArtefact.setArtefactImageFileName(editedImageFileName);
                 mEditArtefact.setArtefactAudioFileName(editedAudioFileName);
                 // replace ApplicationClass.mArtefact
@@ -204,11 +201,11 @@ public class EditArtefactFragment extends Fragment {
             public void handleResponse(Integer response) {
                 Log.d(TAG, "handleResponse: Image successfully deleted!");
 
-                if (mArtefact.getArtefactAudioUrl()!= null) {
+                if (mEditArtefact.getArtefactAudioUrl()!= null) {
                     // TODO: audio
                     //deleteAudioFileFromBackendless(audioFilePath);
                 } else {
-                    uploadImageToBackendless(artefactBitmap, imageFileName);
+                    uploadImageToBackendless(artefactBitmap, editedImageFileName);
                 }
             }
 
@@ -262,7 +259,7 @@ public class EditArtefactFragment extends Fragment {
 
         showProgress(true);
         tvLoadEditArtefact.setText("Updating artefact... please wait...");
-        Backendless.Persistence.save(mArtefact, new AsyncCallback<Artefact>() {
+        Backendless.Persistence.save(mEditArtefact, new AsyncCallback<Artefact>() {
             @Override
             public void handleResponse(Artefact response) {
 
@@ -292,7 +289,7 @@ public class EditArtefactFragment extends Fragment {
                 fileName, BACKENDLESS_IMAGE_FILE_PATH, new AsyncCallback<BackendlessFile>() {
                     @Override
                     public void handleResponse(BackendlessFile response) {
-                        mArtefact.setArtefactImageUrl(response.getFileURL());
+                        mEditArtefact.setArtefactImageUrl(response.getFileURL());
                         Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_image_upload), Toast.LENGTH_SHORT).show();
                         updateArtefactInBackendless();
                         //showProgress(false);
@@ -306,7 +303,7 @@ public class EditArtefactFragment extends Fragment {
 
                     @Override
                     public void handleFault(BackendlessFault fault) {
-                        mArtefact.setArtefactAudioUrl("");
+                        mEditArtefact.setArtefactAudioUrl("");
                         showProgress(false);
                         Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -358,16 +355,16 @@ public class EditArtefactFragment extends Fragment {
         etArtefactAge = view.findViewById(R.id.edit_edit_artefact_age);
         btnEditArtefact = view.findViewById(R.id.button_edit_artefact_save);
 
-        provideFilePath();
+        provideOriginalFilePath();
         mCategoryList = populateCategoryList();
 
         mCategoryAdapter = new CategoryAdapter(artefactActivity, mCategoryList);
         spinnerCategory.setAdapter(mCategoryAdapter);
         mLoader = ApplicationClass.loader;
 
-        etArtefactName.setText(mArtefact.getArtefactName());
-        etArtefactDescription.setText(mArtefact.getArtefactDescription());
-        etArtefactAge.setText(mArtefact.getArtefactAge());
+        etArtefactName.setText(mOriginalArtefact.getArtefactName());
+        etArtefactDescription.setText(mOriginalArtefact.getArtefactDescription());
+        etArtefactAge.setText(mOriginalArtefact.getArtefactAge());
 
         if (mArgs != null) {
             String origin = mArgs.getString(getResources().getString(R.string.origin));
@@ -386,7 +383,7 @@ public class EditArtefactFragment extends Fragment {
                     break;
                 default:
                     Log.d(TAG, "initEditArtefact: default");
-                    mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefact, new ImageLoadingListener() {
+                    mLoader.displayImage(mOriginalArtefact.getArtefactImageUrl(), ivArtefact, new ImageLoadingListener() {
                         @Override
                         public void onLoadingStarted(String imageUri, View view) {
                             showProgress(true);
@@ -423,7 +420,8 @@ public class EditArtefactFragment extends Fragment {
         artefactActivity.setTitle("Edit Artefact");
         artefactActivity.currentScreen = UserScreen.EDIT_ARTEFACT;
         mArgs = getArguments();
-        mArtefact = ApplicationClass.mArtefact;
+        mOriginalArtefact = ApplicationClass.mArtefact;
+        mEditArtefact = mOriginalArtefact;
         ApplicationClass.mArtefactLatLng = new LatLng(ApplicationClass.mArtefact.getLatitude(), ApplicationClass.mArtefact.getLongitude());
     }
 
