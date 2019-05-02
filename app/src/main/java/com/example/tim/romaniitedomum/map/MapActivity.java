@@ -311,12 +311,13 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     protected Marker createMarker(Artefact artefact) {
 
         int markerArtefactIcon = getMarkerArtefactIcon(artefact);
-
-        return mMap.addMarker(new MarkerOptions()
+        Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(artefact.getLatitude(), artefact.getLongitude()))
                 .title(artefact.getArtefactName())
-                .snippet("snippel")
+                .snippet(artefact.getArtefactDescription())
                 .icon(bitmapDescriptorFromVector(this, markerArtefactIcon)));
+
+        return marker;
     }
 
     // if editing icons, also edit -> NewArtefactFragment -> populateCategoryList()
