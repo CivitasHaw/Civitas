@@ -32,4 +32,9 @@ public class Util {
     public static final String ORIGIN_EDIT_ARTEFACT = "editArtefact";
     public static final String ORIGIN_DELETE_ARTEFACT = "deleteArtefact";
     public static final String ARTEFACT_OBJECT_ID = "artefactObjectId";
+
+    // Backendless
+    public static final String BACKENDLESS_IMAGE_FILE_PATH = "artefactImages/";
+    public static final String BACKENDLESS_AUDIO_FILE_PATH = "artefactAudios/";
+
 }

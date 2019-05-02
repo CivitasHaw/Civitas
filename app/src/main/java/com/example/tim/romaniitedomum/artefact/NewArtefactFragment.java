@@ -66,8 +66,6 @@ public class NewArtefactFragment extends Fragment {
     public static final String ORIGIN_GALLERY = "gallery";
     public static final String ORIGIN_MAP_LONG_CLICK = "onMapLongClick";
     public static final String ORIGIN_BTN_ADD_ARTEFACT = "btnAddArtefact";
-    public static final String BACKENDLESS_IMAGE_FILE_PATH = "artefactImages";
-    public static final String BACKENDLESS_AUDIO_FILE_PATH = "/artefactAudios";
 
     public static final int BITMAP_QUALITY = 100;
     public static final int REQUEST_PERMISSION_CODE_AUDIO = 1000;
@@ -323,7 +321,7 @@ public class NewArtefactFragment extends Fragment {
         tvLoadNewArtefact.setText(getResources().getText(R.string.new_artefact_save_image));
 
         Backendless.Files.Android.upload(artefactBitmap, Bitmap.CompressFormat.PNG, BITMAP_QUALITY,
-                fileName, BACKENDLESS_IMAGE_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+                fileName, Util.BACKENDLESS_IMAGE_FILE_PATH, new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(BackendlessFile response) {
                 mArtefact.setArtefactImageUrl(response.getFileURL());
@@ -351,7 +349,7 @@ public class NewArtefactFragment extends Fragment {
         tvLoadNewArtefact.setText(getResources().getString(R.string.new_artefact_save_audio));
         // ---------------------- Audio Upload ----------------------
         // https://backendless.com/feature-31-uploading-files-to-server-with-the-file-upload-api/
-        Backendless.Files.upload(audioFile, BACKENDLESS_AUDIO_FILE_PATH, new AsyncCallback<BackendlessFile>() {
+        Backendless.Files.upload(audioFile, Util.BACKENDLESS_AUDIO_FILE_PATH, new AsyncCallback<BackendlessFile>() {
             @Override
             public void handleResponse(BackendlessFile response) {
 

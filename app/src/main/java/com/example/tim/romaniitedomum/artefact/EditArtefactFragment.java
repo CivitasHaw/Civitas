@@ -312,9 +312,10 @@ public class EditArtefactFragment extends Fragment {
         return list;
     }
 
-    private void provideFilePath() {
-        audioFilePath = "artefactAudios/" + mArtefact.getArtefactAudioFileName();
-        imageFilePath = "artefactImages/" + mArtefact.getArtefactImageFileName();
+    private void provideOriginalFilePath() {
+        // old file paths for accessing Backendless.Files
+        audioFilePath = Util.BACKENDLESS_AUDIO_FILE_PATH + mOriginalArtefact.getArtefactAudioFileName();
+        imageFilePath = Util.BACKENDLESS_IMAGE_FILE_PATH + mOriginalArtefact.getArtefactImageFileName();
     }
 
     private void initEditArtefact(View view) {
