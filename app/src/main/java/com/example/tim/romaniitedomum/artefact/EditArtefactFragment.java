@@ -170,7 +170,7 @@ public class EditArtefactFragment extends Fragment {
                 if (artefactActivity.isImageChanged) {
                     deleteImageFileFromBackendless(imageFilePath);
                 } else {
-                    updateArtefactInBackendless();
+                    updateImageFileNameInBackendless();
                 }
 
             }
@@ -228,6 +228,25 @@ public class EditArtefactFragment extends Fragment {
         Backendless.Files.remove(audioFilePath, new AsyncCallback<Integer>() {
             @Override
             public void handleResponse(Integer response) {
+                updateArtefactInBackendless();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                showProgress(false);
+                Toast.makeText(artefactActivity, "Error: " + fault.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateImageFileNameInBackendless(){
+        showProgress(true);
+        tvLoadEditArtefact.setText("update filename");
+        Backendless.Files.renameFile(imageFilePath, mEditArtefact.getArtefactImageFileName(), new AsyncCallback<String>() {
+            @Override
+            public void handleResponse(String response) {
+                showProgress(false);
+                mEditArtefact.setArtefactImageUrl(response);
                 updateArtefactInBackendless();
             }
 
