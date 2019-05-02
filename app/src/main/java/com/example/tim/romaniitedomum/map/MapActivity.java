@@ -316,6 +316,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 .title(artefact.getArtefactName())
                 .snippet(artefact.getArtefactDescription())
                 .icon(bitmapDescriptorFromVector(this, markerArtefactIcon)));
+        marker.setTag(artefact);
 
         return marker;
     }
