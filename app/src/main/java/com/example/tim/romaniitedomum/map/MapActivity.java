@@ -64,7 +64,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final float DEFAULT_ZOOM = 15f;
+    private static final float DEFAULT_ZOOM = 8f;
+    private static final float CLOSE_ZOOM = 15f;
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -220,7 +221,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         switch (item.getItemId()) {
             case R.id.button_my_location:
                 //Log.d(TAG, "onOptionsItemSelected: myLocation: clicked");
-                moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(), ApplicationClass.mDeviceLocation.getLongitude()), DEFAULT_ZOOM);
+                moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(), ApplicationClass.mDeviceLocation.getLongitude()), CLOSE_ZOOM);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -400,13 +401,13 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     Log.d(TAG, "onComplete: ArtefactDetailFragment");
                                     moveCamera(new LatLng(ApplicationClass.mArtefact.getLatitude(),
                                                     ApplicationClass.mArtefact.getLongitude()),
-                                            DEFAULT_ZOOM);
+                                            CLOSE_ZOOM);
                                     break;
                                 case Util.NEW_ARTEFACT_FRAGMENT:
                                     Log.d(TAG, "onComplete: NewArtefactFragment");
                                     moveCamera(new LatLng(ApplicationClass.mArtefact.getLatitude(),
                                                     ApplicationClass.mArtefact.getLongitude()),
-                                            DEFAULT_ZOOM);
+                                            CLOSE_ZOOM);
                                     break;
                                 case Util.LOGIN_FRAGMENT:
                                     Log.d(TAG, "onComplete: LoginFragment");
@@ -435,7 +436,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                 case Util.EDIT_ARTEFACT_FRAGMENT:
                                     Log.d(TAG, "onComplete: editArtefact");
                                     navigationView.setCheckedItem(R.id.nav_map);
-                                    moveCamera(ApplicationClass.mArtefactLatLng, DEFAULT_ZOOM);
+                                    moveCamera(ApplicationClass.mArtefactLatLng, CLOSE_ZOOM);
                                     break;
                                 default:
                                     Log.d(TAG, "onComplete: default");
