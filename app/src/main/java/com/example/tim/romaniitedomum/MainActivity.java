@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         if (toBackstack) {
             transaction.addToBackStack(name);
         } else {
-
+            // nothing
         }
         transaction.commit();
     }
