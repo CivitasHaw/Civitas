@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,12 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.geo.GeoPoint;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.UserScreen;
@@ -252,30 +259,29 @@ public class ArtefactDetailFragment extends Fragment {
                     }
 */
 
-                    mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
-                        @Override
-                        public void onLoadingStarted(String imageUri, View view) {
-                            mProgress.setVisibility(View.VISIBLE);
+                    mProgress.setVisibility(View.VISIBLE);
+                    Glide.with(artefactActivity)
+                            .load(mArtefact.getArtefactImageUrl())
+                            .centerCrop()
+                            .placeholder(R.drawable.civitas_main_logo)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    showProgress(false);
+                                    Toast.makeText(artefactActivity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    mProgress.setVisibility(View.GONE);
+                                    return false;
+                                }
 
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                            ivArtefactDetail.setImageResource(R.drawable.civitas_main_logo);
-                            mProgress.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                            mProgress.setVisibility(View.INVISIBLE);
-
-                        }
-
-                        @Override
-                        public void onLoadingCancelled(String imageUri, View view) {
-
-                        }
-                    });
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    showProgress(false);
+                                    mProgress.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
+                            .into(ivArtefactDetail);
 
                     fillArtefactTextViews(mArtefact);
                     artefactAudioFileExists(mArtefact);
@@ -292,29 +298,29 @@ public class ArtefactDetailFragment extends Fragment {
             ApplicationClass.mArtefact = mArtefact;
             ApplicationClass.mTempArtefactLatLng = new LatLng(mArtefact.getLatitude(), mArtefact.getLongitude());
 
-            mLoader.displayImage(mArtefact.getArtefactImageUrl(), ivArtefactDetail, new ImageLoadingListener() {
-                @Override
-                public void onLoadingStarted(String imageUri, View view) {
-                    mProgress.setVisibility(View.VISIBLE);
+            mProgress.setVisibility(View.VISIBLE);
+            Glide.with(artefactActivity)
+                    .load(mArtefact.getArtefactImageUrl())
+                    .centerCrop()
+                    .placeholder(R.drawable.civitas_main_logo)
+                    .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            showProgress(false);
+                            Toast.makeText(artefactActivity, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            mProgress.setVisibility(View.GONE);
+                            return false;
+                        }
 
-                }
-
-                @Override
-                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    ivArtefactDetail.setImageResource(R.drawable.civitas_main_logo);
-                    mProgress.setVisibility(View.INVISIBLE);
-                }
-
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    mProgress.setVisibility(View.INVISIBLE);
-                }
-
-                @Override
-                public void onLoadingCancelled(String imageUri, View view) {
-
-                }
-            });
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            showProgress(false);
+                            mProgress.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .into(ivArtefactDetail);
 
             fillArtefactTextViews(mArtefact);
             artefactAudioFileExists(mArtefact);

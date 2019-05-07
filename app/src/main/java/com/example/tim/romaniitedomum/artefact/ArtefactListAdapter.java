@@ -1,7 +1,9 @@
 package com.example.tim.romaniitedomum.artefact;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,12 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.tim.romaniitedomum.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -143,42 +151,35 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     @Override
     public void onBindViewHolder(@NonNull final ArtefactListViewHolder holder, int position) {
 
-        //Artefact currentArtefact = mArtefactListFull.get(position);
         Artefact currentArtefact = mArtefactList.get(position);
+        holder.mProgress.setVisibility(View.VISIBLE);
+        Glide.with(holder.mIvArtefact)
+                .load(currentArtefact.getArtefactImageUrl())
+                .centerCrop()
+                .placeholder(R.drawable.civitas_main_logo)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        holder.mProgress.setVisibility(View.GONE);
+                        return false;
+                    }
 
-        //mImageLoader.displayImage(mArtefactListFull.get(position).getArtefactImageUrl(), holder.mIvArtefact, new ImageLoadingListener() {
-        mImageLoader.displayImage(currentArtefact.getArtefactImageUrl(), holder.mIvArtefact, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String imageUri, View view) {
-                holder.mProgress.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                holder.mIvArtefact.setImageResource(R.drawable.civitas_main_logo);
-                holder.mProgress.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                holder.mProgress.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onLoadingCancelled(String imageUri, View view) {
-
-            }
-        });
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        holder.mProgress.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(holder.mIvArtefact);
 
         holder.mTvArtefactName.setText(currentArtefact.getArtefactName());
         holder.mTvArtefactCategory.setText("#" + currentArtefact.getCategoryName());
-        //holder.mTvArtefactDescription.setText(currentArtefact.getArtefactDescription());
 
     }
 
     @Override
     public int getItemCount() {
-        //return mArtefactListFull.size();
         return mArtefactList == null ? 0 : mArtefactList.size();
     }
 }
