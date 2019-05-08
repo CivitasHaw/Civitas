@@ -161,32 +161,37 @@ public class EditArtefactFragment extends Fragment {
         btnEditArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditArtefact.setArtefactName(etArtefactName.getText().toString());
-                mEditArtefact.setArtefactDescription(etArtefactDescription.getText().toString());
-                mEditArtefact.setArtefactAge(etArtefactAge.getText().toString());
-                mEditArtefact.setCategoryName(mCategory.getCategoryName());
-                mEditArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
-                mEditArtefact.setAnnoDomini(annoDomini.toString());
-
-                Date date = new Date();
-                Timestamp timestamp = new Timestamp(date.getTime());
-                editedImageFileName = "artefactImage_" + mEditArtefact.getArtefactName() + "_" + timestamp + ".png";
-                editedAudioFileName = "artefactAudio_" + mEditArtefact.getArtefactName() + "_" + timestamp + ".3gp";
-                mEditArtefact.setArtefactImageFileName(editedImageFileName);
-                mEditArtefact.setArtefactAudioFileName(editedAudioFileName);
-                // replace ApplicationClass.mArtefact
-                // delete old imageFile
-                // save new imageFile
-                // delete old audioFile
-                // save new audioFile
-                // update artefact backendless
-                ApplicationClass.mArtefactList.remove(mOriginalArtefact);
-                if (artefactActivity.isImageChanged) {
-                    deleteImageFileFromBackendless(imageFilePath);
+                int age = Integer.parseInt(etArtefactAge.getText().toString());
+                if (age > 9999) {
+                    etArtefactAge.setText(mOriginalArtefact.getArtefactAge());
+                    Toast.makeText(artefactActivity, "Unexpected value", Toast.LENGTH_SHORT).show();
                 } else {
-                    updateImageFileNameInBackendless();
-                }
+                    mEditArtefact.setArtefactName(etArtefactName.getText().toString());
+                    mEditArtefact.setArtefactDescription(etArtefactDescription.getText().toString());
+                    mEditArtefact.setArtefactAge(String.valueOf(age));
+                    mEditArtefact.setCategoryName(mCategory.getCategoryName());
+                    mEditArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
+                    mEditArtefact.setAnnoDomini(annoDomini.toString());
 
+                    Date date = new Date();
+                    Timestamp timestamp = new Timestamp(date.getTime());
+                    editedImageFileName = "artefactImage_" + mEditArtefact.getArtefactName() + "_" + timestamp + ".png";
+                    editedAudioFileName = "artefactAudio_" + mEditArtefact.getArtefactName() + "_" + timestamp + ".3gp";
+                    mEditArtefact.setArtefactImageFileName(editedImageFileName);
+                    mEditArtefact.setArtefactAudioFileName(editedAudioFileName);
+                    // replace ApplicationClass.mArtefact
+                    // delete old imageFile
+                    // save new imageFile
+                    // delete old audioFile
+                    // save new audioFile
+                    // update artefact backendless
+                    ApplicationClass.mArtefactList.remove(mOriginalArtefact);
+                    if (artefactActivity.isImageChanged) {
+                        deleteImageFileFromBackendless(imageFilePath);
+                    } else {
+                        updateImageFileNameInBackendless();
+                    }
+                }
             }
         });
 
@@ -218,7 +223,7 @@ public class EditArtefactFragment extends Fragment {
             public void handleResponse(Integer response) {
                 Log.d(TAG, "handleResponse: Image successfully deleted!");
 
-                if (mEditArtefact.getArtefactAudioUrl()!= null) {
+                if (mEditArtefact.getArtefactAudioUrl() != null) {
                     // TODO: audio
                     //deleteAudioFileFromBackendless(audioFilePath);
                 } else {
@@ -253,7 +258,7 @@ public class EditArtefactFragment extends Fragment {
         });
     }
 
-    private void updateImageFileNameInBackendless(){
+    private void updateImageFileNameInBackendless() {
         showProgress(true);
         tvLoadEditArtefact.setText("update filename");
         Backendless.Files.renameFile(imageFilePath, mEditArtefact.getArtefactImageFileName(), new AsyncCallback<String>() {
