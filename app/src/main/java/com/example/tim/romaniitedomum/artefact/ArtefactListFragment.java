@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,12 +24,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.BcAc;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 
@@ -54,26 +59,147 @@ public class ArtefactListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ArtefactListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private RelativeLayout filterLayout;
-    private EditText etFilter;
+    private ConstraintLayout filterLayout;
+    private EditText etFilterName, etFilterAge;
     private Spinner spinnerFilterCategory;
+    private Button btnFilterBeforeAfter;
+    private ImageButton iBtnFilterGreaterLessThan;
     private CategoryAdapter mCategoryAdapter;
     private ArrayList<Category> mCategoryList;
     private Category mCategory;
     private boolean isFilterActive = false;
 
-    private Button btnFilterApply;
+    private RadioGroup radioGroupFilter;
+    private RadioButton radioButtonFilter;
+    private Button btnFilterCategoryApply, btnFilterAgeApply, btnShowFilterOnMap;
     private String filterString = "";
     private List<Artefact> artefactsList;
     private List<Artefact> filteredList;
 
+    private BcAc annoDomini;
+    private boolean isGreaterThan = false;
+    private boolean isBC = true;
+    private boolean isFirstCall = false;
+
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_artefact_list, container, false);
 
         initArtefactList(view);
+
+        radioGroupFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radio_artefact_name:
+                        // Toast.makeText(artefactActivity, "checked button: " + checkedId, Toast.LENGTH_SHORT).show();
+                        // disable unchecked lines
+                        spinnerFilterCategory.setEnabled(false);
+                        btnFilterCategoryApply.setEnabled(false);
+                        etFilterAge.setEnabled(false);
+                        btnFilterBeforeAfter.setEnabled(false);
+                        iBtnFilterGreaterLessThan.setEnabled(false);
+                        btnFilterAgeApply.setEnabled(false);
+
+                        // enable checked line
+                        etFilterName.setEnabled(true);
+                        break;
+                    case R.id.radio_artefact_category:
+                        // Toast.makeText(artefactActivity, "checked button: " + checkedId, Toast.LENGTH_SHORT).show();
+                        // disable unchecked lines
+                        etFilterName.setEnabled(false);
+                        etFilterAge.setEnabled(false);
+                        btnFilterBeforeAfter.setEnabled(false);
+                        iBtnFilterGreaterLessThan.setEnabled(false);
+                        btnFilterAgeApply.setEnabled(false);
+
+                        // enable checked line
+                        spinnerFilterCategory.setEnabled(true);
+                        btnFilterCategoryApply.setEnabled(true);
+                        break;
+                    case R.id.radio_artefact_age:
+                        // Toast.makeText(artefactActivity, "checked button: " + checkedId, Toast.LENGTH_SHORT).show();
+                        if (!isFirstCall) {
+                            isGreaterThan = true;
+                            isFirstCall = true;
+                        }
+                        // disable unchecked lines
+                        etFilterName.setEnabled(false);
+                        spinnerFilterCategory.setEnabled(false);
+                        btnFilterCategoryApply.setEnabled(false);
+
+                        // enable checked line
+                        etFilterAge.setEnabled(true);
+                        btnFilterAgeApply.setEnabled(true);
+                        iBtnFilterGreaterLessThan.setEnabled(true);
+                        btnFilterBeforeAfter.setEnabled(true);
+                        break;
+                }
+            }
+        });
+
+        btnFilterBeforeAfter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if (isBC) {
+                    annoDomini = BcAc.AFTER_CHRIST;
+                    btnFilterBeforeAfter.setText("A.C.");
+                } else {
+                    annoDomini = BcAc.BEFORE_CHRIST;
+                    btnFilterBeforeAfter.setText("B.C.");
+                }
+                Log.d(TAG, "onClick: btnFilterBeforeAfter click: " + annoDomini);
+                isBC = !isBC;
+            }
+        });
+
+        iBtnFilterGreaterLessThan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!isGreaterThan) {
+                    iBtnFilterGreaterLessThan.setImageResource(R.drawable.ic_greater_than);
+                } else {
+                    iBtnFilterGreaterLessThan.setImageResource(R.drawable.ic_less_than);
+                }
+                Log.d(TAG, "onClick: iBtnFilterGreaterLessThan click: isGreaterThan: " + isGreaterThan);
+                isGreaterThan = !isGreaterThan;
+            }
+        });
+
+
+
+        btnFilterAgeApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (etFilterAge.getText().toString().isEmpty()) {
+                    Toast.makeText(artefactActivity, "Fill empty field", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "onClick: age is fine");
+                    int age = Integer.parseInt(etFilterAge.getText().toString());
+                    if (age >= 9999) {
+                        Toast.makeText(artefactActivity, "wrong age", Toast.LENGTH_SHORT).show();
+                        etFilterAge.setText("");
+                        etFilterAge.setHint("Age");
+                    }
+                    if (isGreaterThan && annoDomini == BcAc.AFTER_CHRIST) {
+                        Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
+                    } else if (isGreaterThan && annoDomini == BcAc.BEFORE_CHRIST) {
+                        Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
+                    } else if (!isGreaterThan && annoDomini == BcAc.AFTER_CHRIST) {
+                        Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
+                    } else if (!isGreaterThan && annoDomini == BcAc.BEFORE_CHRIST) {
+                        Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
+                    }
+                }
+            }
+        });
+
+
 
         mAdapter = new ArtefactListAdapter(artefactsList, ApplicationClass.loader);
         mRecyclerView.setLayoutManager(new GridLayoutManager(artefactActivity, SPAN_COUNT));
@@ -105,7 +231,7 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
-        btnFilterApply.setOnClickListener(new View.OnClickListener() {
+        btnFilterCategoryApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mAdapter.isCategoryFilter = true;
@@ -115,7 +241,7 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
-        etFilter.addTextChangedListener(new TextWatcher() {
+        etFilterName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
 
@@ -156,7 +282,7 @@ public class ArtefactListFragment extends Fragment {
                     Log.d(TAG, "onOptionsItemSelected: cancle filter mode");
                     item.setIcon(R.drawable.ic_filter);
                     filterLayout.setVisibility(View.GONE);
-                    etFilter.setText("");
+                    etFilterName.setText("");
                     artefactsList = ApplicationClass.mArtefactList;
                     mAdapter.notifyDataSetChanged();
                 }
@@ -187,6 +313,13 @@ public class ArtefactListFragment extends Fragment {
         return list;
     }
 
+    public void checkButton(View v){
+        int radioId = radioGroupFilter.getCheckedRadioButtonId();
+
+        radioButtonFilter = radioGroupFilter.findViewById(radioId);
+        Toast.makeText(artefactActivity, "Radiobutton selected: " + radioButtonFilter.getText(), Toast.LENGTH_SHORT).show();
+    }
+
     private void initArtefactList(View view) {
 
         mFormViewArtefactList = view.findViewById(R.id.login_form);
@@ -198,8 +331,28 @@ public class ArtefactListFragment extends Fragment {
 
         filterLayout = view.findViewById(R.id.layout_filter);
         spinnerFilterCategory = filterLayout.findViewById(R.id.spinner_list_filter_category);
-        btnFilterApply = filterLayout.findViewById(R.id.button_artefact_list_filter_submit);
-        etFilter = filterLayout.findViewById(R.id.edit_list_filter);
+        btnFilterCategoryApply = filterLayout.findViewById(R.id.button_artefact_list_apply_category_filter);
+        etFilterAge = filterLayout.findViewById(R.id.edit_artefact_age);
+        btnFilterBeforeAfter = filterLayout.findViewById(R.id.button_before_after);
+        iBtnFilterGreaterLessThan = filterLayout.findViewById(R.id.button_bigger_smaller);
+        btnFilterAgeApply = filterLayout.findViewById(R.id.button_artefact_list_apply_age_filter);
+        btnShowFilterOnMap = filterLayout.findViewById(R.id.button_show_filter_on_map);
+        radioGroupFilter = filterLayout.findViewById(R.id.radioGroup);
+        etFilterName = filterLayout.findViewById(R.id.edit_list_filter);
+        annoDomini = BcAc.BEFORE_CHRIST;
+
+
+        // disable unchecked lines
+        spinnerFilterCategory.setEnabled(false);
+        btnFilterCategoryApply.setEnabled(false);
+        etFilterAge.setEnabled(false);
+        btnFilterBeforeAfter.setEnabled(false);
+        btnFilterBeforeAfter.setText("B.C.");
+        iBtnFilterGreaterLessThan.setEnabled(false);
+        btnFilterAgeApply.setEnabled(false);
+        // enable checked line
+        etFilterName.setEnabled(true);
+
         filteredList = new ArrayList<>();
 
         artefactsList = ApplicationClass.mArtefactList;

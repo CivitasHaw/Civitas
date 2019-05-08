@@ -44,35 +44,162 @@
             android:foreground="?android:attr/selectableItemBackground"
             app:cardCornerRadius="8dp">
 
-            <RelativeLayout
-                android:id="@+id/layout_filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone">
-
-                <EditText
-                    android:id="@+id/edit_list_filter"
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/layout_filter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:hint="name" />
+                    android:visibility="visible">
 
-                <Spinner
-                    android:id="@+id/spinner_list_filter_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edit_list_filter"
-                    android:layout_centerVertical="true" />
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0">
 
-                <Button
-                    android:id="@+id/button_artefact_list_filter_submit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/edit_list_filter"
-                    android:layout_alignParentRight="true"
-                    android:text="apply" />
+                        <RadioButton
+                            android:id="@+id/radio_artefact_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:layout_marginBottom="16dp" />
 
-            </RelativeLayout>
+                        <RadioButton
+                            android:id="@+id/radio_artefact_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp" />
+
+                        <RadioButton
+                            android:id="@+id/radio_artefact_age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp" />
+
+                    </RadioGroup>
+
+
+                    <EditText
+                        android:id="@+id/edit_list_filter"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="8dp"
+                        android:hint="name"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <Spinner
+                        android:id="@+id/spinner_list_filter_category"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/edit_list_filter"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toStartOf="@+id/button_artefact_list_apply_category_filter"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_list_filter" />
+
+                    <Button
+                        android:id="@+id/button_artefact_list_apply_category_filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/edit_list_filter"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/buttons"
+                        android:text="apply"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_list_filter" />
+
+                    <ImageButton
+                        android:id="@+id/button_bigger_smaller"
+                        android:layout_width="49dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/buttons"
+                        android:src="@drawable/ic_greater_than"
+                        app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
+                        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_list_filter_category"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <EditText
+                        android:id="@+id/edit_artefact_age"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:hint="Year"
+                        android:inputType="date"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
+                        app:layout_constraintStart_toEndOf="@+id/button_bigger_smaller"
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_list_filter_category"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <Button
+                        android:id="@+id/button_before_after"
+                        android:layout_width="58dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/buttons"
+                        app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
+                        app:layout_constraintStart_toEndOf="@+id/edit_artefact_age"
+                        app:layout_constraintTop_toBottomOf="@+id/spinner_list_filter_category"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <Button
+                        android:id="@+id/button_artefact_list_apply_age_filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/buttons"
+                        android:text="Apply"
+                        app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/button_before_after"
+                        app:layout_constraintTop_toBottomOf="@+id/button_artefact_list_apply_category_filter" />
+
+                    <Button
+                        android:id="@+id/button_show_filter_on_map"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/buttons"
+                        android:text="Show search result on map"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                </android.support.constraint.ConstraintLayout>
+
+
+
 
 
         </android.support.v7.widget.CardView>
