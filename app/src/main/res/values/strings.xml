@@ -37,7 +37,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="hint_new_artefact_name">Artefact name</string>
     <string name="hint_new_artefact_description">Artefact description</string>
-    <string name="hint_new_artefact_date">Which epoche?</string>
+    <string name="hint_new_artefact_date">Artefact age</string>
     <string name="button_new_artefact">Save</string>
     <string name="button_new_artefact_image">Take a picture</string>
     <string name="button_new_artefact_audio">Record audio file (optional)</string>
