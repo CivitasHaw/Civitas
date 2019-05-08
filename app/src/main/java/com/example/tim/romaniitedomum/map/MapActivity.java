@@ -459,7 +459,12 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
+
     private void moveCamera(LatLng latLng, float zoom) {
+         /**
+         *     credits
+         * https://stackoverflow.com/questions/32161757/how-to-animate-the-camera-to-a-specified-location-in-google-maps-v2-for-android
+         */
         //Log.d(TAG, "moveCamera: moving camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         CameraUpdate location = CameraUpdateFactory.newLatLngZoom(latLng, zoom);
         mMap.animateCamera(location);
