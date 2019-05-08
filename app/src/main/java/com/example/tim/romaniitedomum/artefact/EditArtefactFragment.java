@@ -34,6 +34,7 @@ import com.backendless.files.BackendlessFile;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
+import com.example.tim.romaniitedomum.Util.BcAc;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
@@ -75,7 +76,7 @@ public class EditArtefactFragment extends Fragment {
     private ImageButton btnAudioPlay, btnAudioStop, btnAudioRecord, btnAudioDelete;
     private ImageView ivArtefact;
     private EditText etArtefactName, etArtefactDescription, etArtefactAge;
-    private Button btnAudio, btnEditArtefact;
+    private Button btnAudio, btnEditArtefact, btnAnnoDomini;
     private Spinner spinnerCategory;
     private CategoryAdapter mCategoryAdapter;
     private ArrayList<Category> mCategoryList;
@@ -87,6 +88,7 @@ public class EditArtefactFragment extends Fragment {
     private String editedAudioFileName = "";
     private String imageFilePath = "";
     private String audioFilePath = "";
+    private BcAc annoDomini;
 
     private Artefact mEditArtefact;
     private Artefact mOriginalArtefact;
@@ -126,6 +128,20 @@ public class EditArtefactFragment extends Fragment {
             }
         });
 
+        btnAnnoDomini.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (annoDomini == BcAc.BEFORE_CHRIST) {
+                    annoDomini = BcAc.AFTER_CHRIST;
+                    btnAnnoDomini.setText("A.C.");
+                } else {
+                    annoDomini = BcAc.BEFORE_CHRIST;
+                    btnAnnoDomini.setText("B.C.");
+                }
+                Log.d(TAG, "onClick: anno domini: " + annoDomini);
+            }
+        });
+
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,6 +166,7 @@ public class EditArtefactFragment extends Fragment {
                 mEditArtefact.setArtefactAge(etArtefactAge.getText().toString());
                 mEditArtefact.setCategoryName(mCategory.getCategoryName());
                 mEditArtefact.setCategoryMarkerImage(mCategory.getCategoryMarkerImage());
+                mEditArtefact.setAnnoDomini(annoDomini.toString());
 
                 Date date = new Date();
                 Timestamp timestamp = new Timestamp(date.getTime());
@@ -354,6 +371,9 @@ public class EditArtefactFragment extends Fragment {
         etArtefactDescription = view.findViewById(R.id.edit_edit_artefact_description);
         etArtefactAge = view.findViewById(R.id.edit_edit_artefact_age);
         btnEditArtefact = view.findViewById(R.id.button_edit_artefact_save);
+        btnAnnoDomini = view.findViewById(R.id.button_edit_artefact_anno_domini);
+        btnAnnoDomini.setText("B.C.");
+        annoDomini = BcAc.BEFORE_CHRIST;
 
         provideOriginalFilePath();
         mCategoryList = populateCategoryList();
