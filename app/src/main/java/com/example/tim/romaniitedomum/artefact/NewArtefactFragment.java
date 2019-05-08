@@ -42,6 +42,7 @@ import com.backendless.geo.GeoPoint;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.ArtefactImageBitmap;
+import com.example.tim.romaniitedomum.Util.BcAc;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
@@ -81,7 +82,7 @@ public class NewArtefactFragment extends Fragment {
 
     private ImageView ivNewArtefact;
     private EditText etNewArtefactName, etNewArtefactDescription, etNewArtefactDate;
-    private Button btnNewArtefactSave, btnAddCategory, btnAudio;
+    private Button btnNewArtefactSave, btnAddCategory, btnAudio, btnAnnoDomini;
     private ImageButton btnTakeFotoFromCamera, btnTakeFotoFromGallery;
 
     private LinearLayout audioLayout;
@@ -107,6 +108,7 @@ public class NewArtefactFragment extends Fragment {
 
     private String imageFileName = "";
     private String audioFileName = "";
+    private BcAc annoDomini;
 
     private boolean isImageSelected = false;
 
@@ -131,6 +133,20 @@ public class NewArtefactFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        btnAnnoDomini.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (annoDomini == BcAc.BEFORE_CHRIST) {
+                    annoDomini = BcAc.AFTER_CHRIST;
+                    btnAnnoDomini.setText("A.C.");
+                } else {
+                    annoDomini = BcAc.BEFORE_CHRIST;
+                    btnAnnoDomini.setText("B.C.");
+                }
+                Log.d(TAG, "onClick: anno domini: " + annoDomini);
             }
         });
 
@@ -293,6 +309,7 @@ public class NewArtefactFragment extends Fragment {
             mArtefact.setArtefactName(artefactName);
             mArtefact.setArtefactDescription(artefactDescription);
             mArtefact.setArtefactAge(artefactDate);
+            mArtefact.setAnnoDomini(annoDomini.toString());
             mArtefact.setUserEmail(ApplicationClass.user.getEmail());
             mArtefact.setAuthorName(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_name)).toString());
             mArtefact.setOwnerId(ApplicationClass.user.getProperty(getResources().getString(R.string.backendless_property_ownerid)).toString());
@@ -601,6 +618,9 @@ public class NewArtefactFragment extends Fragment {
         btnTakeFotoFromGallery = view.findViewById(R.id.button_new_artefact_image_from_gallery);
         btnAddCategory = view.findViewById(R.id.button_new_artefact_add_category);
         spinnerCategories = view.findViewById(R.id.spinner_new_artefact_category);
+        btnAnnoDomini = view.findViewById(R.id.button_new_artefact_anno_domini);
+        btnAnnoDomini.setText("B.C.");
+        annoDomini = BcAc.BEFORE_CHRIST;
 
         mCategoryList = populateCategoryList();
 
