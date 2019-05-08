@@ -41,6 +41,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.BcAc;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
@@ -67,7 +68,7 @@ public class ArtefactDetailFragment extends Fragment {
 
     private ImageView ivArtefactDetail;
     private TextView tvArtefactDetailName, tvArtefactDetailCategory, tvArtefactDetailDescription;
-    private TextView tvArtefactDetailAuthor, tvArtefactDetailCreated, tvArtefactDetailUpdated;
+    private TextView tvArtefactDetailAuthor, tvArtefactDetailCreated, tvArtefactDetailUpdated, tvArtefactDetailAge;
     private Button btnArtefactDetailSaveRating;
     private ProgressBar mProgress;
     private RatingBar mRating;
@@ -202,6 +203,7 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailAuthor = view.findViewById(R.id.text_artefact_detail_author);
         tvArtefactDetailCreated = view.findViewById(R.id.text_artefact_detail_created);
         tvArtefactDetailUpdated = view.findViewById(R.id.text_artefact_detail_updated);
+        tvArtefactDetailAge = view.findViewById(R.id.text_artefact_detail_age);
         mProgress = view.findViewById(R.id.progress_image_artefact_detail);
         mRating = view.findViewById(R.id.ratingbar_artefact_detail);
         btnArtefactDetailSaveRating = view.findViewById(R.id.button_artefact_detail_save_rating);
@@ -503,6 +505,13 @@ public class ArtefactDetailFragment extends Fragment {
         tvArtefactDetailCreated.setText(d);
         tvArtefactDetailCategory.setText(category);
         tvArtefactDetailDescription.setText(artefact.getArtefactDescription());
+        String ad;
+        if (artefact.getAnnoDomini().equals(BcAc.BEFORE_CHRIST.toString())) {
+            ad = "B.C.";
+        } else {
+            ad = "A.C.";
+        }
+        tvArtefactDetailAge.setText("Age: " + artefact.getArtefactAge() + " " + ad);
     }
 
     private void provideFilePath() {

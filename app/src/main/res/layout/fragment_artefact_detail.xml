@@ -140,19 +140,19 @@
                     <TextView
                         android:id="@+id/text_artefact_detail_created"
                         android:layout_width="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/artefact_detail_created"
                         android:textColor="@color/civitas_dark_grey" />
 
                     <TextView
                         android:id="@+id/text_artefact_detail_updated"
                         android:layout_width="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/artefact_detail_updated"
-                        android:visibility="gone"
-                        android:textColor="@color/civitas_dark_grey" />
+                        android:textColor="@color/civitas_dark_grey"
+                        android:visibility="gone" />
 
 
                     <TextView
@@ -161,6 +161,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/artefact_detail_category"
+                        android:textColor="@color/civitas_dark_grey" />
+
+                    <TextView
+                        android:id="@+id/text_artefact_detail_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:textColor="@color/civitas_dark_grey" />
 
                 </LinearLayout>
