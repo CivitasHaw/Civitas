@@ -21,6 +21,7 @@ public class Artefact {
     private String authorName;
     private String artefactName;
     private String artefactAge;
+    private String annoDomini;
     private String artefactImageUrl;
     private String artefactImageFileName;
     private String artefactAudioFileName;
@@ -36,6 +37,14 @@ public class Artefact {
     private List<Artefact> artefactSiblings;
 
     public Artefact() {
+    }
+
+    public String getAnnoDomini() {
+        return annoDomini;
+    }
+
+    public void setAnnoDomini(String annoDomini) {
+        this.annoDomini = annoDomini;
     }
 
     public String getArtefactAge() {
