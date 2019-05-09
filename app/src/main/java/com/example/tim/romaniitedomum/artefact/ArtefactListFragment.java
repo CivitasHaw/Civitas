@@ -136,12 +136,24 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
+        btnFilterBeforeAfterFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (annoDominiFrom == BcAc.BEFORE_CHRIST) {
+                    annoDominiFrom = BcAc.AFTER_CHRIST;
+                    btnFilterBeforeAfterFrom.setText("A.C.");
+                } else {
+                    annoDominiFrom = BcAc.BEFORE_CHRIST;
+                    btnFilterBeforeAfterFrom.setText("B.C.");
+                }
+                Log.d(TAG, "onClick: btnFilterBeforeAfterFrom click: " + annoDominiFrom);
+            }
+        });
+
         btnFilterBeforeAfter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if (isBC) {
+                if (annoDomini == BcAc.BEFORE_CHRIST) {
                     annoDomini = BcAc.AFTER_CHRIST;
                     btnFilterBeforeAfter.setText("A.C.");
                 } else {
@@ -149,14 +161,6 @@ public class ArtefactListFragment extends Fragment {
                     btnFilterBeforeAfter.setText("B.C.");
                 }
                 Log.d(TAG, "onClick: btnFilterBeforeAfter click: " + annoDomini);
-                isBC = !isBC;
-            }
-        });
-
-            @Override
-            public void onClick(View v) {
-                } else {
-                }
             }
         });
 
