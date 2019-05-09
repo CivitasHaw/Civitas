@@ -183,6 +183,15 @@ public class ArtefactListFragment extends Fragment {
                         Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
                     } else if (!isGreaterThan && annoDomini == BcAc.BEFORE_CHRIST) {
                         Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
+                                mAdapter = null;
+                                mAdapter = new ArtefactListAdapter(filteredList);
+                                mRecyclerView.setAdapter(mAdapter);
+                                    mAdapter = null;
+                                    mAdapter = new ArtefactListAdapter(filteredList);
+                                    mRecyclerView.setAdapter(mAdapter);
+                                    mAdapter = null;
+                                    mAdapter = new ArtefactListAdapter(filteredList);
+                                    mRecyclerView.setAdapter(mAdapter);
                     }
                 }
             }
@@ -200,8 +209,7 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
-
-        mAdapter = new ArtefactListAdapter(artefactsList, ApplicationClass.loader);
+        mAdapter = new ArtefactListAdapter(artefactsList);
         mRecyclerView.setLayoutManager(new GridLayoutManager(artefactActivity, SPAN_COUNT));
         mRecyclerView.setAdapter(mAdapter);
 

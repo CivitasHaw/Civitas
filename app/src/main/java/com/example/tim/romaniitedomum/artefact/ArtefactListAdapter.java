@@ -23,9 +23,6 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.tim.romaniitedomum.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +38,6 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     private List<Artefact> mArtefactListFull;
     public boolean isCategoryFilter = false;
     private List<Artefact> mArtefactList;
-    private ImageLoader mImageLoader;
     private OnItemClickListener mListener;
 
     /**
@@ -132,10 +128,9 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
         }
     }
 
-    public ArtefactListAdapter(List<Artefact> artefacts, ImageLoader loader) {
+    public ArtefactListAdapter(List<Artefact> artefacts) {
         mArtefactListFull = new ArrayList<>(artefacts);
         this.mArtefactList = artefacts;
-        mImageLoader = loader;
     }
 
     @NonNull
