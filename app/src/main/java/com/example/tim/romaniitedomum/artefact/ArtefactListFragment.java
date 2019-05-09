@@ -275,6 +275,27 @@ public class ArtefactListFragment extends Fragment {
         return view;
     }
 
+
+    private List<Artefact> getFilteredList (List<Artefact> fullList, BcAc filterAnnoDominiFrom, int age, boolean isGreaterThan) {
+
+        filteredList.clear();
+        List<Artefact> tempList = new ArrayList<>();
+        if (isGreaterThan) {
+            for (Artefact item : fullList) {
+                if (item.getAnnoDomini().equals(filterAnnoDominiFrom.toString()) && Integer.parseInt(item.getArtefactAge()) >= age) {
+                    tempList.add(item);
+                }
+            }
+        } else {
+            for (Artefact item : fullList) {
+                if (item.getAnnoDomini().equals(filterAnnoDominiFrom.toString()) && Integer.parseInt(item.getArtefactAge()) <= age) {
+                    tempList.add(item);
+                }
+            }
+        }
+        return tempList;
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
