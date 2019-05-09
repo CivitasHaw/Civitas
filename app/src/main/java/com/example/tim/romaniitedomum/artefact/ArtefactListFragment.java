@@ -196,6 +196,7 @@ public class ArtefactListFragment extends Fragment {
                                 mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
                                     @Override
                                     public void onItemclick(int position) {
+                                        goToArtefactDetail(position);
                                     }
                                 });
                                 Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
@@ -219,6 +220,7 @@ public class ArtefactListFragment extends Fragment {
                                     mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
                                         @Override
                                         public void onItemclick(int position) {
+                                            goToArtefactDetail(position);
                                         }
                                     });
                                     Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
@@ -244,6 +246,7 @@ public class ArtefactListFragment extends Fragment {
                                     mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
                                         @Override
                                         public void onItemclick(int position) {
+                                            goToArtefactDetail(position);
                                         }
                                     });
                                     Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
@@ -335,6 +338,11 @@ public class ArtefactListFragment extends Fragment {
         return view;
     }
 
+    private void goToArtefactDetail(int position) {
+        ApplicationClass.position = position;
+        Fragment artefactDetailFragment = new ArtefactDetailFragment();
+        artefactActivity.fragmentSwitcher2(artefactDetailFragment, true, "artefactDetailFragment");
+    }
 
     private void resetAgeFilterViews() {
         etFilterAge.setText("");
