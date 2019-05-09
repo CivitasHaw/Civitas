@@ -69,7 +69,7 @@ public class ArtefactListFragment extends Fragment {
 
     private RadioGroup radioGroupFilter;
     private RadioButton radioButtonFilter;
-    private Button btnFilterCategoryApply, btnFilterAgeApply, btnShowFilterOnMap;
+    private Button btnFilterCategoryApply, btnFilterAgeApply, btnShowFilterResultOnMap;
     private String filterString = "";
     private List<Artefact> artefactsList;
     private List<Artefact> filteredList;
@@ -182,6 +182,17 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
+        btnShowFilterResultOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!filteredList.isEmpty()) {
+                    ApplicationClass.mFilteredArtefactList = filteredList;
+                    Intent intent = new Intent(artefactActivity, MapActivity.class);
+                    intent.putExtra(Util.ORIGIN, Util.FILTER);
+                    startActivity(intent);
+                }
+            }
+        });
 
 
         mAdapter = new ArtefactListAdapter(artefactsList, ApplicationClass.loader);
@@ -320,7 +331,7 @@ public class ArtefactListFragment extends Fragment {
         btnFilterBeforeAfter = filterLayout.findViewById(R.id.button_before_after);
         btnFilterBeforeAfterFrom = filterLayout.findViewById(R.id.button_before_after_from);
         btnFilterAgeApply = filterLayout.findViewById(R.id.button_artefact_list_apply_age_filter);
-        btnShowFilterOnMap = filterLayout.findViewById(R.id.button_show_filter_on_map);
+        btnShowFilterResultOnMap = filterLayout.findViewById(R.id.button_show_filter_on_map);
         radioGroupFilter = filterLayout.findViewById(R.id.radioGroup);
         etFilterName = filterLayout.findViewById(R.id.edit_list_filter);
         annoDomini = BcAc.BEFORE_CHRIST;
