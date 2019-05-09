@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -60,10 +59,9 @@ public class ArtefactListFragment extends Fragment {
     private ArtefactListAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ConstraintLayout filterLayout;
-    private EditText etFilterName, etFilterAge;
+    private EditText etFilterName, etFilterAge, etFilterAgeFrom;
     private Spinner spinnerFilterCategory;
-    private Button btnFilterBeforeAfter;
-    private ImageButton iBtnFilterGreaterLessThan;
+    private Button btnFilterBeforeAfter, btnFilterBeforeAfterFrom;
     private CategoryAdapter mCategoryAdapter;
     private ArrayList<Category> mCategoryList;
     private Category mCategory;
@@ -77,9 +75,7 @@ public class ArtefactListFragment extends Fragment {
     private List<Artefact> filteredList;
 
     private BcAc annoDomini;
-    private boolean isGreaterThan = false;
-    private boolean isBC = true;
-    private boolean isFirstCall = false;
+    private BcAc annoDominiFrom;
 
 
     @Nullable
@@ -100,7 +96,6 @@ public class ArtefactListFragment extends Fragment {
                         btnFilterCategoryApply.setEnabled(false);
                         etFilterAge.setEnabled(false);
                         btnFilterBeforeAfter.setEnabled(false);
-                        iBtnFilterGreaterLessThan.setEnabled(false);
                         btnFilterAgeApply.setEnabled(false);
 
                         // enable checked line
@@ -112,7 +107,6 @@ public class ArtefactListFragment extends Fragment {
                         etFilterName.setEnabled(false);
                         etFilterAge.setEnabled(false);
                         btnFilterBeforeAfter.setEnabled(false);
-                        iBtnFilterGreaterLessThan.setEnabled(false);
                         btnFilterAgeApply.setEnabled(false);
 
                         // enable checked line
@@ -121,10 +115,7 @@ public class ArtefactListFragment extends Fragment {
                         break;
                     case R.id.radio_artefact_age:
                         // Toast.makeText(artefactActivity, "checked button: " + checkedId, Toast.LENGTH_SHORT).show();
-                        if (!isFirstCall) {
-                            isGreaterThan = true;
-                            isFirstCall = true;
-                        }
+                  
                         // disable unchecked lines
                         etFilterName.setEnabled(false);
                         spinnerFilterCategory.setEnabled(false);
@@ -133,7 +124,6 @@ public class ArtefactListFragment extends Fragment {
                         // enable checked line
                         etFilterAge.setEnabled(true);
                         btnFilterAgeApply.setEnabled(true);
-                        iBtnFilterGreaterLessThan.setEnabled(true);
                         btnFilterBeforeAfter.setEnabled(true);
                         break;
                 }
@@ -157,17 +147,10 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
-        iBtnFilterGreaterLessThan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (!isGreaterThan) {
-                    iBtnFilterGreaterLessThan.setImageResource(R.drawable.ic_greater_than);
                 } else {
-                    iBtnFilterGreaterLessThan.setImageResource(R.drawable.ic_less_than);
                 }
-                Log.d(TAG, "onClick: iBtnFilterGreaterLessThan click: isGreaterThan: " + isGreaterThan);
-                isGreaterThan = !isGreaterThan;
             }
         });
 
@@ -333,14 +316,16 @@ public class ArtefactListFragment extends Fragment {
         spinnerFilterCategory = filterLayout.findViewById(R.id.spinner_list_filter_category);
         btnFilterCategoryApply = filterLayout.findViewById(R.id.button_artefact_list_apply_category_filter);
         etFilterAge = filterLayout.findViewById(R.id.edit_artefact_age);
+        etFilterAgeFrom = filterLayout.findViewById(R.id.edit_artefact_age_from);
         btnFilterBeforeAfter = filterLayout.findViewById(R.id.button_before_after);
-        iBtnFilterGreaterLessThan = filterLayout.findViewById(R.id.button_bigger_smaller);
+        btnFilterBeforeAfterFrom = filterLayout.findViewById(R.id.button_before_after_from);
         btnFilterAgeApply = filterLayout.findViewById(R.id.button_artefact_list_apply_age_filter);
         btnShowFilterOnMap = filterLayout.findViewById(R.id.button_show_filter_on_map);
         radioGroupFilter = filterLayout.findViewById(R.id.radioGroup);
         etFilterName = filterLayout.findViewById(R.id.edit_list_filter);
         annoDomini = BcAc.BEFORE_CHRIST;
-
+        annoDomini = BcAc.AFTER_CHRIST;
+        annoDominiFrom = BcAc.BEFORE_CHRIST;
 
         // disable unchecked lines
         spinnerFilterCategory.setEnabled(false);
@@ -348,7 +333,6 @@ public class ArtefactListFragment extends Fragment {
         etFilterAge.setEnabled(false);
         btnFilterBeforeAfter.setEnabled(false);
         btnFilterBeforeAfter.setText("B.C.");
-        iBtnFilterGreaterLessThan.setEnabled(false);
         btnFilterAgeApply.setEnabled(false);
         // enable checked line
         etFilterName.setEnabled(true);
