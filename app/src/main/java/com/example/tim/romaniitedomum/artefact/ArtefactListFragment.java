@@ -165,37 +165,97 @@ public class ArtefactListFragment extends Fragment {
         });
 
 
-
         btnFilterAgeApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etFilterAge.getText().toString().isEmpty()) {
+                if (etFilterAge.getText().toString().isEmpty() || etFilterAgeFrom.getText().toString().isEmpty()) {
                     Toast.makeText(artefactActivity, "Fill empty field", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d(TAG, "onClick: age is fine");
-                    int age = Integer.parseInt(etFilterAge.getText().toString());
-                    if (age >= 9999) {
-                        Toast.makeText(artefactActivity, "wrong age", Toast.LENGTH_SHORT).show();
-                        etFilterAge.setText("");
-                        etFilterAge.setHint("Age");
-                    }
-                    if (isGreaterThan && annoDomini == BcAc.AFTER_CHRIST) {
-                        Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
-                    } else if (isGreaterThan && annoDomini == BcAc.BEFORE_CHRIST) {
-                        Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
-                    } else if (!isGreaterThan && annoDomini == BcAc.AFTER_CHRIST) {
-                        Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
-                    } else if (!isGreaterThan && annoDomini == BcAc.BEFORE_CHRIST) {
-                        Log.d(TAG, "onClick: isGreaterThan: " + isGreaterThan + " annoDomini: " + annoDomini);
+                    if (annoDominiFrom.toString().equals(BcAc.AFTER_CHRIST) && annoDomini.toString().equals(BcAc.BEFORE_CHRIST)) {
+                        Toast.makeText(artefactActivity, "wrong annoDomini setup", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "onClick: wrong annoDomini constellation");
+                    } else {
+                        Log.d(TAG, "onClick: annoDomini is correct");
+                        int ageFrom = Integer.parseInt(etFilterAgeFrom.getText().toString());
+                        int age = Integer.parseInt(etFilterAge.getText().toString());
+                        if (age >= 9999 || ageFrom >= 9999) {
+                            Toast.makeText(artefactActivity, "wrong age", Toast.LENGTH_SHORT).show();
+                            resetAgeFilterViews();
+                        } else {
+                            Log.d(TAG, "onClick: age is fine");
+                            if (annoDominiFrom == BcAc.BEFORE_CHRIST && annoDomini == BcAc.AFTER_CHRIST) {
+                                Log.d(TAG, "onClick: B.C. to A.C. years filter is correct");
+                                Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + age + " " + annoDomini + "\n");
+                                List<Artefact> tempList;
+                                tempList = getFilteredList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, false);
+                                filteredList = getFilteredList(ApplicationClass.mArtefactList, annoDomini, age, false);
+                                filteredList.addAll(tempList);
                                 mAdapter = null;
                                 mAdapter = new ArtefactListAdapter(filteredList);
                                 mRecyclerView.setAdapter(mAdapter);
+                                mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemclick(int position) {
+                                    }
+                                });
+                                Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
+
+//                                for (int i = 0; i < filteredList.size(); i++) {
+//                                    Log.d(TAG, "onClick: artefactname: " + filteredList.get(i).getArtefactName() + " age: " + filteredList.get(i).getArtefactAge() + " " + filteredList.get(i).getAnnoDomini() + "\n");
+//                                }
+                            } else if (annoDominiFrom == BcAc.AFTER_CHRIST && annoDomini == BcAc.AFTER_CHRIST) {
+                                if (ageFrom > age) {
+                                    Toast.makeText(artefactActivity, "incorrect filter", Toast.LENGTH_SHORT).show();
+                                    resetAgeFilterViews();
+                                } else {
+                                    Log.d(TAG, "onClick: A.C. to A.C. years filter is correct");
+                                    Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + age + " " + annoDomini + "\n");
+                                    List<Artefact> tempList;
+                                    tempList = getFilteredList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, true);
+                                    filteredList = getFilteredList(tempList, annoDomini, age, false);
                                     mAdapter = null;
                                     mAdapter = new ArtefactListAdapter(filteredList);
                                     mRecyclerView.setAdapter(mAdapter);
+                                    mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
+                                        @Override
+                                        public void onItemclick(int position) {
+                                        }
+                                    });
+                                    Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
+
+//                                    for (int i = 0; i < filteredList.size(); i++) {
+//                                        Log.d(TAG, "onClick: artefactname: " + filteredList.get(i).getArtefactName() + " age: " + filteredList.get(i).getArtefactAge() + " " + filteredList.get(i).getAnnoDomini() + "\n");
+//                                    }
+                                }
+                            } else if (annoDominiFrom == BcAc.BEFORE_CHRIST && annoDomini == BcAc.BEFORE_CHRIST) {
+                                if (ageFrom < age) {
+                                    Toast.makeText(artefactActivity, "B.C. to B.C. incorrect filter", Toast.LENGTH_SHORT).show();
+                                    resetAgeFilterViews();
+
+                                } else {
+                                    Log.d(TAG, "onClick: B.C. to B.C. years filter is correct");
+                                    Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + age + " " + annoDomini + "\n");
+                                    List<Artefact> tempList;
+                                    tempList = getFilteredList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, false);
+                                    filteredList = getFilteredList(tempList, annoDomini, age, true);
                                     mAdapter = null;
                                     mAdapter = new ArtefactListAdapter(filteredList);
                                     mRecyclerView.setAdapter(mAdapter);
+                                    mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
+                                        @Override
+                                        public void onItemclick(int position) {
+                                        }
+                                    });
+                                    Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
+//                                    for (int i = 0; i < filteredList.size(); i++) {
+//                                        Log.d(TAG, "onClick: artefactname: " + filteredList.get(i).getArtefactName() + " age: " + filteredList.get(i).getArtefactAge() + " " + filteredList.get(i).getAnnoDomini() + "\n");
+//                                    }
+                                }
+                            } else if (annoDominiFrom == BcAc.AFTER_CHRIST && annoDomini == BcAc.BEFORE_CHRIST) {
+                                Log.d(TAG, "onClick: A.C. to B.C. geht nicht");
+                                Log.d(TAG, "onClick: from: " + annoDominiFrom + " to: " + annoDomini);
+                            }
+                        }
                     }
                 }
             }
@@ -460,4 +520,6 @@ public class ArtefactListFragment extends Fragment {
             mFormViewArtefactList.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
+
+
 }
