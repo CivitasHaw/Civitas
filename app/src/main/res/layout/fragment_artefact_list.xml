@@ -132,6 +132,7 @@
                         android:layout_marginBottom="8dp"
                         android:hint="Year"
                         android:gravity="center"
+                        android:inputType="number"
                         app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
                         app:layout_constraintStart_toEndOf="@+id/radioGroup"
                         app:layout_constraintTop_toBottomOf="@+id/spinner_list_filter_category"
@@ -164,21 +165,7 @@
                         app:layout_constraintStart_toEndOf="@+id/button_before_after_from"
                         app:layout_constraintTop_toBottomOf="@+id/spinner_list_filter_category"
                         app:layout_constraintVertical_bias="0.688" />
-                    <!--
-                    <ImageButton
-                        android:id="@+id/button_bigger_smaller"
-                        android:layout_width="49dp"
-                        android:layout_height="44dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/buttons"
-                        android:src="@drawable/ic_greater_than"
-                        app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
-                        app:layout_constraintStart_toEndOf="@+id/radioGroup"
-                        app:layout_constraintTop_toBottomOf="@+id/spinner_list_filter_category"
-                        app:layout_constraintVertical_bias="1.0" />-->
-
+  
                     <EditText
                         android:id="@+id/edit_artefact_age"
                         android:layout_width="56dp"
@@ -189,7 +176,7 @@
                         android:layout_marginBottom="8dp"
                         android:gravity="center"
                         android:hint="Year"
-                        android:inputType="date"
+                        android:inputType="number"
                         app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
                         app:layout_constraintEnd_toStartOf="@+id/button_before_after"
                         app:layout_constraintHorizontal_bias="1.0"
