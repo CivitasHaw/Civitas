@@ -276,6 +276,13 @@ public class ArtefactListFragment extends Fragment {
     }
 
 
+    private void resetAgeFilterViews() {
+        etFilterAge.setText("");
+        etFilterAgeFrom.setText("");
+        etFilterAge.setHint("Age");
+        etFilterAgeFrom.setHint("Age");
+    }
+
     private List<Artefact> getFilteredList (List<Artefact> fullList, BcAc filterAnnoDominiFrom, int age, boolean isGreaterThan) {
 
         filteredList.clear();
