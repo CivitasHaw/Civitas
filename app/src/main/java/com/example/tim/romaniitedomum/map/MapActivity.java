@@ -268,9 +268,15 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     }
                 });
 
-                if (ApplicationClass.mArtefactList.size() > 0) {
-                    for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
-                        createMarker(ApplicationClass.mArtefactList.get(i));
+                if (getIntent().getStringExtra(Util.ORIGIN).equals(Util.FILTER) && !ApplicationClass.mFilteredArtefactList.isEmpty()) {
+                    for (int i = 0; i < ApplicationClass.mFilteredArtefactList.size(); i++) {
+                        createMarker(ApplicationClass.mFilteredArtefactList.get(i));
+                    }
+                } else {
+                    if (ApplicationClass.mArtefactList.size() > 0) {
+                        for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
+                            createMarker(ApplicationClass.mArtefactList.get(i));
+                        }
                     }
                 }
 
@@ -437,6 +443,12 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                                     Log.d(TAG, "onComplete: editArtefact");
                                     navigationView.setCheckedItem(R.id.nav_map);
                                     moveCamera(ApplicationClass.mArtefactLatLng, CLOSE_ZOOM);
+                                    break;
+                                case Util.FILTER:
+                                    navigationView.setCheckedItem(R.id.nav_map);
+                                    moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(),
+                                                    ApplicationClass.mDeviceLocation.getLongitude()),
+                                            DEFAULT_ZOOM);
                                     break;
                                 default:
                                     Log.d(TAG, "onComplete: default");
