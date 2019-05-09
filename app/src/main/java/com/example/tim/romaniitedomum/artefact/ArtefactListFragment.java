@@ -96,6 +96,8 @@ public class ArtefactListFragment extends Fragment {
                         btnFilterCategoryApply.setEnabled(false);
                         etFilterAge.setEnabled(false);
                         btnFilterBeforeAfter.setEnabled(false);
+                        etFilterAgeFrom.setEnabled(false);
+                        btnFilterBeforeAfterFrom.setEnabled(false);
                         btnFilterAgeApply.setEnabled(false);
 
                         // enable checked line
@@ -107,6 +109,8 @@ public class ArtefactListFragment extends Fragment {
                         etFilterName.setEnabled(false);
                         etFilterAge.setEnabled(false);
                         btnFilterBeforeAfter.setEnabled(false);
+                        etFilterAgeFrom.setEnabled(false);
+                        btnFilterBeforeAfterFrom.setEnabled(false);
                         btnFilterAgeApply.setEnabled(false);
 
                         // enable checked line
@@ -123,8 +127,10 @@ public class ArtefactListFragment extends Fragment {
 
                         // enable checked line
                         etFilterAge.setEnabled(true);
-                        btnFilterAgeApply.setEnabled(true);
                         btnFilterBeforeAfter.setEnabled(true);
+                        etFilterAgeFrom.setEnabled(true);
+                        btnFilterBeforeAfterFrom.setEnabled(true);
+                        btnFilterAgeApply.setEnabled(true);
                         break;
                 }
             }
@@ -334,7 +340,6 @@ public class ArtefactListFragment extends Fragment {
         btnShowFilterResultOnMap = filterLayout.findViewById(R.id.button_show_filter_on_map);
         radioGroupFilter = filterLayout.findViewById(R.id.radioGroup);
         etFilterName = filterLayout.findViewById(R.id.edit_list_filter);
-        annoDomini = BcAc.BEFORE_CHRIST;
         annoDomini = BcAc.AFTER_CHRIST;
         annoDominiFrom = BcAc.BEFORE_CHRIST;
 
@@ -343,7 +348,10 @@ public class ArtefactListFragment extends Fragment {
         btnFilterCategoryApply.setEnabled(false);
         etFilterAge.setEnabled(false);
         btnFilterBeforeAfter.setEnabled(false);
-        btnFilterBeforeAfter.setText("B.C.");
+        btnFilterBeforeAfter.setText("A.C.");
+        etFilterAgeFrom.setEnabled(false);
+        btnFilterBeforeAfterFrom.setEnabled(false);
+        btnFilterBeforeAfterFrom.setText("B.C.");
         btnFilterAgeApply.setEnabled(false);
         // enable checked line
         etFilterName.setEnabled(true);
