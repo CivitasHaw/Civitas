@@ -3,6 +3,7 @@ package com.example.tim.romaniitedomum.artefact;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -35,6 +36,7 @@ import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.BcAc;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
+import com.example.tim.romaniitedomum.map.MapActivity;
 
 import java.util.ArrayList;
 import java.util.List;
