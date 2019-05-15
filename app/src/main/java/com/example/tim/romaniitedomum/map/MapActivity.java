@@ -285,6 +285,25 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 Log.d(TAG, "onClick: apply age filter clicked");
                 break;
             case R.id.button_map_apply_category_filter:
+                mFilterHelper.setMapFilterSet(true);
+                btnMapFilterReset.setEnabled(true);
+                btnMapFilterShowResultAtList.setEnabled(true);
+                if (mCategory != null) {
+                    List<Artefact> list = new ArrayList<>();
+                    for (Artefact item : ApplicationClass.mArtefactList) {
+                        if (item.getCategoryName().equals(mCategory.getCategoryName())) {
+                            list.add(item);
+                        }
+                    }
+                    mMap.clear();
+                    if (!list.isEmpty()) {
+                        for (int i = 0; i < list.size(); i++) {
+                            createMarker(list.get(i));
+                        }
+                        mFilterHelper.setFilteredArtefactList(list);
+                        moveCamera(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()), DEFAULT_ZOOM);
+                    }
+                }
                 Log.d(TAG, "onClick: apply category filter clicked");
                 break;
             case R.id.button_map_anno_domini_from:
