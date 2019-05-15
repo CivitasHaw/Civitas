@@ -298,7 +298,14 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.button_map_reset_filter:
                 Log.d(TAG, "onClick: reset filter clicked");
+                btnMapFilterReset.setEnabled(false);
+                btnMapFilterShowResultAtList.setEnabled(false);
+                radioGroupMapFilter.check(R.id.radio_map_artefact_category);
                 mFilterHelper.resetFilterHelperSettings();
+                mMap.clear();
+                for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
+                    createMarker(ApplicationClass.mArtefactList.get(i));
+                }
                 break;
         }
     }
