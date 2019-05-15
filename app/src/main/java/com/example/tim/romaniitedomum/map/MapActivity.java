@@ -238,6 +238,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 //Log.d(TAG, "onOptionsItemSelected: myLocation: clicked");
                 moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(), ApplicationClass.mDeviceLocation.getLongitude()), CLOSE_ZOOM);
                 break;
+            case R.id.map_filter:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
