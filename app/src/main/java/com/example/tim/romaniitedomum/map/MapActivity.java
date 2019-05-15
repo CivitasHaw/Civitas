@@ -316,6 +316,18 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         btnMapFilterAnnoDominiTo.setOnClickListener(this);
         btnMapFilterShowResultAtList.setOnClickListener(this);
         btnMapFilterReset.setOnClickListener(this);
+        radioGroupMapFilter.check(R.id.radio_map_artefact_category);
+        radioGroupMapFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.radio_map_artefact_age:
+                        break;
+                    case R.id.radio_map_artefact_category:
+                        break;
+                }
+            }
+        });
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
