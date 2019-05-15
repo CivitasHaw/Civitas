@@ -79,6 +79,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private NavigationView navigationView;
     private FloatingActionButton btnAddArtefact;
 
+    private boolean isMapFilterMenuExpanded = false;
     private ConstraintLayout mapFilterLayout;
     private RadioGroup radioGroupMapFilter;
     private RadioButton radioButtonMapFilter;
@@ -239,6 +240,14 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 moveCamera(new LatLng(ApplicationClass.mDeviceLocation.getLatitude(), ApplicationClass.mDeviceLocation.getLongitude()), CLOSE_ZOOM);
                 break;
             case R.id.map_filter:
+                if (!isMapFilterMenuExpanded) {
+                    item.setIcon(R.drawable.ic_cancel_filter);
+                    mapFilterLayout.setVisibility(View.VISIBLE);
+                } else {
+                    item.setIcon(R.drawable.ic_filter);
+                    mapFilterLayout.setVisibility(View.GONE);
+                }
+                isMapFilterMenuExpanded = !isMapFilterMenuExpanded;
                 break;
         }
         return super.onOptionsItemSelected(item);
