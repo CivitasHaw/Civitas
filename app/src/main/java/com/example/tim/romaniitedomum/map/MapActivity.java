@@ -260,6 +260,26 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     @Override
     public void onClick(View v) {
 
+        switch (v.getId()) {
+            case R.id.button_artefact_map_apply_age_filter:
+                Log.d(TAG, "onClick: apply age filter clicked");
+                break;
+            case R.id.button_map_apply_category_filter:
+                Log.d(TAG, "onClick: apply category filter clicked");
+                break;
+            case R.id.button_map_anno_domini_from:
+                Log.d(TAG, "onClick: anno domini from clicked");
+                break;
+            case R.id.button_map_anno_domini_to:
+                Log.d(TAG, "onClick: anno domini to clicked");
+                break;
+            case R.id.button_show_filter_as_a_list:
+                Log.d(TAG, "onClick: show filter as a list clicked");
+                break;
+            case R.id.button_map_reset_filter:
+                Log.d(TAG, "onClick: reset filter clicked");
+                break;
+        }
     }
     private void initMap() {
         btnAddArtefact = findViewById(R.id.floatingActionButton);
