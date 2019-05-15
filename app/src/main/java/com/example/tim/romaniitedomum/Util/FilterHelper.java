@@ -105,6 +105,18 @@ public class FilterHelper {
         isMapFilterSet = mapFilterSet;
     }
 
+    public void resetFilterHelperSettings() {
+        this.annoDominiFrom = null;
+        this.annoDominiTo = null;
+        this.artefactName = null;
+        this.ageFrom = null;
+        this.ageTo = null;
+        this.filteredArtefactList = null;
+        this.category = null;
+        this.isMapFilterSet = false;
+        this.isListFilterSet = false;
+    }
+
     @Override
     public String toString() {
         return "FilterHelper{" +
