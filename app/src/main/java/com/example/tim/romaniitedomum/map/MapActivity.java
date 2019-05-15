@@ -282,6 +282,9 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
         switch (v.getId()) {
             case R.id.button_artefact_map_apply_age_filter:
+                mFilterHelper.setMapFilterSet(true);
+                btnMapFilterReset.setEnabled(true);
+                btnMapFilterShowResultAtList.setEnabled(true);
                 Log.d(TAG, "onClick: apply age filter clicked");
                 break;
             case R.id.button_map_apply_category_filter:
