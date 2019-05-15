@@ -399,10 +399,18 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     }
                 });
 
-                if (getIntent().getStringExtra(Util.ORIGIN).equals(Util.FILTER) && !ApplicationClass.mFilteredArtefactList.isEmpty()) {
+                // Map is called from ArtefactListFragment via drawer and filter is set
+                if (mFilterHelper.isListFilterSet() || mFilterHelper.isMapFilterSet()) {
+                    Log.d(TAG, "onMapReady: filter is set: mFilterHelper.toString(): " + mFilterHelper.toString());
+                    for (int i = 0; i < mFilterHelper.getFilteredArtefactList().size(); i++) {
+                        createMarker(mFilterHelper.getFilteredArtefactList().get(i));
+                    }
+                // Map is called from ArtefactListFragment via "show search result on map" button, filter is set
+                } else if (getIntent().getStringExtra(Util.ORIGIN).equals(Util.FILTER) && !ApplicationClass.mFilteredArtefactList.isEmpty()) {
                     for (int i = 0; i < ApplicationClass.mFilteredArtefactList.size(); i++) {
                         createMarker(ApplicationClass.mFilteredArtefactList.get(i));
                     }
+                // initial call, no filter is set
                 } else {
                     if (ApplicationClass.mArtefactList.size() > 0) {
                         for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
