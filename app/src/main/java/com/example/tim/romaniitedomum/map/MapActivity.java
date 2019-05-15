@@ -11,6 +11,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -19,12 +20,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +79,13 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private NavigationView navigationView;
     private FloatingActionButton btnAddArtefact;
 
+    private ConstraintLayout mapFilterLayout;
+    private RadioGroup radioGroupMapFilter;
+    private RadioButton radioButtonMapFilter;
+    private EditText etMapFilterAgeFrom, etMapFilterAgeTo;
+    private Spinner spinnerMapFilterCategory;
+    private Button btnMapFilterAnnoDominiFrom, btnMapFilterAnnoDominiTo, btnMapFilterApplyCategory,
+            btnMapFilterApplyAge, btnMapFilterShowResultAtList, btnMapFilterReset;
 
     private boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
@@ -244,6 +259,17 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
     private void initMap() {
         btnAddArtefact = findViewById(R.id.floatingActionButton);
+        mapFilterLayout = findViewById(R.id.layout_filter_map);
+        radioGroupMapFilter = mapFilterLayout.findViewById(R.id.radioGroup_map);
+        etMapFilterAgeFrom = mapFilterLayout.findViewById(R.id.edit_map_artefact_age_from);
+        etMapFilterAgeTo = mapFilterLayout.findViewById(R.id.edit_map_artefact_age);
+        spinnerMapFilterCategory = mapFilterLayout.findViewById(R.id.spinner_map_filter_category);
+        btnMapFilterApplyCategory = mapFilterLayout.findViewById(R.id.button_map_apply_category_filter);
+        btnMapFilterApplyAge = mapFilterLayout.findViewById(R.id.button_artefact_map_apply_age_filter);
+        btnMapFilterAnnoDominiFrom = mapFilterLayout.findViewById(R.id.button_map_anno_domini_from);
+        btnMapFilterAnnoDominiTo = mapFilterLayout.findViewById(R.id.button_map_anno_domini_to);
+        btnMapFilterShowResultAtList = mapFilterLayout.findViewById(R.id.button_show_filter_as_a_list);
+        btnMapFilterReset = mapFilterLayout.findViewById(R.id.button_map_reset_filter);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
