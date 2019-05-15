@@ -49,13 +49,6 @@
                     app:layout_constraintVertical_bias="0.0">
 
                     <RadioButton
-                        android:id="@+id/radio_map_artefact_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:checked="true" />
-
-                    <RadioButton
                         android:id="@+id/radio_map_artefact_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -68,19 +61,6 @@
                         android:layout_marginBottom="16dp" />
                 </RadioGroup>
 
-                <EditText
-                    android:id="@+id/edit_map_filter_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="8dp"
-                    android:hint="name"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/radioGroup_map"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <Spinner
                     android:id="@+id/spinner_map_filter_category"
                     android:layout_width="0dp"
@@ -88,12 +68,12 @@
                     android:layout_below="@id/edit_list_filter"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     app:layout_constraintEnd_toStartOf="@+id/button_map_apply_category_filter"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/radioGroup_map"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_map_filter_name" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <Button
                     android:id="@+id/button_map_apply_category_filter"
@@ -106,7 +86,7 @@
                     android:background="@drawable/buttons"
                     android:text="apply"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edit_map_filter_name" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
                     android:id="@+id/edit_map_artefact_age_from"
