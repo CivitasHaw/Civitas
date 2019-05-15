@@ -42,6 +42,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.FilterHelper;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.artefact.ArtefactActivity;
@@ -79,6 +80,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private NavigationView navigationView;
     private FloatingActionButton btnAddArtefact;
 
+    private FilterHelper mFilterHelper;
     private boolean isMapFilterMenuExpanded = false;
     private ConstraintLayout mapFilterLayout;
     private RadioGroup radioGroupMapFilter;
@@ -294,6 +296,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     }
     private void initMap() {
         btnAddArtefact = findViewById(R.id.floatingActionButton);
+        mFilterHelper = FilterHelper.getInstance();
         mapFilterLayout = findViewById(R.id.layout_filter_map);
         radioGroupMapFilter = mapFilterLayout.findViewById(R.id.radioGroup_map);
         etMapFilterAgeFrom = mapFilterLayout.findViewById(R.id.edit_map_artefact_age_from);

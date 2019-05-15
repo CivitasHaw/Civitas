@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.R;
 import com.example.tim.romaniitedomum.Util.BcAc;
+import com.example.tim.romaniitedomum.Util.FilterHelper;
 import com.example.tim.romaniitedomum.Util.UserScreen;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.map.MapActivity;
@@ -66,6 +67,7 @@ public class ArtefactListFragment extends Fragment {
     private ArrayList<Category> mCategoryList;
     private Category mCategory;
     private boolean isFilterActive = false;
+    private FilterHelper mFilterHelper;
 
     private RadioGroup radioGroupFilter;
     private RadioButton radioButtonFilter;
@@ -467,6 +469,7 @@ public class ArtefactListFragment extends Fragment {
 
         artefactsList = ApplicationClass.mArtefactList;
         mCategoryList = populateCategoryList();
+        mFilterHelper = FilterHelper.getInstance();
     }
 
 
