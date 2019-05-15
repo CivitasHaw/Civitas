@@ -316,14 +316,18 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         btnMapFilterAnnoDominiTo.setOnClickListener(this);
         btnMapFilterShowResultAtList.setOnClickListener(this);
         btnMapFilterReset.setOnClickListener(this);
+
+        enableMapFilterViews(true, true, false, false, false, false, false);
         radioGroupMapFilter.check(R.id.radio_map_artefact_category);
         radioGroupMapFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.radio_map_artefact_age:
+                        enableMapFilterViews(false, false, true, true, true, true, true);
                         break;
                     case R.id.radio_map_artefact_category:
+                        enableMapFilterViews(true, true, false, false, false, false, false);
                         break;
                 }
             }
@@ -387,6 +391,17 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 }
             }
         });
+    }
+
+    private void enableMapFilterViews(boolean category, boolean applyCategory,
+                                      boolean ageFrom, boolean adFrom, boolean ageTo, boolean adTo, boolean applyAge) {
+        spinnerMapFilterCategory.setEnabled(category);
+        btnMapFilterApplyCategory.setEnabled(applyCategory);
+        etMapFilterAgeFrom.setEnabled(ageFrom);
+        etMapFilterAgeTo.setEnabled(ageTo);
+        btnMapFilterAnnoDominiFrom.setEnabled(adFrom);
+        btnMapFilterAnnoDominiTo.setEnabled(adTo);
+        btnMapFilterApplyAge.setEnabled(applyAge);
     }
 
 
