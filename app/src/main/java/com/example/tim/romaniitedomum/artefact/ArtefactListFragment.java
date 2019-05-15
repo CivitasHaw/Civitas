@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -59,7 +58,6 @@ public class ArtefactListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ArtefactListAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private ConstraintLayout filterLayout;
     private EditText etFilterName, etFilterAge, etFilterAgeFrom;
     private Spinner spinnerFilterCategory;
@@ -437,7 +435,6 @@ public class ArtefactListFragment extends Fragment {
         tvLoadArtefactList = view.findViewById(R.id.tvLoad);
 
         mRecyclerView = view.findViewById(R.id.recyclerview_list_of_artefacts);
-        mLayoutManager = new LinearLayoutManager(artefactActivity);
 
         filterLayout = view.findViewById(R.id.layout_filter);
         spinnerFilterCategory = filterLayout.findViewById(R.id.spinner_list_filter_category);
