@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/map_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="Filter"
+        app:showAsAction="always" />
+
     <item android:id="@+id/button_my_location"
         android:icon="@drawable/ic_my_location"
         app:showAsAction="ifRoom"
