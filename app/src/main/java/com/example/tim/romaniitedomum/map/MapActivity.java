@@ -65,8 +65,8 @@ import com.google.android.gms.tasks.Task;
  * Created by TimStaats 21.02.2019
  */
 
-public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener/*,
-        GoogleMap.OnMapLongClickListener*/ {
+public class MapActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        View.OnClickListener {
 
     private static final String TAG = "MapActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -257,6 +257,10 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         super.onDestroy();
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
     private void initMap() {
         btnAddArtefact = findViewById(R.id.floatingActionButton);
         mapFilterLayout = findViewById(R.id.layout_filter_map);
@@ -271,6 +275,12 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         btnMapFilterShowResultAtList = mapFilterLayout.findViewById(R.id.button_show_filter_as_a_list);
         btnMapFilterReset = mapFilterLayout.findViewById(R.id.button_map_reset_filter);
 
+        btnMapFilterApplyAge.setOnClickListener(this);
+        btnMapFilterApplyCategory.setOnClickListener(this);
+        btnMapFilterAnnoDominiFrom.setOnClickListener(this);
+        btnMapFilterAnnoDominiTo.setOnClickListener(this);
+        btnMapFilterShowResultAtList.setOnClickListener(this);
+        btnMapFilterReset.setOnClickListener(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
