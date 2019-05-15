@@ -291,6 +291,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case R.id.button_map_reset_filter:
                 Log.d(TAG, "onClick: reset filter clicked");
+                mFilterHelper.resetFilterHelperSettings();
                 break;
         }
     }
