@@ -20,7 +20,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -66,6 +65,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Created by TimStaats 21.02.2019
  */
@@ -86,6 +86,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
     private FilterHelper mFilterHelper;
     private boolean isMapFilterMenuExpanded = false;
+
+    // filter vars
     private ConstraintLayout mapFilterLayout;
     private RadioGroup radioGroupMapFilter;
     private RadioButton radioButtonMapFilter;
@@ -355,6 +357,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private void initMap() {
         btnAddArtefact = findViewById(R.id.floatingActionButton);
         mFilterHelper = FilterHelper.getInstance();
+
+        // filter vars
         mapFilterLayout = findViewById(R.id.layout_filter_map);
         radioGroupMapFilter = mapFilterLayout.findViewById(R.id.radioGroup_map);
         etMapFilterAgeFrom = mapFilterLayout.findViewById(R.id.edit_map_artefact_age_from);
@@ -434,12 +438,12 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     for (int i = 0; i < mFilterHelper.getFilteredArtefactList().size(); i++) {
                         createMarker(mFilterHelper.getFilteredArtefactList().get(i));
                     }
-                // Map is called from ArtefactListFragment via "show search result on map" button, filter is set
+                    // Map is called from ArtefactListFragment via "show search result on map" button, filter is set
                 } else if (getIntent().getStringExtra(Util.ORIGIN).equals(Util.FILTER) && !ApplicationClass.mFilteredArtefactList.isEmpty()) {
                     for (int i = 0; i < ApplicationClass.mFilteredArtefactList.size(); i++) {
                         createMarker(ApplicationClass.mFilteredArtefactList.get(i));
                     }
-                // initial call, no filter is set
+                    // initial call, no filter is set
                 } else {
                     if (ApplicationClass.mArtefactList.size() > 0) {
                         for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
@@ -652,7 +656,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
 
 
     private void moveCamera(LatLng latLng, float zoom) {
-         /**
+        /**
          *     credits
          * https://stackoverflow.com/questions/32161757/how-to-animate-the-camera-to-a-specified-location-in-google-maps-v2-for-android
          */
