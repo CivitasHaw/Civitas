@@ -93,46 +93,15 @@ public class ArtefactListFragment extends Fragment {
                 switch (checkedId) {
                     case R.id.radio_artefact_name:
                         // Toast.makeText(artefactActivity, "checked button: " + checkedId, Toast.LENGTH_SHORT).show();
-                        // disable unchecked lines
-                        spinnerFilterCategory.setEnabled(false);
-                        btnFilterCategoryApply.setEnabled(false);
-                        etFilterAge.setEnabled(false);
-                        btnFilterBeforeAfter.setEnabled(false);
-                        etFilterAgeFrom.setEnabled(false);
-                        btnFilterBeforeAfterFrom.setEnabled(false);
-                        btnFilterAgeApply.setEnabled(false);
-
-                        // enable checked line
-                        etFilterName.setEnabled(true);
+                        enableFilterViews(true, false, false, false, false, false, false, false);
                         break;
                     case R.id.radio_artefact_category:
                         // Toast.makeText(artefactActivity, "checked button: " + checkedId, Toast.LENGTH_SHORT).show();
-                        // disable unchecked lines
-                        etFilterName.setEnabled(false);
-                        etFilterAge.setEnabled(false);
-                        btnFilterBeforeAfter.setEnabled(false);
-                        etFilterAgeFrom.setEnabled(false);
-                        btnFilterBeforeAfterFrom.setEnabled(false);
-                        btnFilterAgeApply.setEnabled(false);
-
-                        // enable checked line
-                        spinnerFilterCategory.setEnabled(true);
-                        btnFilterCategoryApply.setEnabled(true);
+                        enableFilterViews(false, true, true, false, false, false, false, false);
                         break;
                     case R.id.radio_artefact_age:
                         // Toast.makeText(artefactActivity, "checked button: " + checkedId, Toast.LENGTH_SHORT).show();
-                  
-                        // disable unchecked lines
-                        etFilterName.setEnabled(false);
-                        spinnerFilterCategory.setEnabled(false);
-                        btnFilterCategoryApply.setEnabled(false);
-
-                        // enable checked line
-                        etFilterAge.setEnabled(true);
-                        btnFilterBeforeAfter.setEnabled(true);
-                        etFilterAgeFrom.setEnabled(true);
-                        btnFilterBeforeAfterFrom.setEnabled(true);
-                        btnFilterAgeApply.setEnabled(true);
+                        enableFilterViews(false, false, false, true, true, true, true, true);
                         break;
                 }
             }
@@ -340,6 +309,20 @@ public class ArtefactListFragment extends Fragment {
         return view;
     }
 
+    private void enableFilterViews(boolean name,
+                                   boolean category, boolean applyCategory,
+                                   boolean ageFrom, boolean adFrom, boolean ageTo, boolean adTo, boolean applyAge) {
+
+        etFilterName.setEnabled(name);
+        spinnerFilterCategory.setEnabled(category);
+        btnFilterCategoryApply.setEnabled(applyCategory);
+        etFilterAgeFrom.setEnabled(ageFrom);
+        btnFilterAnnoDominiFrom.setEnabled(adFrom);
+        etFilterAgeTo.setEnabled(ageTo);
+        btnFilterAnnoDominiTo.setEnabled(adTo);
+        btnFilterAgeApply.setEnabled(applyAge);
+
+    }
     private void goToArtefactDetail(int position) {
         ApplicationClass.position = position;
         Fragment artefactDetailFragment = new ArtefactDetailFragment();
@@ -452,18 +435,8 @@ public class ArtefactListFragment extends Fragment {
         annoDomini = BcAc.AFTER_CHRIST;
         annoDominiFrom = BcAc.BEFORE_CHRIST;
 
-        // disable unchecked lines
-        spinnerFilterCategory.setEnabled(false);
-        btnFilterCategoryApply.setEnabled(false);
-        etFilterAge.setEnabled(false);
-        btnFilterBeforeAfter.setEnabled(false);
-        btnFilterBeforeAfter.setText("A.C.");
-        etFilterAgeFrom.setEnabled(false);
-        btnFilterBeforeAfterFrom.setEnabled(false);
-        btnFilterBeforeAfterFrom.setText("B.C.");
-        btnFilterAgeApply.setEnabled(false);
-        // enable checked line
-        etFilterName.setEnabled(true);
+        // enable name search by default
+        enableFilterViews(true, false, false, false, false, false, false, false);
 
         filteredList = new ArrayList<>();
 
