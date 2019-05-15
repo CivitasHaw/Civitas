@@ -63,7 +63,7 @@ public class ArtefactListFragment extends Fragment {
     private ConstraintLayout filterLayout;
     private EditText etFilterName, etFilterAge, etFilterAgeFrom;
     private Spinner spinnerFilterCategory;
-    private Button btnFilterBeforeAfter, btnFilterBeforeAfterFrom;
+    private Button btnFilterAnnoDominiTo, btnFilterAnnoDominiFrom;
     private CategoryAdapter mCategoryAdapter;
     private ArrayList<Category> mCategoryList;
     private Category mCategory;
@@ -444,8 +444,8 @@ public class ArtefactListFragment extends Fragment {
         btnFilterCategoryApply = filterLayout.findViewById(R.id.button_artefact_list_apply_category_filter);
         etFilterAge = filterLayout.findViewById(R.id.edit_artefact_age);
         etFilterAgeFrom = filterLayout.findViewById(R.id.edit_artefact_age_from);
-        btnFilterBeforeAfter = filterLayout.findViewById(R.id.button_before_after);
-        btnFilterBeforeAfterFrom = filterLayout.findViewById(R.id.button_before_after_from);
+        btnFilterAnnoDominiTo = filterLayout.findViewById(R.id.button_anno_domini_to);
+        btnFilterAnnoDominiFrom = filterLayout.findViewById(R.id.button_anno_domini_from);
         btnFilterAgeApply = filterLayout.findViewById(R.id.button_artefact_list_apply_age_filter);
         btnShowFilterResultOnMap = filterLayout.findViewById(R.id.button_show_filter_on_map);
         radioGroupFilter = filterLayout.findViewById(R.id.radioGroup);

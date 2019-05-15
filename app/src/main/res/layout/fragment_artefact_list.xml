@@ -139,7 +139,7 @@
                         app:layout_constraintVertical_bias="0.842" />
 
                     <Button
-                        android:id="@+id/button_before_after_from"
+                        android:id="@+id/button_anno_domini_from"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
@@ -162,7 +162,7 @@
                         app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
                         app:layout_constraintEnd_toStartOf="@+id/edit_artefact_age"
                         app:layout_constraintHorizontal_bias="0.536"
-                        app:layout_constraintStart_toEndOf="@+id/button_before_after_from"
+                        app:layout_constraintStart_toEndOf="@+id/button_anno_domini_from"
                         app:layout_constraintTop_toBottomOf="@+id/spinner_list_filter_category"
                         app:layout_constraintVertical_bias="0.688" />
   
@@ -178,13 +178,13 @@
                         android:hint="Year"
                         android:inputType="number"
                         app:layout_constraintBottom_toTopOf="@+id/button_show_filter_on_map"
-                        app:layout_constraintEnd_toStartOf="@+id/button_before_after"
+                        app:layout_constraintEnd_toStartOf="@+id/button_anno_domini_to"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintTop_toBottomOf="@+id/spinner_list_filter_category"
                         app:layout_constraintVertical_bias="0.842" />
 
                     <Button
-                        android:id="@+id/button_before_after"
+                        android:id="@+id/button_anno_domini_to"
                         android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
@@ -219,8 +219,7 @@
                         android:background="@drawable/buttons"
                         android:text="Show search result on map"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintEnd_toStartOf="@+id/button_reset_filter"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radioGroup"
                         app:layout_constraintVertical_bias="1.0" />
