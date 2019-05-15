@@ -46,6 +46,8 @@ import com.example.tim.romaniitedomum.Util.FilterHelper;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.artefact.ArtefactActivity;
+import com.example.tim.romaniitedomum.artefact.Category;
+import com.example.tim.romaniitedomum.artefact.CategoryAdapter;
 import com.example.tim.romaniitedomum.impressum.ImpressumActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -62,6 +64,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+import java.util.List;
 /**
  * Created by TimStaats 21.02.2019
  */
@@ -89,6 +93,9 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private Spinner spinnerMapFilterCategory;
     private Button btnMapFilterAnnoDominiFrom, btnMapFilterAnnoDominiTo, btnMapFilterApplyCategory,
             btnMapFilterApplyAge, btnMapFilterShowResultAtList, btnMapFilterReset;
+    private Category mCategory;
+    private CategoryAdapter mCategoryAdapter;
+    private ArrayList<Category> mCategoryList;
 
     private boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
@@ -295,6 +302,27 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
         }
     }
+
+    private ArrayList<Category> populateCategoryList() {
+        ArrayList<Category> list = new ArrayList<>();
+
+        list.add(new Category("SaltAndPepper", R.drawable.ic_salt_and_pepper));
+        list.add(new Category(Util.CATEGORY_BASILIKA, R.drawable.ic_map_basilica));
+        list.add(new Category(Util.CATEGORY_BOGEN, R.drawable.ic_map_bogen));
+        list.add(new Category(Util.CATEGORY_CHRISTENTUM, R.drawable.ic_map_christentum));
+        list.add(new Category(Util.CATEGORY_GRABSTAETTE, R.drawable.ic_map_grabstaette));
+        list.add(new Category(Util.CATEGORY_GRUENDUNGSMYTHOS, R.drawable.ic_map_grundungsmythos));
+        list.add(new Category(Util.CATEGORY_INFRASTRUKTUR, R.drawable.ic_map_infrastruktur));
+        list.add(new Category(Util.CATEGORY_KULTSTAETTE, R.drawable.ic_map_kultstaette));
+        list.add(new Category(Util.CATEGORY_PLATZANLAGE, R.drawable.ic_map_platzanlage));
+        list.add(new Category(Util.CATEGORY_POLITISCHE_INSTITUTION, R.drawable.ic_map_politische_institution));
+        list.add(new Category(Util.CATEGORY_SPIELSTAETTE, R.drawable.ic_map_spielstaette));
+        list.add(new Category(Util.CATEGORY_THERME, R.drawable.ic_map_therme));
+        list.add(new Category(Util.CATEGORY_WOHNKOMPLEX, R.drawable.ic_map_wohnkomplex));
+
+        return list;
+    }
+
     private void initMap() {
         btnAddArtefact = findViewById(R.id.floatingActionButton);
         mFilterHelper = FilterHelper.getInstance();
@@ -332,6 +360,22 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 }
             }
         });
+
+        mCategoryList = populateCategoryList();
+        mCategoryAdapter = new CategoryAdapter(this, mCategoryList);
+        spinnerMapFilterCategory.setAdapter(mCategoryAdapter);
+        spinnerMapFilterCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mCategory = (Category) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
