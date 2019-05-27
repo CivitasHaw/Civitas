@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.example.tim.romaniitedomum.R;
@@ -17,9 +20,11 @@ import com.example.tim.romaniitedomum.map.MapActivity;
 public class ImpressumActivity extends AppCompatActivity {
 
     private static final String TAG = "ImpressumActivity";
+    public static final String CIVITAS_URL = "https://www.geschichte.uni-hamburg.de/arbeitsbereiche/alte-geschichte/personen/panzram.html";
     private Intent originIntent;
 
     private TextView tvCredits;
+    private WebView webView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,9 +39,31 @@ public class ImpressumActivity extends AppCompatActivity {
     }
 
     private void initImpressum() {
+        webView = findViewById(R.id.webview_impressum);
+        webView.getSettings().setJavaScriptEnabled(true);
+        //webView.getSettings().setPluginState(PluginState.ON);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.getSettings().setSupportMultipleWindows(true);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setAllowFileAccess(true);
+        webView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                setProgressBarIndeterminateVisibility(false);
+                super.onPageFinished(view, url);
+            }
+        });
+        webView.loadUrl(CIVITAS_URL);
+        webView.setVisibility(View.VISIBLE);
+        
+        // visibility gone within XML
         tvCredits = findViewById(R.id.text_credits);
         String credits = "Icon made by Lucy G from www.flaticon.com \n" + "Icon made by Freepik from www.flaticon.com \n";
         tvCredits.setText(credits);
+
+
     }
 
     @Override
