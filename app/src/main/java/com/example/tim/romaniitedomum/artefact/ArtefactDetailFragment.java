@@ -212,7 +212,6 @@ public class ArtefactDetailFragment extends Fragment {
         btnAudioPause = audioLayout.findViewById(R.id.button_artefact_detail_audio_pause);
         btnAudioStop = audioLayout.findViewById(R.id.button_artefact_detail_audio_stop);
 
-        mLoader = ApplicationClass.loader;
 
 //        mAudioFile = new File(AUDIO_FILE_PATH);
 

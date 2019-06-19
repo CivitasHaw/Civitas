@@ -59,14 +59,15 @@ public class ArtefactListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private ArtefactListAdapter mAdapter;
-    private ConstraintLayout filterLayout;
-    private EditText etFilterName, etFilterAge, etFilterAgeFrom;
+    private ConstraintLayout listFilterLayout;
+    private EditText etFilterName, etFilterAgeTo, etFilterAgeFrom;
     private Spinner spinnerFilterCategory;
     private Button btnFilterAnnoDominiTo, btnFilterAnnoDominiFrom;
+    private Button btnResetFilter;
     private CategoryAdapter mCategoryAdapter;
     private ArrayList<Category> mCategoryList;
     private Category mCategory;
-    private boolean isFilterActive = false;
+    private boolean isFilterMenuExpanded = false;
     private FilterHelper mFilterHelper;
 
     private RadioGroup radioGroupFilter;
@@ -86,6 +87,38 @@ public class ArtefactListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_artefact_list, container, false);
 
         initArtefactList(view);
+
+        // recreate filtersettings when returning to ArtefactListFragment
+        if (mFilterHelper.isFilterSet()) {
+            prepareFilter();
+            if (mFilterHelper.getCategory() != null) {
+                Log.d(TAG, "onCreateView: category filter recovery");
+                radioGroupFilter.check(R.id.radio_artefact_category);
+                enableFilterViews(false, true, true, false, false, false, false, false);
+            } else if ((mFilterHelper.getAnnoDominiFrom() != null) && mFilterHelper.getAnnoDominiTo() != null) {
+                Log.d(TAG, "onCreateView: age Filter recovery");
+                etFilterAgeFrom.setText(mFilterHelper.getAgeFrom());
+                etFilterAgeTo.setText(mFilterHelper.getAgeTo());
+                String ac = "A.C.";
+                String bc = "B.C.";
+                if (mFilterHelper.getAnnoDominiFrom().toString().equals("BEFORE_CHRIST")) {
+                    btnFilterAnnoDominiFrom.setText(bc);
+                } else {
+                    btnFilterAnnoDominiFrom.setText(ac);
+                }
+                if (mFilterHelper.getAnnoDominiTo().toString().equals("BEFORE_CHRIST")) {
+                    btnFilterAnnoDominiTo.setText(bc);
+                } else {
+                    btnFilterAnnoDominiTo.setText(ac);
+                }
+                radioGroupFilter.check(R.id.radio_artefact_age);
+                enableFilterViews(false, false, false, true, true, true, true, true);
+            } else if (mFilterHelper.getArtefactName() != null) {
+                Log.d(TAG, "onCreateView: name filter recovery");
+                radioGroupFilter.check(R.id.radio_artefact_name);
+                enableFilterViews(true, false, false, false, false, false, false, false);
+            }
+        }
 
         radioGroupFilter.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -107,31 +140,43 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
-        btnFilterBeforeAfterFrom.setOnClickListener(new View.OnClickListener() {
+        btnResetFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mFilterHelper.isFilterSet()) {
+                    btnResetFilter.setEnabled(false);
+                    mFilterHelper.resetFilterHelperSettings();
+                    resetAgeFilterViews();
+                    prepareAdapter(ApplicationClass.mArtefactList);
+                }
+            }
+        });
+
+        btnFilterAnnoDominiFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (annoDominiFrom == BcAc.BEFORE_CHRIST) {
                     annoDominiFrom = BcAc.AFTER_CHRIST;
-                    btnFilterBeforeAfterFrom.setText("A.C.");
+                    btnFilterAnnoDominiFrom.setText("A.C.");
                 } else {
                     annoDominiFrom = BcAc.BEFORE_CHRIST;
-                    btnFilterBeforeAfterFrom.setText("B.C.");
+                    btnFilterAnnoDominiFrom.setText("B.C.");
                 }
-                Log.d(TAG, "onClick: btnFilterBeforeAfterFrom click: " + annoDominiFrom);
+                Log.d(TAG, "onClick: btnFilterAnnoDominiFrom click: " + annoDominiFrom);
             }
         });
 
-        btnFilterBeforeAfter.setOnClickListener(new View.OnClickListener() {
+        btnFilterAnnoDominiTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (annoDomini == BcAc.BEFORE_CHRIST) {
                     annoDomini = BcAc.AFTER_CHRIST;
-                    btnFilterBeforeAfter.setText("A.C.");
+                    btnFilterAnnoDominiTo.setText("A.C.");
                 } else {
                     annoDomini = BcAc.BEFORE_CHRIST;
-                    btnFilterBeforeAfter.setText("B.C.");
+                    btnFilterAnnoDominiTo.setText("B.C.");
                 }
-                Log.d(TAG, "onClick: btnFilterBeforeAfter click: " + annoDomini);
+                Log.d(TAG, "onClick: btnFilterAnnoDominiTo click: " + annoDomini);
             }
         });
 
@@ -139,7 +184,7 @@ public class ArtefactListFragment extends Fragment {
         btnFilterAgeApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (etFilterAge.getText().toString().isEmpty() || etFilterAgeFrom.getText().toString().isEmpty()) {
+                if (etFilterAgeTo.getText().toString().isEmpty() || etFilterAgeFrom.getText().toString().isEmpty()) {
                     Toast.makeText(artefactActivity, "Fill empty field", Toast.LENGTH_SHORT).show();
                 } else {
                     if (annoDominiFrom.toString().equals(BcAc.AFTER_CHRIST) && annoDomini.toString().equals(BcAc.BEFORE_CHRIST)) {
@@ -148,88 +193,62 @@ public class ArtefactListFragment extends Fragment {
                     } else {
                         Log.d(TAG, "onClick: annoDomini is correct");
                         int ageFrom = Integer.parseInt(etFilterAgeFrom.getText().toString());
-                        int age = Integer.parseInt(etFilterAge.getText().toString());
-                        if (age >= 9999 || ageFrom >= 9999) {
+                        int ageTo = Integer.parseInt(etFilterAgeTo.getText().toString());
+                        if (ageTo >= 9999 || ageFrom >= 9999) {
                             Toast.makeText(artefactActivity, "wrong age", Toast.LENGTH_SHORT).show();
                             resetAgeFilterViews();
+                            mFilterHelper.resetFilterHelperSettings();
                         } else {
                             Log.d(TAG, "onClick: age is fine");
+                            prepareFilter();
+                            mFilterHelper.prepareFilterHelper(null, null, etFilterAgeFrom.getText().toString(), annoDominiFrom, etFilterAgeTo.getText().toString(), annoDomini, true);
+
                             if (annoDominiFrom == BcAc.BEFORE_CHRIST && annoDomini == BcAc.AFTER_CHRIST) {
                                 Log.d(TAG, "onClick: B.C. to A.C. years filter is correct");
-                                Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + age + " " + annoDomini + "\n");
+                                Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + ageTo + " " + annoDomini + "\n");
                                 List<Artefact> tempList;
-                                tempList = getFilteredList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, false);
-                                filteredList = getFilteredList(ApplicationClass.mArtefactList, annoDomini, age, false);
+                                tempList = filterArtefactList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, false);
+                                filteredList = filterArtefactList(ApplicationClass.mArtefactList, annoDomini, ageTo, false);
                                 filteredList.addAll(tempList);
-                                mAdapter = null;
-                                mAdapter = new ArtefactListAdapter(filteredList);
-                                mRecyclerView.setAdapter(mAdapter);
-                                mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
-                                    @Override
-                                    public void onItemclick(int position) {
-                                        goToArtefactDetail(position);
-                                    }
-                                });
-                                Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
-
-//                                for (int i = 0; i < filteredList.size(); i++) {
-//                                    Log.d(TAG, "onClick: artefactname: " + filteredList.get(i).getArtefactName() + " age: " + filteredList.get(i).getArtefactAge() + " " + filteredList.get(i).getAnnoDomini() + "\n");
-//                                }
+                                prepareAdapter(filteredList);
+                                mFilterHelper.setFilteredArtefactList(filteredList);
                             } else if (annoDominiFrom == BcAc.AFTER_CHRIST && annoDomini == BcAc.AFTER_CHRIST) {
-                                if (ageFrom > age) {
+                                if (ageFrom > ageTo) {
                                     Toast.makeText(artefactActivity, "incorrect filter", Toast.LENGTH_SHORT).show();
                                     resetAgeFilterViews();
+                                    mFilterHelper.resetFilterHelperSettings();
                                 } else {
                                     Log.d(TAG, "onClick: A.C. to A.C. years filter is correct");
-                                    Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + age + " " + annoDomini + "\n");
+                                    Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + ageTo + " " + annoDomini + "\n");
                                     List<Artefact> tempList;
-                                    tempList = getFilteredList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, true);
-                                    filteredList = getFilteredList(tempList, annoDomini, age, false);
-                                    mAdapter = null;
-                                    mAdapter = new ArtefactListAdapter(filteredList);
-                                    mRecyclerView.setAdapter(mAdapter);
-                                    mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
-                                        @Override
-                                        public void onItemclick(int position) {
-                                            goToArtefactDetail(position);
-                                        }
-                                    });
+                                    tempList = filterArtefactList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, true);
+                                    filteredList = filterArtefactList(tempList, annoDomini, ageTo, false);
+                                    prepareAdapter(filteredList);
+                                    mFilterHelper.setFilteredArtefactList(filteredList);
                                     Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
-
-//                                    for (int i = 0; i < filteredList.size(); i++) {
-//                                        Log.d(TAG, "onClick: artefactname: " + filteredList.get(i).getArtefactName() + " age: " + filteredList.get(i).getArtefactAge() + " " + filteredList.get(i).getAnnoDomini() + "\n");
-//                                    }
                                 }
                             } else if (annoDominiFrom == BcAc.BEFORE_CHRIST && annoDomini == BcAc.BEFORE_CHRIST) {
-                                if (ageFrom < age) {
+                                if (ageFrom < ageTo) {
                                     Toast.makeText(artefactActivity, "B.C. to B.C. incorrect filter", Toast.LENGTH_SHORT).show();
                                     resetAgeFilterViews();
-
+                                    mFilterHelper.resetFilterHelperSettings();
                                 } else {
                                     Log.d(TAG, "onClick: B.C. to B.C. years filter is correct");
-                                    Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + age + " " + annoDomini + "\n");
+                                    Log.d(TAG, "onClick: from: " + ageFrom + " " + annoDominiFrom + " to: " + ageTo + " " + annoDomini + "\n");
                                     List<Artefact> tempList;
-                                    tempList = getFilteredList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, false);
-                                    filteredList = getFilteredList(tempList, annoDomini, age, true);
-                                    mAdapter = null;
-                                    mAdapter = new ArtefactListAdapter(filteredList);
-                                    mRecyclerView.setAdapter(mAdapter);
-                                    mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
-                                        @Override
-                                        public void onItemclick(int position) {
-                                            goToArtefactDetail(position);
-                                        }
-                                    });
+                                    tempList = filterArtefactList(ApplicationClass.mArtefactList, annoDominiFrom, ageFrom, false);
+                                    filteredList = filterArtefactList(tempList, annoDomini, ageTo, true);
+                                    prepareAdapter(filteredList);
+                                    mFilterHelper.setFilteredArtefactList(filteredList);
                                     Log.d(TAG, "onClick: filteredList.size(): " + filteredList.size());
-//                                    for (int i = 0; i < filteredList.size(); i++) {
-//                                        Log.d(TAG, "onClick: artefactname: " + filteredList.get(i).getArtefactName() + " age: " + filteredList.get(i).getArtefactAge() + " " + filteredList.get(i).getAnnoDomini() + "\n");
-//                                    }
                                 }
                             } else if (annoDominiFrom == BcAc.AFTER_CHRIST && annoDomini == BcAc.BEFORE_CHRIST) {
                                 Log.d(TAG, "onClick: A.C. to B.C. geht nicht");
                                 Log.d(TAG, "onClick: from: " + annoDominiFrom + " to: " + annoDomini);
+                                mFilterHelper.resetFilterHelperSettings();
                             }
                         }
+                        Log.d(TAG, "onClick: " + mFilterHelper.toString());
                     }
                 }
             }
@@ -239,7 +258,7 @@ public class ArtefactListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!filteredList.isEmpty()) {
-                    ApplicationClass.mFilteredArtefactList = filteredList;
+                    mFilterHelper.setFilteredArtefactList(filteredList);
                     Intent intent = new Intent(artefactActivity, MapActivity.class);
                     intent.putExtra(Util.ORIGIN, Util.FILTER);
                     startActivity(intent);
@@ -247,23 +266,38 @@ public class ArtefactListFragment extends Fragment {
             }
         });
 
-        mAdapter = new ArtefactListAdapter(artefactsList);
+        // initial adapter setup
         mRecyclerView.setLayoutManager(new GridLayoutManager(artefactActivity, SPAN_COUNT));
-        mRecyclerView.setAdapter(mAdapter);
+        if (mFilterHelper.isFilterSet()) {
+            mAdapter = new ArtefactListAdapter(mFilterHelper.getFilteredArtefactList());
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemclick(int position) {
+                    goToArtefactDetail(position);
+                }
+            });
+        } else {
+            mAdapter = new ArtefactListAdapter(artefactsList);
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
+                @Override
+                public void onItemclick(int position) {
+                    goToArtefactDetail(position);
+                }
+            });
+        }
 
-        mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemclick(int position) {
-
-                ApplicationClass.position = position;
-                Fragment artefactDetailFragment = new ArtefactDetailFragment();
-                artefactActivity.fragmentSwitcher2(artefactDetailFragment, true, "artefactDetailFragment");
-            }
-        });
+        /*
+        String[] categoryNames = new String[Category.categories.length];
+        for (int i = 0; i < categoryNames.length; i++) {
+            categoryNames[i] = Category.categories[i].getCategoryName();
+        }
+        mCategoryAdapter = new CategoryAdapter(artefactActivity, categoryNames);
+        */
 
         mCategoryAdapter = new CategoryAdapter(artefactActivity, mCategoryList);
         spinnerFilterCategory.setAdapter(mCategoryAdapter);
-
         spinnerFilterCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -280,10 +314,17 @@ public class ArtefactListFragment extends Fragment {
         btnFilterCategoryApply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAdapter.isCategoryFilter = true;
+                filteredList.clear();
                 if (mCategory != null) {
-                    mAdapter.getFilter().filter(mCategory.getCategoryName());
+                    for (Artefact item : artefactsList) {
+                        if (item.getCategoryName().equals(mCategory.getCategoryName())) {
+                            filteredList.add(item);
+                        }
+                    }
+                    prepareAdapter(filteredList);
                 }
+                prepareFilter();
+                mFilterHelper.prepareFilterHelper(null, mCategory.getCategoryName(), null, null, null, null, true);
             }
         });
 
@@ -323,6 +364,24 @@ public class ArtefactListFragment extends Fragment {
         btnFilterAgeApply.setEnabled(applyAge);
 
     }
+
+    private void prepareAdapter(List<Artefact> artefactsList) {
+        mAdapter = null;
+        mAdapter = new ArtefactListAdapter(artefactsList);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new ArtefactListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemclick(int position) {
+                goToArtefactDetail(position);
+            }
+        });
+    }
+
+    private void prepareFilter() {
+        btnShowFilterResultOnMap.setEnabled(true);
+        btnResetFilter.setEnabled(true);
+    }
+
     private void goToArtefactDetail(int position) {
         ApplicationClass.position = position;
         Fragment artefactDetailFragment = new ArtefactDetailFragment();
@@ -330,25 +389,26 @@ public class ArtefactListFragment extends Fragment {
     }
 
     private void resetAgeFilterViews() {
-        etFilterAge.setText("");
+        radioGroupFilter.check(R.id.radio_artefact_name);
+        etFilterAgeTo.setText("");
         etFilterAgeFrom.setText("");
-        etFilterAge.setHint("Age");
+        etFilterAgeTo.setHint("Age");
         etFilterAgeFrom.setHint("Age");
     }
 
-    private List<Artefact> getFilteredList (List<Artefact> fullList, BcAc filterAnnoDominiFrom, int age, boolean isGreaterThan) {
+    private List<Artefact> filterArtefactList(List<Artefact> fullList, BcAc filterAnnoDominiFrom, int age, boolean isGreaterThan) {
 
         filteredList.clear();
         List<Artefact> tempList = new ArrayList<>();
         if (isGreaterThan) {
             for (Artefact item : fullList) {
-                if (item.getAnnoDomini().equals(filterAnnoDominiFrom.toString()) && Integer.parseInt(item.getArtefactAge()) >= age) {
+                if (item.getAnnoDomini().equals(filterAnnoDominiFrom.toString()) && Integer.parseInt(item.getArtefactAge()) > age) {
                     tempList.add(item);
                 }
             }
         } else {
             for (Artefact item : fullList) {
-                if (item.getAnnoDomini().equals(filterAnnoDominiFrom.toString()) && Integer.parseInt(item.getArtefactAge()) <= age) {
+                if (item.getAnnoDomini().equals(filterAnnoDominiFrom.toString()) && Integer.parseInt(item.getArtefactAge()) < age) {
                     tempList.add(item);
                 }
             }
@@ -367,19 +427,19 @@ public class ArtefactListFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.list_filter:
-                if (!isFilterActive) {
+                if (!isFilterMenuExpanded) {
                     Log.d(TAG, "onOptionsItemSelected: filter mode on");
                     item.setIcon(R.drawable.ic_cancel_filter);
-                    filterLayout.setVisibility(View.VISIBLE);
+                    listFilterLayout.setVisibility(View.VISIBLE);
                 } else {
                     Log.d(TAG, "onOptionsItemSelected: cancle filter mode");
                     item.setIcon(R.drawable.ic_filter);
-                    filterLayout.setVisibility(View.GONE);
+                    listFilterLayout.setVisibility(View.GONE);
                     etFilterName.setText("");
                     artefactsList = ApplicationClass.mArtefactList;
                     mAdapter.notifyDataSetChanged();
                 }
-                isFilterActive = !isFilterActive;
+                isFilterMenuExpanded = !isFilterMenuExpanded;
                 break;
         }
 
@@ -389,7 +449,6 @@ public class ArtefactListFragment extends Fragment {
     private ArrayList<Category> populateCategoryList() {
         ArrayList<Category> list = new ArrayList<>();
 
-        list.add(new Category("SaltAndPepper", R.drawable.ic_salt_and_pepper));
         list.add(new Category(Util.CATEGORY_BASILIKA, R.drawable.ic_map_basilica));
         list.add(new Category(Util.CATEGORY_BOGEN, R.drawable.ic_map_bogen));
         list.add(new Category(Util.CATEGORY_CHRISTENTUM, R.drawable.ic_map_christentum));
@@ -406,7 +465,7 @@ public class ArtefactListFragment extends Fragment {
         return list;
     }
 
-    public void checkButton(View v){
+    public void checkButton(View v) {
         int radioId = radioGroupFilter.getCheckedRadioButtonId();
 
         radioButtonFilter = radioGroupFilter.findViewById(radioId);
@@ -421,27 +480,31 @@ public class ArtefactListFragment extends Fragment {
 
         mRecyclerView = view.findViewById(R.id.recyclerview_list_of_artefacts);
 
-        filterLayout = view.findViewById(R.id.layout_filter);
-        spinnerFilterCategory = filterLayout.findViewById(R.id.spinner_list_filter_category);
-        btnFilterCategoryApply = filterLayout.findViewById(R.id.button_artefact_list_apply_category_filter);
-        etFilterAge = filterLayout.findViewById(R.id.edit_artefact_age);
-        etFilterAgeFrom = filterLayout.findViewById(R.id.edit_artefact_age_from);
-        btnFilterAnnoDominiTo = filterLayout.findViewById(R.id.button_anno_domini_to);
-        btnFilterAnnoDominiFrom = filterLayout.findViewById(R.id.button_anno_domini_from);
-        btnFilterAgeApply = filterLayout.findViewById(R.id.button_artefact_list_apply_age_filter);
-        btnShowFilterResultOnMap = filterLayout.findViewById(R.id.button_show_filter_on_map);
-        radioGroupFilter = filterLayout.findViewById(R.id.radioGroup);
-        etFilterName = filterLayout.findViewById(R.id.edit_list_filter);
+        listFilterLayout = view.findViewById(R.id.layout_filter);
+        spinnerFilterCategory = listFilterLayout.findViewById(R.id.spinner_list_filter_category);
+        btnFilterCategoryApply = listFilterLayout.findViewById(R.id.button_artefact_list_apply_category_filter);
+        etFilterAgeTo = listFilterLayout.findViewById(R.id.edit_artefact_age);
+        etFilterAgeFrom = listFilterLayout.findViewById(R.id.edit_artefact_age_from);
+        btnFilterAnnoDominiTo = listFilterLayout.findViewById(R.id.button_anno_domini_to);
+        btnFilterAnnoDominiFrom = listFilterLayout.findViewById(R.id.button_anno_domini_from);
+        btnFilterAgeApply = listFilterLayout.findViewById(R.id.button_artefact_list_apply_age_filter);
+        btnResetFilter = listFilterLayout.findViewById(R.id.button_reset_filter);
+        btnShowFilterResultOnMap = listFilterLayout.findViewById(R.id.button_show_filter_on_map);
+        radioGroupFilter = listFilterLayout.findViewById(R.id.radioGroup);
+        etFilterName = listFilterLayout.findViewById(R.id.edit_list_filter);
         annoDomini = BcAc.AFTER_CHRIST;
         annoDominiFrom = BcAc.BEFORE_CHRIST;
 
         // enable name search by default
         enableFilterViews(true, false, false, false, false, false, false, false);
+        btnFilterAnnoDominiTo.setText("A.C.");
+        btnFilterAnnoDominiFrom.setText("B.C.");
 
         filteredList = new ArrayList<>();
 
         artefactsList = ApplicationClass.mArtefactList;
         mCategoryList = populateCategoryList();
+
         mFilterHelper = FilterHelper.getInstance();
     }
 

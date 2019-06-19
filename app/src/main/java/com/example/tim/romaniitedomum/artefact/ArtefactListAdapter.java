@@ -36,7 +36,6 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
     private static final String TAG = "ArtefactListAdapter";
 
     private List<Artefact> mArtefactListFull;
-    public boolean isCategoryFilter = false;
     private List<Artefact> mArtefactList;
     private OnItemClickListener mListener;
 
@@ -53,23 +52,16 @@ public class ArtefactListAdapter extends RecyclerView.Adapter<ArtefactListAdapte
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Artefact> filteredList = new ArrayList<>();
-            
+
             if (constraint == null || constraint.length() == 0) {
                 filteredList.addAll(mArtefactListFull);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Artefact item: mArtefactListFull) {
-                    if (isCategoryFilter) {
-                        if (item.getCategoryName().toLowerCase().equals(filterPattern)) {
-                            filteredList.add(item);
-                        }
-                    } else {
-                        if (item.getArtefactName().toLowerCase().contains(filterPattern)) {
-                            filteredList.add(item);
-                        }
+                for (Artefact item : mArtefactListFull) {
+                    if (item.getArtefactName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
                     }
                 }
-                isCategoryFilter = false;
             }
             FilterResults results = new FilterResults();
             results.values = filteredList;

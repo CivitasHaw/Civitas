@@ -28,9 +28,8 @@ public class ApplicationClass extends Application {
     public static LatLng mScreenPosition;
     public static Artefact mArtefact;
     public static List<Artefact> mArtefactList;
-    public static List<Artefact> mFilteredArtefactList;
-    public static ImageLoader loader;
     public static int position;
+
 
     @Override
     public void onCreate() {

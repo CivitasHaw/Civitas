@@ -578,7 +578,6 @@ public class NewArtefactFragment extends Fragment {
     private ArrayList<Category> populateCategoryList() {
         ArrayList<Category> list = new ArrayList<>();
 
-        list.add(new Category("SaltAndPepper", R.drawable.ic_salt_and_pepper));
         list.add(new Category(Util.CATEGORY_BASILIKA, R.drawable.ic_map_basilica));
         list.add(new Category(Util.CATEGORY_BOGEN, R.drawable.ic_map_bogen));
         list.add(new Category(Util.CATEGORY_CHRISTENTUM, R.drawable.ic_map_christentum));

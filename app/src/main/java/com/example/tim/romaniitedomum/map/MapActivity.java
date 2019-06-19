@@ -41,6 +41,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.example.tim.romaniitedomum.ApplicationClass;
 import com.example.tim.romaniitedomum.MainActivity;
 import com.example.tim.romaniitedomum.R;
+import com.example.tim.romaniitedomum.Util.BcAc;
 import com.example.tim.romaniitedomum.Util.FilterHelper;
 import com.example.tim.romaniitedomum.Util.Util;
 import com.example.tim.romaniitedomum.artefact.Artefact;
@@ -98,6 +99,9 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private Category mCategory;
     private CategoryAdapter mCategoryAdapter;
     private ArrayList<Category> mCategoryList;
+    private BcAc annoDominiFrom, annoDominiTo;
+    private List<Artefact> filteredList;
+    private int categoryPosition;
 
     private boolean mLocationPermissionGranted = false;
     private GoogleMap mMap;
@@ -112,6 +116,36 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         initDrawerAndToolbar();
 
         getLocationPermission();
+
+        // recreate filtersettings when returning to ArtefactListFragment
+        if (mFilterHelper.isFilterSet()) {
+            btnMapFilterShowResultAtList.setEnabled(true);
+            btnMapFilterReset.setEnabled(true);
+            if (mFilterHelper.getCategory() != null) {
+                Log.d(TAG, "onCreateView: category filter recovery");
+                radioGroupMapFilter.check(R.id.radio_map_artefact_category);
+                enableMapFilterViews(true, true, false, false, false, false, false);
+            } else if ((mFilterHelper.getAnnoDominiFrom() != null) && mFilterHelper.getAnnoDominiTo() != null) {
+                Log.d(TAG, "onCreateView: age Filter recovery");
+                etMapFilterAgeFrom.setText(mFilterHelper.getAgeFrom());
+                etMapFilterAgeTo.setText(mFilterHelper.getAgeTo());
+                String ac = "A.C.";
+                String bc = "B.C.";
+                if (mFilterHelper.getAnnoDominiFrom().toString().equals("BEFORE_CHRIST")) {
+                    btnMapFilterAnnoDominiFrom.setText(bc);
+                } else {
+                    btnMapFilterAnnoDominiFrom.setText(ac);
+                }
+                if (mFilterHelper.getAnnoDominiTo().toString().equals("BEFORE_CHRIST")) {
+                    btnMapFilterAnnoDominiTo.setText(bc);
+                } else {
+                    btnMapFilterAnnoDominiTo.setText(ac);
+                }
+                radioGroupMapFilter.check(R.id.radio_map_artefact_age);
+                enableMapFilterViews(false, false, true, true, true, true, true);
+            }
+        }
+
 
         btnAddArtefact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,57 +313,139 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         super.onDestroy();
     }
 
+    // filter buttons onClick method
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
             case R.id.button_artefact_map_apply_age_filter:
-                mFilterHelper.setMapFilterSet(true);
-                btnMapFilterReset.setEnabled(true);
-                btnMapFilterShowResultAtList.setEnabled(true);
+                String ageFrom = etMapFilterAgeFrom.getText().toString();
+                String ageTo = etMapFilterAgeTo.getText().toString();
+                if (ageFrom.isEmpty() || ageTo.isEmpty()) {
+                    Toast.makeText(this, "empty fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.d(TAG, "onClick: age is fine");
+                    btnMapFilterReset.setEnabled(true);
+                    btnMapFilterShowResultAtList.setEnabled(true);
+                    // hier hat der filterhelper schon alle settings!
+                    mFilterHelper.prepareFilterHelper(null, null, ageFrom,
+                            annoDominiFrom, ageTo, annoDominiTo, true);
+                    if (annoDominiFrom == BcAc.BEFORE_CHRIST && annoDominiTo == BcAc.AFTER_CHRIST) {
+                        // case: BC - AC
+                        List<Artefact> tempList;
+                        tempList = filterArtefactList(ApplicationClass.mArtefactList, annoDominiFrom, Integer.parseInt(ageFrom), false);
+                        filteredList = filterArtefactList(ApplicationClass.mArtefactList, annoDominiTo, Integer.parseInt(ageTo), false);
+                        filteredList.addAll(tempList);
+                        if (!filteredList.isEmpty()) {
+                            mFilterHelper.setFilteredArtefactList(filteredList);
+                            mMap.clear();
+                            for (int i = 0; i < filteredList.size(); i++) {
+                                createMarker(filteredList.get(i));
+                            }
+                        }
+                    } else if (annoDominiFrom == BcAc.AFTER_CHRIST && annoDominiTo == BcAc.AFTER_CHRIST) {
+                        // case: AC - AC
+                        // ageFrom < ageTo
+                        if (Integer.parseInt(ageFrom) > Integer.parseInt(ageTo)) {
+                            Log.d(TAG, "onClick: BC - BC: ageFrom < ageTo: verboten!");
+                            mFilterHelper.resetFilterHelperSettings();
+                        } else {
+                            List<Artefact> tempList;
+                            tempList = filterArtefactList(ApplicationClass.mArtefactList, annoDominiFrom, Integer.parseInt(ageFrom), true);
+                            filteredList = filterArtefactList(tempList, annoDominiTo, Integer.parseInt(ageTo), false);
+                            if (!filteredList.isEmpty()) {
+                                mFilterHelper.setFilteredArtefactList(filteredList);
+                                mMap.clear();
+                                for (int i = 0; i < filteredList.size(); i++) {
+                                    createMarker(filteredList.get(i));
+                                }
+                            }
+                        }
+                    } else if (annoDominiFrom == BcAc.BEFORE_CHRIST && annoDominiTo == BcAc.BEFORE_CHRIST) {
+                        // case: BC - BC
+                        if (Integer.parseInt(ageFrom) < Integer.parseInt(ageTo)) {
+                            Log.d(TAG, "onClick: BC - BC: ageFrom < ageTo: verboten!");
+                            mFilterHelper.resetFilterHelperSettings();
+                        } else {
+                            // ageFrom > ageTo
+                            List<Artefact> tempList;
+                            tempList = filterArtefactList(ApplicationClass.mArtefactList, annoDominiFrom, Integer.parseInt(ageFrom), false);
+                            filteredList = filterArtefactList(tempList, annoDominiTo, Integer.parseInt(ageTo), true);
+                            if (!filteredList.isEmpty()) {
+                                mFilterHelper.setFilteredArtefactList(filteredList);
+                                mMap.clear();
+                                for (int i = 0; i < filteredList.size(); i++) {
+                                    createMarker(filteredList.get(i));
+                                }
+                            }
+                        }
+                    } else if (annoDominiFrom == BcAc.AFTER_CHRIST && annoDominiTo == BcAc.BEFORE_CHRIST) {
+                        // case: AC - BC --> forbidden
+                        Toast.makeText(this, "verboten", Toast.LENGTH_SHORT).show();
+                        mFilterHelper.resetFilterHelperSettings();
+                    }
+                }
                 Log.d(TAG, "onClick: apply age filter clicked");
                 break;
             case R.id.button_map_apply_category_filter:
-                mFilterHelper.setMapFilterSet(true);
                 btnMapFilterReset.setEnabled(true);
                 btnMapFilterShowResultAtList.setEnabled(true);
                 if (mCategory != null) {
-                    List<Artefact> list = new ArrayList<>();
-                    for (Artefact item : ApplicationClass.mArtefactList) {
-                        if (item.getCategoryName().equals(mCategory.getCategoryName())) {
-                            list.add(item);
-                        }
-                    }
-                    mMap.clear();
+                    mFilterHelper.prepareFilterHelper(null, mCategory.getCategoryName(), null, null,
+                            null, null, true);
+                    List<Artefact> list = filterCategory(ApplicationClass.mArtefactList, mCategory.getCategoryName());
                     if (!list.isEmpty()) {
+                        mFilterHelper.setFilteredArtefactList(list);
+                        mMap.clear();
                         for (int i = 0; i < list.size(); i++) {
                             createMarker(list.get(i));
                         }
-                        mFilterHelper.setFilteredArtefactList(list);
                         moveCamera(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()), DEFAULT_ZOOM);
                     }
                 }
                 Log.d(TAG, "onClick: apply category filter clicked");
                 break;
             case R.id.button_map_anno_domini_from:
-                Log.d(TAG, "onClick: anno domini from clicked");
+                if (annoDominiFrom == BcAc.BEFORE_CHRIST) {
+                    annoDominiFrom = BcAc.AFTER_CHRIST;
+                    btnMapFilterAnnoDominiFrom.setText("A.C.");
+                } else {
+                    annoDominiFrom = BcAc.BEFORE_CHRIST;
+                    btnMapFilterAnnoDominiFrom.setText("B.C.");
+                }
+                //Log.d(TAG, "onClick: anno domini from clicked");
                 break;
             case R.id.button_map_anno_domini_to:
-                Log.d(TAG, "onClick: anno domini to clicked");
+                if (annoDominiTo == BcAc.BEFORE_CHRIST) {
+                    annoDominiTo = BcAc.AFTER_CHRIST;
+                    btnMapFilterAnnoDominiTo.setText("A.C.");
+                } else {
+                    annoDominiTo = BcAc.BEFORE_CHRIST;
+                    btnMapFilterAnnoDominiTo.setText("B.C.");
+                }
+                //Log.d(TAG, "onClick: anno domini to clicked");
                 break;
             case R.id.button_show_filter_as_a_list:
                 Log.d(TAG, "onClick: show filter as a list clicked");
                 break;
             case R.id.button_map_reset_filter:
                 Log.d(TAG, "onClick: reset filter clicked");
+                etMapFilterAgeFrom.setText("");
+                etMapFilterAgeTo.setText("");
+                etMapFilterAgeFrom.setHint(Util.YEAR);
+                etMapFilterAgeTo.setHint(Util.YEAR);
+                annoDominiFrom = BcAc.BEFORE_CHRIST;
+                annoDominiTo = BcAc.AFTER_CHRIST;
                 btnMapFilterReset.setEnabled(false);
                 btnMapFilterShowResultAtList.setEnabled(false);
                 radioGroupMapFilter.check(R.id.radio_map_artefact_category);
                 mFilterHelper.resetFilterHelperSettings();
                 mMap.clear();
+                // populate map with marker from complete artefactList
                 for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
                     createMarker(ApplicationClass.mArtefactList.get(i));
                 }
+                Log.d(TAG, "onClick: artefactsList.size(): " + ApplicationClass.mArtefactList.size());
                 break;
         }
     }
@@ -337,7 +453,7 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
     private ArrayList<Category> populateCategoryList() {
         ArrayList<Category> list = new ArrayList<>();
 
-        list.add(new Category("SaltAndPepper", R.drawable.ic_salt_and_pepper));
+
         list.add(new Category(Util.CATEGORY_BASILIKA, R.drawable.ic_map_basilica));
         list.add(new Category(Util.CATEGORY_BOGEN, R.drawable.ic_map_bogen));
         list.add(new Category(Util.CATEGORY_CHRISTENTUM, R.drawable.ic_map_christentum));
@@ -352,6 +468,37 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         list.add(new Category(Util.CATEGORY_WOHNKOMPLEX, R.drawable.ic_map_wohnkomplex));
 
         return list;
+    }
+
+    public List<Artefact> filterArtefactList(List<Artefact> fullList, BcAc filterAnnoDominiFrom, int age, boolean isGreaterThan) {
+
+        //filteredList.clear();
+        List<Artefact> tempList = new ArrayList<>();
+        if (isGreaterThan) {
+            for (Artefact item : fullList) {
+                if (item.getAnnoDomini().equals(filterAnnoDominiFrom.toString()) && Integer.parseInt(item.getArtefactAge()) > age) {
+                    tempList.add(item);
+                }
+            }
+        } else {
+            for (Artefact item : fullList) {
+                if (item.getAnnoDomini().equals(filterAnnoDominiFrom.toString()) && Integer.parseInt(item.getArtefactAge()) < age) {
+                    tempList.add(item);
+                }
+            }
+        }
+        return tempList;
+    }
+
+    public List<Artefact> filterCategory(List<Artefact> fullList, String categoryName) {
+
+        List<Artefact> tempList = new ArrayList<>();
+        for (Artefact item : fullList) {
+            if (item.getCategoryName().equals(categoryName)) {
+                tempList.add(item);
+            }
+        }
+        return tempList;
     }
 
     private void initMap() {
@@ -377,6 +524,11 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
         btnMapFilterAnnoDominiTo.setOnClickListener(this);
         btnMapFilterShowResultAtList.setOnClickListener(this);
         btnMapFilterReset.setOnClickListener(this);
+
+        annoDominiFrom = BcAc.BEFORE_CHRIST;
+        annoDominiTo = BcAc.AFTER_CHRIST;
+        btnMapFilterAnnoDominiFrom.setText("B.C.");
+        btnMapFilterAnnoDominiTo.setText("A.C.");
 
         enableMapFilterViews(true, true, false, false, false, false, false);
         radioGroupMapFilter.check(R.id.radio_map_artefact_category);
@@ -409,6 +561,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
             }
         });
 
+        filteredList = new ArrayList<>();
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -433,18 +587,31 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 });
 
                 // Map is called from ArtefactListFragment via drawer and filter is set
-                if (mFilterHelper.isListFilterSet() || mFilterHelper.isMapFilterSet()) {
+                if (mFilterHelper.isFilterSet()) {
+                    filteredList.clear();
+                    filteredList = mFilterHelper.getFilteredArtefactList();
                     Log.d(TAG, "onMapReady: filter is set: mFilterHelper.toString(): " + mFilterHelper.toString());
-                    for (int i = 0; i < mFilterHelper.getFilteredArtefactList().size(); i++) {
-                        createMarker(mFilterHelper.getFilteredArtefactList().get(i));
+                    for (int i = 0; i < filteredList.size(); i++) {
+                        createMarker(filteredList.get(i));
                     }
                     // Map is called from ArtefactListFragment via "show search result on map" button, filter is set
-                } else if (getIntent().getStringExtra(Util.ORIGIN).equals(Util.FILTER) && !ApplicationClass.mFilteredArtefactList.isEmpty()) {
-                    for (int i = 0; i < ApplicationClass.mFilteredArtefactList.size(); i++) {
-                        createMarker(ApplicationClass.mFilteredArtefactList.get(i));
+                } else if (getIntent().getStringExtra(Util.ORIGIN).equals(Util.FILTER)) {
+                    //&& !mFilterHelper.getFilteredArtefactList().isEmpty()) {
+                    filteredList.clear();
+                    filteredList = mFilterHelper.getFilteredArtefactList();
+                    if (!filteredList.isEmpty()) {
+                        for (int i = 0; i < filteredList.size(); i++) {
+                            createMarker(filteredList.get(i));
+                        }
+                        for (int i = 0; i < mCategoryList.size(); i++) {
+                            if (mCategoryList.get(i).getCategoryName().equals(mFilterHelper.getCategory())) {
+                                categoryPosition = i;
+                            }
+                        }
                     }
-                    // initial call, no filter is set
-                } else {
+                    spinnerMapFilterCategory.setSelection(categoryPosition);
+                } else { // initial call, no filter is set
+
                     if (ApplicationClass.mArtefactList.size() > 0) {
                         for (int i = 0; i < ApplicationClass.mArtefactList.size(); i++) {
                             createMarker(ApplicationClass.mArtefactList.get(i));
@@ -457,8 +624,8 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                     public void onMapLongClick(LatLng latLng) {
                         ApplicationClass.mArtefactLatLng = latLng;
                         ApplicationClass.mScreenPosition = getScreenPosition();
-                        Log.d(TAG, "onMapLongClick: lat: " + ApplicationClass.mArtefactLatLng.latitude + " lng: " + ApplicationClass.mArtefactLatLng.longitude);
-                        navigateToNewArtefactFragment("onMapLongClick");
+                        //Log.d(TAG, "onMapLongClick: lat: " + ApplicationClass.mArtefactLatLng.latitude + " lng: " + ApplicationClass.mArtefactLatLng.longitude);
+                        navigateToNewArtefactFragment(Util.ON_MAP_LONG_CLICK);
 
                     }
                 });
@@ -544,9 +711,6 @@ public class MapActivity extends AppCompatActivity implements NavigationView.OnN
                 break;
             case Util.CATEGORY_POLITISCHE_INSTITUTION:
                 markerArtefactIcon = R.drawable.ic_map_politische_institution;
-                break;
-            case "SaltAndPepper":
-                markerArtefactIcon = R.drawable.ic_salt_and_pepper;
                 break;
             default:
                 markerArtefactIcon = R.drawable.ic_map_default_marker;

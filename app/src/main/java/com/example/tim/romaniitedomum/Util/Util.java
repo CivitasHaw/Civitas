@@ -33,9 +33,14 @@ public class Util {
     public static final String ORIGIN_DELETE_ARTEFACT = "deleteArtefact";
     public static final String ARTEFACT_OBJECT_ID = "artefactObjectId";
     public static final String FILTER = "filter";
+    public static final String MARKER_CLICK = "markerClick";
+    public static final String ON_MAP_LONG_CLICK = "onMapLongClick";
+    public static final String BUTTON_ADD_ARTEFACT = "btnAddArtefact";
 
     // Backendless
     public static final String BACKENDLESS_IMAGE_FILE_PATH = "artefactImages/";
     public static final String BACKENDLESS_AUDIO_FILE_PATH = "artefactAudios/";
 
+    // common
+    public static final String YEAR = "Year";
 }

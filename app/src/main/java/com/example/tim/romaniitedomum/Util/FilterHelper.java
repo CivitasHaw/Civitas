@@ -18,8 +18,7 @@ public class FilterHelper {
     private List<Artefact> filteredArtefactList;
     private BcAc annoDominiFrom;
     private BcAc annoDominiTo;
-    private boolean isListFilterSet;
-    private boolean isMapFilterSet;
+    private boolean isFilterSet;
 
     private FilterHelper() {
 
@@ -89,20 +88,23 @@ public class FilterHelper {
         this.annoDominiTo = annoDominiTo;
     }
 
-    public boolean isListFilterSet() {
-        return isListFilterSet;
+    public boolean isFilterSet() {
+        return isFilterSet;
     }
 
-    public void setListFilterSet(boolean listFilterSet) {
-        isListFilterSet = listFilterSet;
+    public void setFilterSet(boolean filterSet) {
+        isFilterSet = filterSet;
     }
 
-    public boolean isMapFilterSet() {
-        return isMapFilterSet;
-    }
 
-    public void setMapFilterSet(boolean mapFilterSet) {
-        isMapFilterSet = mapFilterSet;
+    public void prepareFilterHelper(String name, String category, String ageFrom, BcAc adFrom, String ageTo, BcAc adTo, boolean filter) {
+        this.artefactName = name;
+        this.category = category;
+        this.ageFrom = ageFrom;
+        this.annoDominiFrom = adFrom;
+        this.ageTo = ageTo;
+        this.annoDominiTo = adTo;
+        this.isFilterSet = filter;
     }
 
     public void resetFilterHelperSettings() {
@@ -113,8 +115,7 @@ public class FilterHelper {
         this.ageTo = null;
         this.filteredArtefactList = null;
         this.category = null;
-        this.isMapFilterSet = false;
-        this.isListFilterSet = false;
+        this.isFilterSet = false;
     }
 
     @Override
@@ -126,8 +127,7 @@ public class FilterHelper {
                 ", ageTo=" + ageTo +
                 ", annoDominiFrom=" + annoDominiFrom +
                 ", annoDominiTo=" + annoDominiTo +
-                ", isListFilterSet=" + isListFilterSet +
-                ", isMapFilterSet=" + isMapFilterSet +
+                ", isFilterSet=" + isFilterSet +
                 '}';
     }
 }

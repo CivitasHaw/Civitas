@@ -22,15 +22,17 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
-import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.persistence.local.UserIdStorageFactory;
 import com.example.tim.romaniitedomum.ApplicationClass;
-import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.MainActivity;
+import com.example.tim.romaniitedomum.Util.BcAc;
+import com.example.tim.romaniitedomum.Util.Util;
+import com.example.tim.romaniitedomum.artefact.Artefact;
 import com.example.tim.romaniitedomum.map.MapActivity;
 import com.example.tim.romaniitedomum.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -180,6 +182,7 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
+    // login
     private void retrieveArtefactsFromBackendless() {
         tvLoad.setText(getResources().getText(R.string.retrieve_artefacts_from_backendless));
         // retrieve more than 10 artefact objects
@@ -197,10 +200,28 @@ public class LoginFragment extends Fragment {
             @Override
             public void handleFault(BackendlessFault fault) {
                 Toast.makeText(getContext(), getResources().getText(R.string.toast_backendless_error) + fault.getMessage(), Toast.LENGTH_SHORT).show();
-                showProgress(false);
+                // avoid starting with an empty artefact list
+                avoidEmptyArtefactList();
                 navigateToMapActivity();
             }
         });
+    }
+
+    private void avoidEmptyArtefactList() {
+        List<Artefact> list = new ArrayList<>();
+        Artefact artefact = new Artefact();
+        artefact.setArtefactName("Civitas");
+        artefact.setCategoryName(Util.CATEGORY_SPIELSTAETTE);
+        artefact.setAnnoDomini(BcAc.BEFORE_CHRIST.toString());
+        artefact.setArtefactImageUrl("");
+        artefact.setArtefactAudioUrl("");
+        artefact.setArtefactDescription("greatest app ever");
+        artefact.setAuthorName("Marcus Tullio Cicero");
+        artefact.setArtefactAge("63");
+        artefact.setLatitude(53.50000);
+        artefact.setLongitude(10.000);
+        list.add(artefact);
+        ApplicationClass.mArtefactList = list;
     }
 
     private void navigateToMapActivity(){

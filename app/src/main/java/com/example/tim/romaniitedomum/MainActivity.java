@@ -29,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this).build();
-        ImageLoader.getInstance().init(configuration);
-        ApplicationClass.loader = ImageLoader.getInstance();
 
         if (isServicesOk()){
             fragmentSwitch(new LoginFragment(), false, "");

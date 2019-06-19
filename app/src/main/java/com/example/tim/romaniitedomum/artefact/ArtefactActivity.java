@@ -71,7 +71,7 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         if (content.equals("list")) {
             ArtefactListFragment artefactListFragment = new ArtefactListFragment();
             fragmentSwitcher2(artefactListFragment, true, "ArtefactListFragment");
-        } else if (content.equals("markerClick")) {
+        } else if (content.equals(Util.MARKER_CLICK)) {
             ArtefactDetailFragment artefactDetailFragment = new ArtefactDetailFragment();
             args.putString(Util.ARTEFACT_OBJECT_ID, intent.getStringExtra(Util.ARTEFACT_OBJECT_ID));
             artefactDetailFragment.setArguments(args);
@@ -79,12 +79,12 @@ public class ArtefactActivity extends AppCompatActivity implements NavigationVie
         } else {
             NewArtefactFragment newArtefactFragment = new NewArtefactFragment();
             String content2 = intent.getStringExtra(getResources().getString(R.string.origin));
-            if (content2.equals("btnAddArtefact")) { // creating Artefact at device location
-                args.putString(getResources().getString(R.string.origin), "btnAddArtefact");
+            if (content2.equals(Util.BUTTON_ADD_ARTEFACT)) { // creating Artefact at device location
+                args.putString(getResources().getString(R.string.origin), Util.BUTTON_ADD_ARTEFACT);
                 args.putDouble("latitude", ApplicationClass.mDeviceLocation.getLatitude());
                 args.putDouble("longitude", ApplicationClass.mDeviceLocation.getLongitude());
-            } else if (content2.equals("onMapLongClick")) { // creating Artefact at marker location
-                args.putString(getResources().getString(R.string.origin), "onMapLongClick");
+            } else if (content2.equals(Util.ON_MAP_LONG_CLICK)) { // creating Artefact at marker location
+                args.putString(getResources().getString(R.string.origin), Util.ON_MAP_LONG_CLICK);
                 args.putDouble("latitude", ApplicationClass.mArtefactLatLng.latitude);
                 args.putDouble("longitude", ApplicationClass.mArtefactLatLng.longitude);
             }

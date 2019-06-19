@@ -20,6 +20,7 @@ import com.example.tim.romaniitedomum.map.MapActivity;
 public class ImpressumActivity extends AppCompatActivity {
 
     private static final String TAG = "ImpressumActivity";
+    // link zuletzt aufgerufen: 27.05.2019
     public static final String CIVITAS_URL = "https://www.geschichte.uni-hamburg.de/arbeitsbereiche/alte-geschichte/personen/panzram.html";
     private Intent originIntent;
 
@@ -41,7 +42,6 @@ public class ImpressumActivity extends AppCompatActivity {
     private void initImpressum() {
         webView = findViewById(R.id.webview_impressum);
         webView.getSettings().setJavaScriptEnabled(true);
-        //webView.getSettings().setPluginState(PluginState.ON);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.getSettings().setSupportMultipleWindows(true);
         webView.getSettings().setSupportZoom(true);
@@ -57,7 +57,7 @@ public class ImpressumActivity extends AppCompatActivity {
         });
         webView.loadUrl(CIVITAS_URL);
         webView.setVisibility(View.VISIBLE);
-        
+
         // visibility gone within XML
         tvCredits = findViewById(R.id.text_credits);
         String credits = "Icon made by Lucy G from www.flaticon.com \n" + "Icon made by Freepik from www.flaticon.com \n";
